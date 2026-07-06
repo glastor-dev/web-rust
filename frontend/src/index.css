@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #00ff66;
+  --color-brand-light: #33ff85;
+  
+  --font-sans: "Red Hat Text", system-ui, sans-serif;
+  --font-display: "Red Hat Display", system-ui, sans-serif;
+  --font-mono: "Red Hat Mono", monospace;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 2%; /* #050505 */
+    --foreground: 0 0% 98%; /* white */
+    
+    --card: 0 0% 2%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 2%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 144 100% 50%; /* #00ff66 */
+    --primary-foreground: 0 0% 0%; /* black */
+    
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    
+    --accent: 144 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 144 100% 50%;
+    
+    --radius: 0px; /* Brutalist sharp edges */
+  }
+}
+
+:root {
+  background-color: #050505; /* Ultra black */
+  color: #fafafa; /* Zinc 50 */
+  font-family: var(--font-sans);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #050505;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use Red Hat Display for editorial look */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Thin editorial borders */
+.border-editorial {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@utility text-fluid-display {
+  font-size: clamp(3rem, 8vw + 1rem, 8rem);
+  line-height: 0.85;
+}
+
+@utility text-fluid-h2 {
+  font-size: clamp(2.5rem, 5vw + 1rem, 6rem);
+  line-height: 0.9;
+}
+
+@utility text-fluid-h3 {
+  font-size: clamp(1.5rem, 3vw + 1rem, 3rem);
+  line-height: 1;
+}
+
+@utility text-fluid-body {
+  font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.animate-shake {
+  animation: shake 0.5s;
+  animation-iteration-count: infinite;
+}
