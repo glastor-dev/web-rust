@@ -127,6 +127,12 @@ export default function Footer() {
                   <a href="https://wa.me/5491132578591" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 hover:text-brand transition-all">
                     <img src="/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
                   </a>
+                  <a href="https://t.me/glastordev" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 hover:text-brand transition-all">
+                    <img src="/icons/telegram.svg" alt="Telegram" className="w-5 h-5 invert" />
+                  </a>
+                  <a href="https://instagram.com/glastordev" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 transition-all">
+                    <img src="/icons/instagram.svg" alt="Instagram" className="w-5 h-5 invert" />
+                  </a>
                   <a href="mailto:ventas@glastor.es" className="opacity-50 hover:opacity-100 transition-opacity">
                     <img src="/icons/aws-res-amazon-simple-email-service-email.svg" alt="Email" className="w-5 h-5" />
                   </a>

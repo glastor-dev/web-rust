@@ -49,7 +49,10 @@ export function SEO({
             "telephone": "+5491132578591"
           },
           "sameAs": [
-            "https://github.com/glastor-dev"
+            "https://github.com/glastor-dev",
+            "https://wa.me/5491132578591",
+            "https://t.me/glastordev",
+            "https://instagram.com/glastordev"
           ]
         })}
       </script>
