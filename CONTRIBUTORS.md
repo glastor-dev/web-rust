@@ -38,4 +38,4 @@ Agradecemos a las entidades y profesionales que validan nuestro rigor técnico:
 
 ---
 
-© 2010-2026 Andrés Antonio Cardoso — GLASTOR®. Todos los derechos reservados.
+© 2010-2026 Andrés Antonio Cardoso — GLASTOR®. Todos los derechos reservados..
