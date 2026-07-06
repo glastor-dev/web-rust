@@ -17,9 +17,6 @@ RUN rm -rf src
 
 # Copiamos el código real
 COPY src ./src
-# También copiamos el archivo de la base de datos local y el .env porque SQLx lo necesita en tiempo de compilación si usa macros (opcional)
-COPY glastor.db .
-COPY .env .
 
 # Forzamos la recompilación del código real (touch obliga a ignorar el caché del main dummy)
 RUN touch src/main.rs
@@ -37,10 +34,6 @@ WORKDIR /app
 
 # Copiamos el binario compilado desde la etapa anterior
 COPY --from=builder /app/target/release/backend /usr/local/bin/backend
-
-# Copiamos variables de entorno y base de datos inicial (si existe)
-COPY --from=builder /app/.env .
-COPY --from=builder /app/glastor.db .
 
 # Exponemos el puerto del backend
 EXPOSE 3000

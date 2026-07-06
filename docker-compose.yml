@@ -28,11 +28,8 @@ services:
     ports:
       - "3000:3000" # Expuesto al mundo (o al frontend interno)
     restart: unless-stopped
-    env_file:
-      - ./backend/.env
     volumes:
-      # Montar la base de datos de sqlite persistente
-      - ./backend/glastor.db:/app/glastor.db
+      - backend-data:/app
     networks:
       - glastor-network
 
@@ -40,3 +37,6 @@ services:
 networks:
   glastor-network:
     driver: bridge
+
+volumes:
+  backend-data:
