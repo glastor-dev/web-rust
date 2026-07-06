@@ -9,19 +9,33 @@ import { EditorialCard } from '../components/reutilizables/EditorialCard';
 import { FoundersSection } from '../components/sections/Nosotros/FoundersSection';
 import { AntiTimeline } from '../components/sections/Nosotros/AntiTimeline';
 import { SinceridadBrutal } from '../components/sections/Nosotros/SinceridadBrutal';
+import { TextRevealGSAP } from '../components/ui/TextRevealGSAP';
 
 export default function Nosotros() {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <SEO 
+      <SEO
         title="Glastor | Odiamos el software mediocre"
         description="Fundamos Glastor tras ver cómo ideas brillantes morían aplastadas por arquitecturas de papel. Conoce al equipo obcecado con la calidad."
         url="https://glastor.dev/nosotros"
       />
-      
+
       {/* 1. Hero Manifiesto */}
-      <PageHero 
-        title={<>ODIAMOS EL<br />SOFTWARE<br />MEDIOCRE.<br /><span className="text-zinc-500">POR ESO<br />EXISTIMOS.</span></>}
+      <PageHero
+        title={
+          <TextRevealGSAP
+            lines={[
+              'ODIAMOS EL',
+              'SOFTWARE',
+              'MEDIOCRE.',
+              <span key="eso" className="text-zinc-500">
+                POR ESO
+                <br />
+                EXISTIMOS.
+              </span>,
+            ]}
+          />
+        }
         titleClass="text-fluid-h2 mx-auto"
         description="Fundamos Glastor tras ver cómo ideas brillantes morían aplastadas por arquitecturas de papel, presupuestos inflados y tiempos de carga eternos. Queríamos construir algo inquebrantable."
         ctaPrimary={{ text: 'Ven a tomar un café (virtual)', href: '#contacto' }}
@@ -56,7 +70,7 @@ export default function Nosotros() {
           className="w-full flex flex-col items-center"
         >
           <div className="w-full max-w-5xl mb-16 text-center">
-            <EditorialCard 
+            <EditorialCard
               title="¿TODAVÍA LEYENDO?"
               text="Eres curioso. Te caemos bien. En lugar de llenar un aburrido formulario de contacto que nadie quiere leer ni responder, hablemos directo. Sin fricción. Sin comerciales."
               fontFamily="Inter, sans-serif"
@@ -64,12 +78,18 @@ export default function Nosotros() {
               lineHeight={44}
             />
           </div>
-          <Button asChild variant="default" size="lg" className="h-16 px-12 text-lg uppercase tracking-widest">
-            <a href="https://wa.me/5491132578591" target="_blank" rel="noopener noreferrer">Hablar con un Humano</a>
+          <Button
+            asChild
+            variant="default"
+            size="lg"
+            className="h-16 px-12 text-lg uppercase tracking-widest"
+          >
+            <a href="https://wa.me/5491132578591" target="_blank" rel="noopener noreferrer">
+              Hablar con un Humano
+            </a>
           </Button>
         </motion.div>
       </section>
-
     </div>
   );
 }
