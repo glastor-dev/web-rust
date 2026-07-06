@@ -1,6 +1,6 @@
 use axum::{
     extract::{State, DefaultBodyLimit},
-    http::{HeaderValue, Method, StatusCode},
+    http::{HeaderMap, HeaderValue, Method, StatusCode},
     response::{IntoResponse, Response},
     routing::{post, get},
     Json, Router,
@@ -16,6 +16,8 @@ use tower_http::trace::TraceLayer;
 use tracing::{info, error};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use thiserror::Error;
+use sha2::{Sha256, Digest};
+use chrono::Utc;
 
 #[derive(Error, Debug)]
 pub enum AppError {
@@ -84,6 +86,34 @@ struct RevocationRequest {
 #[derive(Deserialize)]
 struct PageviewRequest {
     path: String,
+    referrer: Option<String>,
+    screen_size: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct LeaveRequest {
+    path: String,
+    duration_seconds: i32,
+}
+
+#[derive(Deserialize)]
+struct EventRequest {
+    event_name: String,
+    path: String,
+    data: Option<String>,
+}
+
+#[derive(Serialize)]
+struct AnalyticsSummary {
+    total_pageviews: i64,
+    unique_visitors: i64,
+    top_pages: Vec<TopPage>,
+}
+
+#[derive(Serialize, FromRow)]
+struct TopPage {
+    path: String,
+    views: i64,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
@@ -102,6 +132,7 @@ struct AppState {
     resend_api_key: String,
     resend_from_email: String,
     db_pool: SqlitePool,
+    analytics_salt: String,
 }
 
 #[tokio::main]
@@ -115,9 +146,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // Init SQLite DB
     let db_url = "sqlite://data.db";
-    // Create the DB file if it doesn't exist
     if !std::path::Path::new("data.db").exists() {
         std::fs::File::create("data.db")?;
     }
@@ -127,17 +156,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .connect(db_url)
         .await?;
 
-    // Create table and seed if empty
     init_db(&pool).await?;
 
     let resend_api_key = env::var("RESEND_API_KEY").unwrap_or_else(|_| "fake_key".to_string());
     let resend_from_email = env::var("RESEND_FROM_EMAIL").unwrap_or_else(|_| "onboarding@resend.dev".to_string());
+    let analytics_salt = env::var("ANALYTICS_SALT").unwrap_or_else(|_| "glastor_default_salt_2026".to_string());
 
     let state = Arc::new(AppState {
         http_client: Client::new(),
         resend_api_key,
         resend_from_email,
         db_pool: pool,
+        analytics_salt,
     });
 
     let cors = CorsLayer::new()
@@ -158,6 +188,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/sow/send", post(send_sow))
         .route("/api/arrepentimiento/send", post(send_arrepentimiento))
         .route("/api/analytics/pageview", post(track_pageview))
+        .route("/api/analytics/leave", post(track_leave))
+        .route("/api/analytics/event", post(track_event))
+        .route("/api/analytics/summary", get(get_analytics_summary))
         .layer(tower_governor::GovernorLayer::new(governor_conf))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
@@ -188,12 +221,35 @@ async fn init_db(pool: &SqlitePool) -> Result<(), sqlx::Error> {
     .execute(pool)
     .await?;
 
+    // Drop table to update schema for analytics (development reset)
+    let _ = sqlx::query("DROP TABLE IF EXISTS analytics_pageviews").execute(pool).await;
+    let _ = sqlx::query("DROP TABLE IF EXISTS analytics_events").execute(pool).await;
+
     sqlx::query(
         r#"
         CREATE TABLE IF NOT EXISTS analytics_pageviews (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
             path TEXT NOT NULL,
             user_agent TEXT NOT NULL,
+            referrer TEXT,
+            screen_size TEXT,
+            duration_seconds INTEGER DEFAULT 0,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        CREATE TABLE IF NOT EXISTS analytics_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
+            event_name TEXT NOT NULL,
+            path TEXT NOT NULL,
+            data TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         "#,
@@ -233,6 +289,26 @@ async fn init_db(pool: &SqlitePool) -> Result<(), sqlx::Error> {
     }
     
     Ok(())
+}
+
+fn get_client_ip(headers: &HeaderMap) -> String {
+    headers
+        .get("x-forwarded-for")
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("127.0.0.1")
+        .split(',')
+        .next()
+        .unwrap_or("127.0.0.1")
+        .trim()
+        .to_string()
+}
+
+fn generate_session_id(ip: &str, user_agent: &str, salt: &str) -> String {
+    let date = Utc::now().format("%Y-%m-%d").to_string();
+    let raw = format!("{}-{}-{}-{}", ip, user_agent, date, salt);
+    let mut hasher = Sha256::new();
+    hasher.update(raw);
+    hex::encode(hasher.finalize())
 }
 
 async fn get_modules(State(state): State<Arc<AppState>>) -> Result<Json<Vec<ArchitectureModule>>, AppError> {
@@ -344,20 +420,97 @@ fn response_is_success(res: &reqwest::Response) -> bool {
 
 async fn track_pageview(
     State(state): State<Arc<AppState>>,
-    headers: axum::http::HeaderMap,
+    headers: HeaderMap,
     Json(payload): Json<PageviewRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     let user_agent = headers
         .get(axum::http::header::USER_AGENT)
         .and_then(|h| h.to_str().ok())
-        .unwrap_or("unknown")
-        .to_string();
+        .unwrap_or("unknown");
 
-    sqlx::query("INSERT INTO analytics_pageviews (path, user_agent) VALUES (?, ?)")
-        .bind(&payload.path)
-        .bind(&user_agent)
-        .execute(&state.db_pool)
-        .await?;
+    let ip = get_client_ip(&headers);
+    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
+
+    sqlx::query(
+        "INSERT INTO analytics_pageviews (session_id, path, user_agent, referrer, screen_size) VALUES (?, ?, ?, ?, ?)"
+    )
+    .bind(&session_id)
+    .bind(&payload.path)
+    .bind(user_agent)
+    .bind(&payload.referrer)
+    .bind(&payload.screen_size)
+    .execute(&state.db_pool)
+    .await?;
+
+    Ok((StatusCode::OK, Json(json!({ "status": "success", "session_id": session_id }))))
+}
+
+async fn track_leave(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Json(payload): Json<LeaveRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    let user_agent = headers
+        .get(axum::http::header::USER_AGENT)
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("unknown");
+
+    let ip = get_client_ip(&headers);
+    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
+
+    sqlx::query(
+        "UPDATE analytics_pageviews SET duration_seconds = ? WHERE id = (SELECT id FROM analytics_pageviews WHERE session_id = ? AND path = ? ORDER BY id DESC LIMIT 1)"
+    )
+    .bind(payload.duration_seconds)
+    .bind(&session_id)
+    .bind(&payload.path)
+    .execute(&state.db_pool)
+    .await?;
 
     Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
+}
+
+async fn track_event(
+    State(state): State<Arc<AppState>>,
+    headers: HeaderMap,
+    Json(payload): Json<EventRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    let user_agent = headers
+        .get(axum::http::header::USER_AGENT)
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("unknown");
+
+    let ip = get_client_ip(&headers);
+    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
+
+    sqlx::query(
+        "INSERT INTO analytics_events (session_id, event_name, path, data) VALUES (?, ?, ?, ?)"
+    )
+    .bind(&session_id)
+    .bind(&payload.event_name)
+    .bind(&payload.path)
+    .bind(&payload.data)
+    .execute(&state.db_pool)
+    .await?;
+
+    Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
+}
+
+async fn get_analytics_summary(
+    State(state): State<Arc<AppState>>,
+) -> Result<impl IntoResponse, AppError> {
+    let total: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM analytics_pageviews").fetch_one(&state.db_pool).await?;
+    let unique: (i64,) = sqlx::query_as("SELECT COUNT(DISTINCT session_id) FROM analytics_pageviews").fetch_one(&state.db_pool).await?;
+    
+    let top_pages = sqlx::query_as::<_, TopPage>(
+        "SELECT path, COUNT(*) as views FROM analytics_pageviews GROUP BY path ORDER BY views DESC LIMIT 5"
+    ).fetch_all(&state.db_pool).await?;
+
+    let summary = AnalyticsSummary {
+        total_pageviews: total.0,
+        unique_visitors: unique.0,
+        top_pages,
+    };
+
+    Ok((StatusCode::OK, Json(summary)))
 }

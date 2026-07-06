@@ -3,6 +3,7 @@ import { ArrowUpIcon, AlertTriangleIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from './reutilizables/button';
 import getCalApi from '@calcom/embed-react';
+import { trackEvent } from '../lib/analytics';
 
 export default function Footer() {
   const [coffeeCups, setCoffeeCups] = useState(14023);
@@ -30,6 +31,7 @@ export default function Footer() {
   }, []);
 
   const handleEasterEgg = () => {
+    trackEvent('easter_egg_clicked');
     setIsShaking(true);
     // Efecto de terremoto en toda la pantalla (vía clase en el body o wrapper)
     document.body.classList.add('animate-shake');
@@ -67,6 +69,7 @@ export default function Footer() {
               size="lg"
               variant="default"
               className="h-14 px-8 text-sm uppercase tracking-widest w-full sm:w-auto"
+              onClick={() => trackEvent('click_cta_footer')}
               asChild
             >
               <a
