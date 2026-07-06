@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import Sitemap from 'vite-plugin-sitemap'
 
 import path from 'path';
-import packageJson from './package.json';
+import packageJson from './package.json' with { type: "json" };
 
 const dynamicRoutes = [
   '/',
