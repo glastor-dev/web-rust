@@ -1,0 +1,24 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          password: ${{ secrets.DO_PASSWORD }}
+          script: |
+            cd ~/web-rust
+            git pull
+            # Construir por separado para evitar OOM (Out Of Memory) en servidores de 1GB
+            docker compose build frontend
+            docker compose build backend
+            docker compose up -d
