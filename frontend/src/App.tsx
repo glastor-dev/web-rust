@@ -11,45 +11,50 @@ const Nosotros = lazy(() => import('./pages/Nosotros'));
 const Legales = lazy(() => import('./pages/Legal/Legales'));
 const Configurador = lazy(() => import('./pages/Configurador'));
 const Arrepentimiento = lazy(() => import('./pages/Legal/Arrepentimiento'));
+const Dashboard = lazy(() => import('./pages/Admin/Dashboard'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Home />,
       },
       {
-        path: "/servicios",
+        path: '/servicios',
         element: <Servicios />,
       },
       {
-        path: "/proyectos",
+        path: '/proyectos',
         element: <Proyectos />,
       },
       {
-        path: "/nosotros",
+        path: '/nosotros',
         element: <Nosotros />,
       },
       {
-        path: "/legales",
+        path: '/legales',
         element: <Legales />,
       },
       {
-        path: "/arquitectura",
+        path: '/arquitectura',
         element: <Configurador />,
       },
       {
-        path: "/arrepentimiento",
+        path: '/arrepentimiento',
         element: <Arrepentimiento />,
       },
       {
-        path: "*",
+        path: '/glastor-sys-admin',
+        element: <Dashboard />,
+      },
+      {
+        path: '*',
         element: <NotFound />,
-      }
+      },
     ],
   },
 ]);
