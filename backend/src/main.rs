@@ -81,6 +81,11 @@ struct RevocationRequest {
     declaracion: bool,
 }
 
+#[derive(Deserialize)]
+struct PageviewRequest {
+    path: String,
+}
+
 #[derive(Serialize, Deserialize, FromRow)]
 struct ArchitectureModule {
     id: String,
@@ -152,6 +157,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/modules", get(get_modules))
         .route("/api/sow/send", post(send_sow))
         .route("/api/arrepentimiento/send", post(send_arrepentimiento))
+        .route("/api/analytics/pageview", post(track_pageview))
         .layer(tower_governor::GovernorLayer::new(governor_conf))
         .layer(TraceLayer::new_for_http())
         .layer(cors)
@@ -176,6 +182,19 @@ async fn init_db(pool: &SqlitePool) -> Result<(), sqlx::Error> {
             min_weeks INTEGER NOT NULL,
             max_weeks INTEGER NOT NULL,
             description TEXT NOT NULL
+        );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        CREATE TABLE IF NOT EXISTS analytics_pageviews (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            path TEXT NOT NULL,
+            user_agent TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         "#,
     )
@@ -321,4 +340,24 @@ async fn send_arrepentimiento(
 
 fn response_is_success(res: &reqwest::Response) -> bool {
     res.status().is_success()
+}
+
+async fn track_pageview(
+    State(state): State<Arc<AppState>>,
+    headers: axum::http::HeaderMap,
+    Json(payload): Json<PageviewRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    let user_agent = headers
+        .get(axum::http::header::USER_AGENT)
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("unknown")
+        .to_string();
+
+    sqlx::query("INSERT INTO analytics_pageviews (path, user_agent) VALUES (?, ?)")
+        .bind(&payload.path)
+        .bind(&user_agent)
+        .execute(&state.db_pool)
+        .await?;
+
+    Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
 }

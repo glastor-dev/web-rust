@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { NoiseOverlay } from '../components/ui/NoiseOverlay';
 import { CustomCursor } from '../components/ui/CustomCursor';
-import { CookieBanner } from '../components/ui/CookieBanner';
 import { SmoothScroll } from '../components/SmoothScroll';
 
 export default function MainLayout() {
@@ -25,12 +24,20 @@ export default function MainLayout() {
     }
   }, [pathname, hash]);
 
+  // Telemetry: Custom Rust Analytics (No Cookies)
+  useEffect(() => {
+    fetch('/api/analytics/pageview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: pathname })
+    }).catch(err => console.debug('Analytics error:', err));
+  }, [pathname]);
+
   return (
     <SmoothScroll>
       <div className="bg-[#050505] min-h-screen text-white font-sans overflow-x-hidden selection:bg-brand selection:text-black">
         <NoiseOverlay />
         <CustomCursor />
-        <CookieBanner />
         
         <Header />
         
