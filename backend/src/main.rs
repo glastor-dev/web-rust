@@ -103,12 +103,6 @@ struct EventRequest {
     data: Option<String>,
 }
 
-#[derive(Serialize)]
-struct AnalyticsSummary {
-    total_pageviews: i64,
-    unique_visitors: i64,
-    top_pages: Vec<TopPage>,
-}
 
 #[derive(Serialize, FromRow)]
 struct TopPage {
@@ -496,20 +490,42 @@ async fn track_event(
     Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
 }
 
+#[derive(Serialize, FromRow)]
+struct TopEvent {
+    event_name: String,
+    count: i64,
+}
+
+#[derive(Serialize)]
+struct AnalyticsSummary {
+    total_pageviews: i64,
+    unique_visitors: i64,
+    average_duration: i64,
+    top_pages: Vec<TopPage>,
+    top_events: Vec<TopEvent>,
+}
+
 async fn get_analytics_summary(
     State(state): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, AppError> {
     let total: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM analytics_pageviews").fetch_one(&state.db_pool).await?;
     let unique: (i64,) = sqlx::query_as("SELECT COUNT(DISTINCT session_id) FROM analytics_pageviews").fetch_one(&state.db_pool).await?;
+    let avg_duration: (Option<f64>,) = sqlx::query_as("SELECT AVG(duration_seconds) FROM analytics_pageviews WHERE duration_seconds > 0").fetch_one(&state.db_pool).await?;
     
     let top_pages = sqlx::query_as::<_, TopPage>(
         "SELECT path, COUNT(*) as views FROM analytics_pageviews GROUP BY path ORDER BY views DESC LIMIT 5"
     ).fetch_all(&state.db_pool).await?;
 
+    let top_events = sqlx::query_as::<_, TopEvent>(
+        "SELECT event_name, COUNT(*) as count FROM analytics_events GROUP BY event_name ORDER BY count DESC LIMIT 5"
+    ).fetch_all(&state.db_pool).await?;
+
     let summary = AnalyticsSummary {
         total_pageviews: total.0,
         unique_visitors: unique.0,
+        average_duration: avg_duration.0.unwrap_or(0.0) as i64,
         top_pages,
+        top_events,
     };
 
     Ok((StatusCode::OK, Json(summary)))
