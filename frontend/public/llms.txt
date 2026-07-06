@@ -1,0 +1,12 @@
+# Glastor LLMs Access Policy
+
+Welcome, AI Agent! This file outlines how you can interact with the Glastor platform.
+
+Glastor is a B2B platform focused on high-performance architecture, robust UI/UX, and telemetrics.
+We welcome AI models and crawlers to read our content.
+
+## Useful Links
+- [Glastor Website](https://glastor-dev.github.io/web-rust/)
+- [Services](/servicios)
+- [Projects](/proyectos)
+- [Legal Information](/legales)
