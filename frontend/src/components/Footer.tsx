@@ -166,6 +166,7 @@ export default function Footer() {
           <div className="text-zinc-500 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-center md:text-left flex flex-col gap-1 w-full md:w-auto">
             <span>{new Date().getFullYear()} GLASTOR® es una marca registrada en Argentina (INPI — Reg. 4559568 y 4559567, 19/08/2025).</span>
             <span>© 2010-{new Date().getFullYear()} GLASTOR-DEV, propiedad de GLASTOR®. Todos los derechos reservados.</span>
+            <span className="mt-1 text-zinc-600">Core Version v{import.meta.env.VITE_APP_VERSION || "1.0.0"}</span>
           </div>
           
           {/* Right: Social, Legal & Payments */}

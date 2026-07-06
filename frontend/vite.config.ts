@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import Sitemap from 'vite-plugin-sitemap'
 
 import path from 'path';
+import packageJson from './package.json';
 
 const dynamicRoutes = [
   '/',
@@ -15,6 +16,9 @@ const dynamicRoutes = [
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(packageJson.version)
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

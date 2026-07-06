@@ -40,6 +40,7 @@ Versión inicial de producción para el ecosistema completo de la agencia GLASTO
 ### ✨ Added
 
 #### Core Frontend & Estética
+
 - **Motor de Renderizado:** Integración completa de React 19 con Vite para builds ultra-rápidos.
 - **Diseño Premium (Brutalismo Tecnológico):**
   - Implementación de paleta cromática restringida (`#050505` base, `#00ff66` acento).
@@ -57,23 +58,27 @@ Versión inicial de producción para el ecosistema completo de la agencia GLASTO
   - "Founders Section" y "Anti-Timeline" para reforzar el storytelling corporativo.
 
 #### SEO Técnico y Accesibilidad (WCAG AAA)
+
 - Inyección de etiquetas `robots.txt` y `sitemap.xml` dinámicos.
 - Marcado Schema.org (JSON-LD) para metadatos empresariales.
 - Etiquetas Meta Fallback y OpenGraph en `index.html`.
 - Contraste visual garantizado superior a 7:1 y anillos de foco de teclado adaptables.
 
 #### Infraestructura y Configuración de Herramientas
+
 - **Linter & Formatter:** Biome (para reemplazo de Prettier/ESLint) y Oxlint configurados.
 - **Gestión de dependencias:** Configuración base usando Bun.
 - **Monorepo Structure:** Estructura unificada para `/frontend` (React) y `/backend` (Rust).
 
 ### 🐛 Fixed
+
 - Resolución de conflictos en hooks de React detectados por Oxlint.
 - Refactorización de tipos `any` en TypeScript (`icon: string`) en `PretextMasonryGrid`.
 - Redirección forzada nativa para botones de Cal.com evadiendo bloqueadores de anuncios (AdBlockers).
 - Limpieza de sub-repositorios anidados en la estructura git inicial (`backend/.git`).
 
 ### 🔒 Security
+
 - Reubicación de archivos de variables de entorno `.env` en el `.gitignore`.
 - Botones de pagos y enlaces legales ejecutados con atributos `rel="noopener noreferrer"`.
 - Cumplimiento de enlace ISO 27001 visual en pie de página.
