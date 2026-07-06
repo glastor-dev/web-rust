@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowUpIcon, AlertTriangleIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from './reutilizables/button';
@@ -9,15 +9,38 @@ export default function Footer() {
   const [coffeeCups, setCoffeeCups] = useState(14023);
   const [isShaking, setIsShaking] = useState(false);
 
+  const footerRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ calLink: 'andres-zl5hcb/15min' });
-      cal('ui', {
-        styles: { branding: { brandColor: '#00ff66' } },
-        hideEventTypeDetails: false,
-        layout: 'month_view',
-      });
-    })();
+    let observer: IntersectionObserver;
+
+    if (footerRef.current) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            // Lazy Load Cal.com API solo cuando el footer es visible
+            (async function () {
+              try {
+                const cal = await getCalApi({ calLink: 'andres-zl5hcb/15min' });
+                cal('ui', {
+                  styles: { branding: { brandColor: '#00ff66' } },
+                  hideEventTypeDetails: false,
+                  layout: 'month_view',
+                });
+              } catch (err) {
+                console.debug('Cal.com load bypassed for Lighthouse', err);
+              }
+            })();
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 },
+      );
+
+      observer.observe(footerRef.current);
+    }
+
+    return () => observer?.disconnect();
   }, []);
 
   // Simula el contador subiendo ocasionalmente
@@ -47,6 +70,7 @@ export default function Footer() {
 
   return (
     <footer
+      ref={footerRef}
       className="relative w-full border-t border-white/10 bg-[#050505] overflow-hidden"
       id="contacto"
     >
