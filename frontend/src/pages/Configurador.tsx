@@ -44,7 +44,7 @@ export default function Configurador() {
       pdf.addImage(imgData, 'JPEG', 0, 0, 794, 1123);
       const pdfBase64 = pdf.output('datauristring');
 
-      const response = await fetch('http://localhost:3001/api/sow/send', {
+      const response = await fetch('/api/sow/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -35,7 +35,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   fetchModules: async () => {
     set({ isLoading: true, error: null });
     try {
-      const res = await fetch('http://localhost:3001/api/modules');
+      const res = await fetch('/api/modules');
       if (!res.ok) throw new Error('Failed to fetch modules');
       const data: ArchitectureModule[] = await res.json();
       set({ availableModules: data, isLoading: false });
