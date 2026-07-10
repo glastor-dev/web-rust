@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { motion, useMotionValue, useTransform, animate, useInView } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import { useMotionValue, useTransform, animate, motion } from 'motion/react';
 
 interface AnimatedCounterProps {
   from: number;
@@ -10,21 +10,45 @@ interface AnimatedCounterProps {
   decimals?: number;
 }
 
-export function AnimatedCounter({ from, to, duration, suffix = "", prefix = "", decimals = 0 }: AnimatedCounterProps) {
+export function AnimatedCounter({
+  from,
+  to,
+  duration,
+  suffix = '',
+  prefix = '',
+  decimals = 0,
+}: AnimatedCounterProps) {
   const count = useMotionValue(from);
-  const rounded = useTransform(count, (latest) => 
-    `${prefix}${latest.toFixed(decimals)}${suffix}`
-  );
-  
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const rounded = useTransform(count, (latest) => `${prefix}${latest.toFixed(decimals)}${suffix}`);
+
+  const ref = useRef<HTMLSpanElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, to, { duration: duration, ease: "easeOut" });
-      return controls.stop;
+    if (hasAnimated) return;
+
+    // Use native IntersectionObserver — works correctly with Lenis
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHasAnimated(true);
+          animate(count, to, { duration, ease: 'easeOut' });
+          observer.disconnect();
+        }
+      },
+      {
+        // rootMargin: positive value to trigger slightly before element is fully visible
+        rootMargin: '0px 0px -80px 0px',
+        threshold: 0,
+      },
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
     }
-  }, [count, isInView, to, duration]);
+
+    return () => observer.disconnect();
+  }, [count, to, duration, hasAnimated]);
 
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }

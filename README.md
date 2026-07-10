@@ -25,6 +25,7 @@ Este repositorio es un Monorepo que unifica dos pilares de ingeniería extrema:
 ## 🚀 Tecnologías Core
 
 ### Frontend (User Experience & Cinematics)
+
 - **Framework:** React 19 + TypeScript
 - **Bundler:** Vite (Ultra fast HMR)
 - **Styling:** TailwindCSS v4 + Glassmorphism Customizado
@@ -32,6 +33,7 @@ Este repositorio es un Monorepo que unifica dos pilares de ingeniería extrema:
 - **Linter & Formatter:** Biome + Oxlint
 
 ### Backend (Performance & Security)
+
 - **Lenguaje:** Rust (Edición 2021)
 - **Base de Datos:** PostgreSQL
 - **Concurrencia:** Tokio runtime
@@ -41,10 +43,12 @@ Este repositorio es un Monorepo que unifica dos pilares de ingeniería extrema:
 Si formas parte del equipo de ingeniería o eres un _early adopter_, sigue estos pasos para levantar el entorno completo en tu máquina:
 
 ### Requisitos Previos
+
 - [Node.js](https://nodejs.org/) (v20+) y [Bun](https://bun.sh/)
 - [Rust](https://rustup.rs/) (Cargo)
 
 ### Ejecutar Frontend
+
 ```bash
 cd frontend
 bun install
@@ -52,19 +56,24 @@ bun run dev
 ```
 
 ### Ejecutar Backend
+
 ```bash
 cd backend
 cargo run
 ```
 
 ## 📐 Estricto Cumplimiento de Diseño (Awwwards)
+
 Toda contribución visual debe apegarse estrictamente a nuestro `DESIGN_RULES.md`. GLASTOR utiliza un enfoque brutalista premium:
+
 - **Paleta Cromática:** `#050505` (Ultra Black) como fondo absoluto. `#00ff66` (Glastor Green) para acentos cinéticos y micro-interacciones de hover.
 - **Tipografía Fluida:** Sin breakpoints bruscos. Todo el texto escala de forma dinámica (`clamp()`).
 - **Motion Priority:** Ningún componente "aparece de golpe". Todo fluye, desde máscaras difuminadas hasta bordes reactivos al cursor.
 
 ## 🤝 Sostenibilidad y Contribución
+
 Consulta nuestro archivo `CONTRIBUTORS.md` y `CITATION.cff` para conocer cómo ser parte del impacto, auditar nuestro código o escalar junto a nosotros a nivel de negocio y desarrollo.
 
 ---
+
 © 2010-2026 Andrés Antonio Cardoso — GLASTOR®. Todos los derechos reservados.

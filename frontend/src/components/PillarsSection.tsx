@@ -1,0 +1,1 @@
+// Contenido de PillarsSection.tsx

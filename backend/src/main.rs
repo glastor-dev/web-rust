@@ -67,6 +67,7 @@ struct SowRequest {
     name: String,
     company: String,
     pdf_base64: String,
+    turnstile_token: String,
 }
 
 #[derive(Deserialize)]
@@ -81,6 +82,7 @@ struct RevocationRequest {
     producto: String,
     motivo: String,
     declaracion: bool,
+    turnstile_token: String,
 }
 
 #[derive(Deserialize)]
@@ -127,6 +129,7 @@ struct AppState {
     resend_from_email: String,
     db_pool: SqlitePool,
     analytics_salt: String,
+    turnstile_secret_key: String,
 }
 
 #[tokio::main]
@@ -155,6 +158,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let resend_api_key = env::var("RESEND_API_KEY").unwrap_or_else(|_| "fake_key".to_string());
     let resend_from_email = env::var("RESEND_FROM_EMAIL").unwrap_or_else(|_| "onboarding@resend.dev".to_string());
     let analytics_salt = env::var("ANALYTICS_SALT").unwrap_or_else(|_| "glastor_default_salt_2026".to_string());
+    let turnstile_secret_key = env::var("TURNSTILE_SECRET_KEY").unwrap_or_else(|_| "1x0000000000000000000000000000000AA".to_string());
 
     let state = Arc::new(AppState {
         http_client: Client::new(),
@@ -162,6 +166,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         resend_from_email,
         db_pool: pool,
         analytics_salt,
+        turnstile_secret_key,
     });
 
     let cors = CorsLayer::new()
@@ -194,7 +199,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3001").await?;
     info!("Backend server running on http://localhost:3001");
     
-    axum::serve(listener, app).await?;
+    axum::serve(listener, app.into_make_service_with_connect_info::<std::net::SocketAddr>()).await?;
     Ok(())
 }
 
@@ -319,6 +324,11 @@ async fn send_sow(
 ) -> Result<impl IntoResponse, AppError> {
     info!("Received SOW generation request for: {}", payload.email);
     
+    let is_human = verify_turnstile(&payload.turnstile_token, &state.turnstile_secret_key, &state.http_client).await?;
+    if !is_human {
+        return Ok((StatusCode::BAD_REQUEST, Json(json!({ "status": "error", "message": "Security verification failed" }))));
+    }
+    
     let b64_clean = if let Some(idx) = payload.pdf_base64.find(";base64,") {
         payload.pdf_base64[idx + 8..].to_string()
     } else {
@@ -366,6 +376,11 @@ async fn send_arrepentimiento(
 ) -> Result<impl IntoResponse, AppError> {
     info!("Received Arrepentimiento form from: {}", payload.email);
 
+    let is_human = verify_turnstile(&payload.turnstile_token, &state.turnstile_secret_key, &state.http_client).await?;
+    if !is_human {
+        return Ok((StatusCode::BAD_REQUEST, Json(json!({ "status": "error", "message": "Security verification failed" }))));
+    }
+
     if !payload.declaracion {
         return Ok((StatusCode::BAD_REQUEST, Json(json!({ "status": "error", "message": "Debe aceptar la declaración jurada" }))));
     }
@@ -410,6 +425,29 @@ async fn send_arrepentimiento(
 
 fn response_is_success(res: &reqwest::Response) -> bool {
     res.status().is_success()
+}
+
+#[derive(Deserialize)]
+struct TurnstileResponse {
+    success: bool,
+}
+
+async fn verify_turnstile(token: &str, secret: &str, client: &Client) -> Result<bool, AppError> {
+    let mut params = std::collections::HashMap::new();
+    params.insert("secret", secret);
+    params.insert("response", token);
+
+    let res = client.post("https://challenges.cloudflare.com/turnstile/v0/siteverify")
+        .form(&params)
+        .send()
+        .await?;
+
+    if res.status().is_success() {
+        let ts_res: TurnstileResponse = res.json().await.map_err(|_| AppError::InternalServerError)?;
+        Ok(ts_res.success)
+    } else {
+        Ok(false)
+    }
 }
 
 async fn track_pageview(

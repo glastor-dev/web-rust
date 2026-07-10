@@ -2006,8 +2006,8 @@ export default function Legales() {
                     <ul className="list-disc pl-6 space-y-2 text-zinc-400 mt-4">
                       <li>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a href="mailto:dpo@glastor.dev" className="text-brand hover:underline">
-                          dpo@glastor.dev
+                        <a href="mailto:dpo@glastor.es" className="text-brand hover:underline">
+                          dpo@glastor.es
                         </a>
                       </li>
                       <li>

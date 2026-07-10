@@ -7,11 +7,11 @@ interface SEOProps {
   ogImage?: string;
 }
 
-export function SEO({ 
-  title, 
-  description, 
-  url = 'https://glastor.dev',
-  ogImage = 'https://glastor.dev/images/og-image.jpg' 
+export function SEO({
+  title,
+  description,
+  url = 'https://glastor.es',
+  ogImage = 'https://glastor.es/images/og-image.jpg',
 }: SEOProps) {
   return (
     <Helmet>
@@ -36,24 +36,25 @@ export function SEO({
       {/* JSON-LD Schema.org Markup */}
       <script type="application/ld+json">
         {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "GLASTOR",
-          "url": "https://glastor.dev",
-          "logo": "https://glastor.dev/icons/favicon-512x512.png",
-          "description": "Agencia de software B2B especializada en Rust y arquitecturas de alto rendimiento.",
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "sales",
-            "email": "ventas@glastor.es",
-            "telephone": "+5491132578591"
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'GLASTOR',
+          url: 'https://glastor.es',
+          logo: 'https://glastor.es/icons/favicon-512x512.png',
+          description:
+            'Agencia de software B2B especializada en Rust y arquitecturas de alto rendimiento.',
+          contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'sales',
+            email: 'ventas@glastor.es',
+            telephone: '+5491132578591',
           },
-          "sameAs": [
-            "https://github.com/glastor-dev",
-            "https://wa.me/5491132578591",
-            "https://t.me/glastordev",
-            "https://instagram.com/glastordev"
-          ]
+          sameAs: [
+            'https://github.com/glastor-dev',
+            'https://wa.me/5491132578591',
+            'https://t.me/glastordev',
+            'https://instagram.com/glastordev',
+          ],
         })}
       </script>
     </Helmet>

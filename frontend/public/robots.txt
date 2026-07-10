@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://glastor.dev/sitemap.xml
+Sitemap: https://glastor.es/sitemap.xml

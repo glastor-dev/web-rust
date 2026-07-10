@@ -5,7 +5,7 @@ export function FoundersSection() {
   return (
     <>
       <SectionHeader title="EL NÚCLEO" subtitle="Arquitectos detrás de Glastor" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 mb-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 mb-32 max-w-4xl mx-auto">
         {/* Founder 1 */}
         <div className="group">
           <div className="aspect-square bg-zinc-900 overflow-hidden relative mb-6">

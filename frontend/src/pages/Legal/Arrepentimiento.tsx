@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +18,8 @@ type ArrepentimientoFormValues = z.infer<typeof arrepentimientoSchema>;
 export default function Arrepentimiento() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 
   const {
     register,
@@ -27,12 +30,28 @@ export default function Arrepentimiento() {
   });
 
   const onSubmit = async (data: ArrepentimientoFormValues) => {
+    if (!turnstileToken) {
+      alert('Por favor, espera la validación de seguridad antes de enviar.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
+      const payload = {
+        ...data,
+        turnstile_token: turnstileToken,
+        declaracion: true,
+        nombre: '',
+        apellido: '',
+        dni: '',
+        telefono: '',
+        fecha_compra: '',
+        producto: '',
+      };
       const res = await fetch('http://localhost:3001/api/arrepentimiento/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Error al procesar la solicitud');
       setSuccess(true);
@@ -117,9 +136,17 @@ export default function Arrepentimiento() {
                 ></textarea>
               </div>
 
+              <div className="mt-2">
+                <Turnstile
+                  siteKey={turnstileSiteKey}
+                  onSuccess={(token) => setTurnstileToken(token)}
+                  options={{ theme: 'dark' }}
+                />
+              </div>
+
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !turnstileToken}
                 variant="destructive"
                 size="lg"
                 className="w-full h-16 uppercase tracking-widest text-base mt-4 shadow-[0_0_15px_rgba(239,68,68,0.3)] hover:shadow-[0_0_25px_rgba(239,68,68,0.5)] bg-red-600 hover:bg-red-700 text-white font-bold"

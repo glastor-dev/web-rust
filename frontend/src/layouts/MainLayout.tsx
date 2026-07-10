@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { NoiseOverlay } from '../components/ui/NoiseOverlay';
 import { CustomCursor } from '../components/ui/CustomCursor';
 import { SmoothScroll } from '../components/SmoothScroll';
+import { PageTransitionWrapper } from '../components/ui/PageTransitionWrapper';
 
 export default function MainLayout() {
   const { pathname, hash } = useLocation();
@@ -73,7 +74,9 @@ export default function MainLayout() {
         <Header />
 
         <main className="relative z-10">
-          <Outlet />
+          <PageTransitionWrapper>
+            <Outlet />
+          </PageTransitionWrapper>
         </main>
 
         <Footer />

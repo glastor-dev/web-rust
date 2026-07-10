@@ -30,7 +30,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     Sitemap({
-      hostname: 'https://glastor.dev',
+      hostname: 'https://glastor.es',
       dynamicRoutes,
       generateRobotsTxt: true,
       robots: [

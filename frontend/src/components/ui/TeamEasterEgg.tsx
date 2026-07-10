@@ -9,7 +9,7 @@ const team = [
     icon: TerminalIcon,
     publicDesc: 'Diseña la estructura de microservicios y clusters de alta disponibilidad.',
     secret: 'Escribe código en Vim sin plugins. Odia usar el ratón.',
-    secretColor: '#00ff66'
+    secretColor: '#00ff66',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const team = [
     icon: MonitorIcon,
     publicDesc: 'Convierte el caos de datos en interfaces brutalistas fluidas.',
     secret: 'Alinea los píxeles basándose en la proporción áurea. Duerme poco.',
-    secretColor: '#ec4899'
+    secretColor: '#ec4899',
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const team = [
     icon: GamepadIcon,
     publicDesc: 'Programa shaders en GLSL que rompen los límites del navegador.',
     secret: 'Trata de optimizar hasta el microondas de la oficina.',
-    secretColor: '#3b82f6'
+    secretColor: '#3b82f6',
   },
   {
     id: 4,
@@ -36,8 +36,8 @@ const team = [
     icon: CoffeeIcon,
     publicDesc: 'Asegura que los despliegues en AWS sean invisibles y perfectos.',
     secret: 'Su café es 90% espresso, 10% ansiedad por el uptime.',
-    secretColor: '#f59e0b'
-  }
+    secretColor: '#f59e0b',
+  },
 ];
 
 export function TeamEasterEgg() {
@@ -45,6 +45,7 @@ export function TeamEasterEgg() {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {team.map((member, idx) => {
         const Icon = member.icon;
+
         return (
           <motion.div
             key={member.id}
@@ -52,29 +53,26 @@ export function TeamEasterEgg() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1, duration: 0.6 }}
-            className="group relative h-72 rounded-sm bg-[#0a0a0a] border border-white/10 overflow-hidden cursor-crosshair perspective-[1000px]"
+            className="group relative h-80 rounded-none bg-[#050505] border border-white/10 hover:border-white/30 transition-colors duration-500 overflow-hidden cursor-crosshair flex flex-col justify-end p-6"
           >
-            {/* Front Card (Public Profile) */}
-            <div className="absolute inset-0 p-6 flex flex-col justify-between transition-transform duration-700 backface-hidden group-hover:transform-[rotateY(180deg)]">
-              <div className="w-12 h-12 rounded-sm bg-white/5 flex items-center justify-center text-zinc-400">
-                <Icon size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold uppercase tracking-tight text-white">{member.name}</h3>
-                <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block mb-2">{member.role}</span>
-                <p className="text-sm text-zinc-400 leading-relaxed line-clamp-3">{member.publicDesc}</p>
-              </div>
-            </div>
+            {/* Ambient Aura on Hover */}
+            <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-            {/* Back Card (Easter Egg Secret) */}
-            <div 
-              className="absolute inset-0 p-6 flex flex-col justify-center items-center text-center transition-transform duration-700 backface-hidden transform-[rotateY(-180deg)] group-hover:transform-[rotateY(0deg)]"
-              style={{ backgroundColor: `${member.secretColor}15`, border: `1px solid ${member.secretColor}50` }}
-            >
-              <span className="text-xs font-mono uppercase tracking-widest mb-4" style={{ color: member.secretColor }}>
-                [ TOP SECRET ]
+            <div className="relative z-20 transition-transform duration-500 transform translate-y-4 group-hover:translate-y-0">
+              <div className="w-10 h-10 rounded-sm bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-brand mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <Icon size={20} />
+              </div>
+              <h3 className="text-xl font-bold uppercase tracking-tight text-white">
+                {member.name}
+              </h3>
+              <span className="text-xs font-mono text-brand uppercase tracking-widest block mb-2">
+                {member.role}
               </span>
-              <p className="text-sm font-bold text-white leading-relaxed">{member.secret}</p>
+
+              <div className="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden mt-2">
+                <p className="text-sm text-zinc-300 leading-relaxed">{member.secret}</p>
+              </div>
             </div>
           </motion.div>
         );

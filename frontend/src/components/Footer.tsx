@@ -269,7 +269,7 @@ export default function Footer() {
                     />
                   </a>
                   <img
-                    src="/images/iso-27001.webp"
+                    src="https://res.cloudinary.com/dzualplqi/image/upload/v1783566465/iso-27001_hzcz5n.webp"
                     alt="ISO 27001 Certified"
                     className="h-14 object-contain opacity-60 hover:opacity-100 transition-opacity rounded-sm grayscale hover:grayscale-0"
                   />
