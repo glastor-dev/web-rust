@@ -4,8 +4,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { NoiseOverlay } from '../components/ui/NoiseOverlay';
 import { CustomCursor } from '../components/ui/CustomCursor';
+import { CartDrawer } from '../components/ui/CartDrawer';
 import { SmoothScroll } from '../components/SmoothScroll';
 import { PageTransitionWrapper } from '../components/ui/PageTransitionWrapper';
+import { FlashlightEffect } from '../components/ui/FlashlightEffect';
 
 export default function MainLayout() {
   const { pathname, hash } = useLocation();
@@ -68,8 +70,10 @@ export default function MainLayout() {
   return (
     <SmoothScroll>
       <div className="bg-[#050505] min-h-screen text-white font-sans overflow-x-hidden selection:bg-brand selection:text-black">
+        <FlashlightEffect />
         <NoiseOverlay />
         <CustomCursor />
+        <CartDrawer />
 
         <Header />
 

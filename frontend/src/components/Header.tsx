@@ -1,8 +1,9 @@
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 import { Button } from './reutilizables/button';
+import { useCartStore } from '../store/cartStore';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,6 +11,9 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const location = useLocation();
+  const { items, openDrawer } = useCartStore();
+
+  const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
 
   // Física de Scroll: Esconder al bajar, mostrar al subir
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -91,6 +95,18 @@ export default function Header() {
 
           {/* Right Actions: Greeting & CTA */}
           <div className="hidden md:flex items-center gap-6">
+            <button
+              onClick={openDrawer}
+              className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
+            >
+              <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              {cartItemCount > 0 && (
+                <span className="absolute 1 top-0.5 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
+
             <Button
               asChild
               variant="default"
@@ -101,14 +117,28 @@ export default function Header() {
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-zinc-400 hover:text-white p-2 z-50 relative transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle Menu"
-          >
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          {/* Mobile Menu Toggle & Cart */}
+          <div className="md:hidden flex items-center gap-4">
+            <button
+              onClick={openDrawer}
+              className="relative p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              {cartItemCount > 0 && (
+                <span className="absolute top-0 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              className="text-zinc-400 hover:text-white p-2 z-50 relative transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -160,7 +190,7 @@ export default function Header() {
               </motion.div>
             </nav>
 
-            <div className="absolute bottom-12 left-10 text-xs font-mono uppercase tracking-widest text-zinc-600">
+            <div className="absolute bottom-12 left-10 text-xs font-mono uppercase tracking-widest text-zinc-500">
               GLASTOR · Código Inquebrantable
             </div>
           </motion.div>

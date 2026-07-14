@@ -1,7 +1,24 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Activity, TrendingDown, RefreshCcw } from 'lucide-react';
+import { ArchitectureDiagram } from '../ui/ArchitectureDiagram';
+import type { ArchitectureNode } from '../ui/ArchitectureDiagram';
 
-const cases = [
+import type { ReactNode } from 'react';
+
+type CaseStudy = {
+  icon: ReactNode;
+  title: string;
+  subtitle: string;
+  challenge: string[];
+  solution: string;
+  architecture: ArchitectureNode[];
+  results: { label: string; value: string; sub: string }[];
+  stack: string;
+  roi: string;
+};
+
+const cases: CaseStudy[] = [
   {
     icon: <Activity className="w-8 h-8 text-brand" />,
     title: 'API de Alto Rendimiento en Rust',
@@ -12,6 +29,12 @@ const cases = [
       'Costos de servidor: €8,000/mes',
     ],
     solution: 'Migración a Rust con Actix-web, PostgreSQL optimizado, Redis y Load balancing.',
+    architecture: [
+      { iconName: 'Users', label: 'Client' },
+      { iconName: 'ServerCrash', label: 'Nginx LB' },
+      { iconName: 'Cpu', label: 'Rust API' },
+      { iconName: 'Database', label: 'PostgreSQL' },
+    ],
     results: [
       { label: 'Latencia p99', value: '800ms → 23ms', sub: '97% mejora' },
       { label: 'Throughput', value: '200 → 15k req/s', sub: '75x mejora' },
@@ -31,6 +54,12 @@ const cases = [
     ],
     solution:
       'Auditoría, right-sizing de instancias (40% red.), migración a PostgreSQL y Auto-scaling inteligente.',
+    architecture: [
+      { iconName: 'CloudRain', label: 'AWS ALB' },
+      { iconName: 'Network', label: 'K8s Cluster' },
+      { iconName: 'Cpu', label: 'Rust Nodes' },
+      { iconName: 'Database', label: 'AWS RDS' },
+    ],
     results: [
       { label: 'Costo AWS', value: '€25k → €6.2k', sub: '75% reducción' },
       { label: 'Tiempo de carga', value: '4.2s → 1.8s', sub: '57% más rápido' },
@@ -49,6 +78,12 @@ const cases = [
       'Caídas diarias, backups manuales',
     ],
     solution: 'Migración gradual en 4 fases sin downtime a nueva arquitectura Rust + React.',
+    architecture: [
+      { iconName: 'Globe', label: 'React SPA' },
+      { iconName: 'ArrowRightLeft', label: 'API Gateway' },
+      { iconName: 'Cpu', label: 'Rust Core' },
+      { iconName: 'HardDrive', label: 'Legacy DB' },
+    ],
     results: [
       { label: 'Uptime', value: '85% → 99.95%', sub: 'Alta disponibilidad' },
       { label: 'Nuevas integraciones', value: '0 → 15', sub: 'APIs REST' },
@@ -60,6 +95,9 @@ const cases = [
 ];
 
 export function CaseStudiesSection() {
+  const [showAll, setShowAll] = useState(false);
+  const visibleCases = showAll ? cases : cases.slice(0, 1);
+
   return (
     <section className="py-24 relative bg-[#050505]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -71,7 +109,7 @@ export function CaseStudiesSection() {
             <h2 className="text-fluid-h2 font-black uppercase text-white mb-4 leading-none">
               PROYECTOS EN
               <br />
-              <span className="text-zinc-600">PRODUCCIÓN.</span>
+              <span className="text-zinc-500">PRODUCCIÓN.</span>
             </h2>
             <p className="text-zinc-400 max-w-2xl text-lg font-light mt-6">
               Más de 150 proyectos completados desde 2010. Aquí tienes una muestra de lo que hacemos
@@ -87,71 +125,95 @@ export function CaseStudiesSection() {
         </div>
 
         <div className="space-y-12">
-          {cases.map((caseStudy, index) => (
+          {visibleCases.map((caseStudy, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: 0.1, duration: 0.5 }}
-              className="glass-panel p-8 md:p-12 border-editorial flex flex-col lg:flex-row gap-12 group hover:border-brand/30 transition-colors"
+              className="glass-panel p-8 md:p-12 border-editorial flex flex-col group hover:border-brand/30 transition-colors"
             >
-              {/* Left Column */}
-              <div className="lg:w-1/3">
-                <div className="mb-6">{caseStudy.icon}</div>
-                <h3 className="text-2xl font-black uppercase text-white mb-2">{caseStudy.title}</h3>
-                <div className="text-brand font-mono text-sm mb-6">
-                  Duración: {caseStudy.subtitle}
+              <div className="flex flex-col lg:flex-row gap-12 w-full">
+                {/* Left Column */}
+                <div className="lg:w-1/3">
+                  <div className="mb-6">{caseStudy.icon}</div>
+                  <h3 className="text-2xl font-black uppercase text-white mb-2">
+                    {caseStudy.title}
+                  </h3>
+                  <div className="text-brand font-mono text-sm mb-6">
+                    Duración: {caseStudy.subtitle}
+                  </div>
+
+                  <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
+                    El Desafío:
+                  </h4>
+                  <ul className="space-y-2 mb-6">
+                    {caseStudy.challenge.map((ch, i) => (
+                      <li key={i} className="text-sm text-zinc-400 flex items-start">
+                        <span className="text-red-500 mr-2 mt-0.5">✕</span> {ch}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                  El Desafío:
-                </h4>
-                <ul className="space-y-2 mb-6">
-                  {caseStudy.challenge.map((ch, i) => (
-                    <li key={i} className="text-sm text-zinc-400 flex items-start">
-                      <span className="text-red-500 mr-2 mt-0.5">✕</span> {ch}
-                    </li>
-                  ))}
-                </ul>
+                {/* Right Column */}
+                <div className="lg:w-2/3 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
+                      La Solución:
+                    </h4>
+                    <p className="text-zinc-300 mb-6">{caseStudy.solution}</p>
+
+                    <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
+                      Resultados:
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                      {caseStudy.results.map((res, i) => (
+                        <div key={i} className="bg-white/5 p-4 rounded-sm border border-white/10">
+                          <div className="text-xs text-zinc-500 font-mono uppercase mb-1">
+                            {res.label}
+                          </div>
+                          <div className="text-lg font-bold text-white mb-1">{res.value}</div>
+                          <div className="text-xs text-brand">{res.sub}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center pt-6 border-t border-white/10 gap-4">
+                    <div className="text-xs font-mono text-zinc-500">
+                      <span className="text-white">Stack:</span> {caseStudy.stack}
+                    </div>
+                    <div className="text-xs font-mono px-3 py-1 bg-brand/10 text-brand rounded-full">
+                      ROI: {caseStudy.roi}
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Right Column */}
-              <div className="lg:w-2/3 flex flex-col justify-between">
-                <div>
-                  <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                    La Solución:
-                  </h4>
-                  <p className="text-zinc-300 mb-8">{caseStudy.solution}</p>
-
-                  <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
-                    Resultados:
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {caseStudy.results.map((res, i) => (
-                      <div key={i} className="bg-white/5 p-4 rounded-sm border border-white/10">
-                        <div className="text-xs text-zinc-500 font-mono uppercase mb-1">
-                          {res.label}
-                        </div>
-                        <div className="text-lg font-bold text-white mb-1">{res.value}</div>
-                        <div className="text-xs text-brand">{res.sub}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center pt-6 border-t border-white/10 gap-4">
-                  <div className="text-xs font-mono text-zinc-500">
-                    <span className="text-white">Stack:</span> {caseStudy.stack}
-                  </div>
-                  <div className="text-xs font-mono px-3 py-1 bg-brand/10 text-brand rounded-full">
-                    ROI: {caseStudy.roi}
-                  </div>
-                </div>
+              {/* Diagrama arquitectónico a ancho completo */}
+              <div className="mt-8 pt-8 border-t border-white/10 w-full">
+                <ArchitectureDiagram nodes={caseStudy.architecture} />
               </div>
             </motion.div>
           ))}
         </div>
+
+        {!showAll && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-center mt-12"
+          >
+            <button
+              onClick={() => setShowAll(true)}
+              className="inline-flex items-center text-xs font-mono text-white border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all uppercase tracking-widest cursor-pointer"
+            >
+              Ver más proyectos <ArrowRight className="w-4 h-4 ml-2" />
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );

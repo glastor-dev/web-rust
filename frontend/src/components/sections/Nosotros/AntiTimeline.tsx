@@ -93,7 +93,7 @@ export function AntiTimeline() {
           <AccordionItem key={item.year} value={`item-${idx}`}>
             <AccordionTrigger className="text-xl md:text-2xl hover:text-white">
               <div className="flex items-center gap-6">
-                <span className="text-3xl md:text-5xl font-mono text-zinc-600 transition-colors group-hover:text-brand">
+                <span className="text-3xl md:text-5xl font-mono text-zinc-500 transition-colors group-hover:text-brand">
                   {item.year}
                 </span>
                 <span className="font-black uppercase tracking-tighter">{item.title}</span>

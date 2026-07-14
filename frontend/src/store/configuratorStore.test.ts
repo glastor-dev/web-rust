@@ -9,20 +9,20 @@ const mockModules: ArchitectureModule[] = [
     base_price: 1000,
     min_weeks: 1,
     max_weeks: 2,
-    description: 'Test'
-  }
+    description: 'Test',
+  },
 ];
 
 describe('configuratorStore', () => {
   beforeEach(() => {
-    useConfiguratorStore.setState({ 
+    useConfiguratorStore.setState({
       availableModules: mockModules,
       selectedModuleIds: [],
       totalPrice: 0,
       totalMinWeeks: 0,
       totalMaxWeeks: 0,
       isLoading: false,
-      error: null
+      error: null,
     });
   });
 
@@ -37,9 +37,9 @@ describe('configuratorStore', () => {
   it('should toggle a module and recalculate totals', () => {
     const store = useConfiguratorStore.getState();
     const moduleToSelect = mockModules[0];
-    
+
     store.toggleModule(moduleToSelect.id);
-    
+
     const newState = useConfiguratorStore.getState();
     expect(newState.selectedModuleIds).toContain(moduleToSelect.id);
     expect(newState.totalPrice).toBe(moduleToSelect.base_price);
@@ -50,12 +50,12 @@ describe('configuratorStore', () => {
   it('should remove a module if toggled twice', () => {
     const store = useConfiguratorStore.getState();
     const moduleToSelect = mockModules[0];
-    
+
     // Toggle on
     store.toggleModule(moduleToSelect.id);
     // Toggle off
     useConfiguratorStore.getState().toggleModule(moduleToSelect.id);
-    
+
     const newState = useConfiguratorStore.getState();
     expect(newState.selectedModuleIds).toHaveLength(0);
     expect(newState.totalPrice).toBe(0);

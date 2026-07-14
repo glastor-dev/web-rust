@@ -7,10 +7,6 @@ const metrics = [
   { label: 'AHORRO COSTOS INFRA', value: 60, prefix: '', suffix: '%', decimals: 0 },
   { label: 'UPTIME PROMEDIO', value: 99.97, prefix: '', suffix: '%', decimals: 2 },
   { label: 'AÑOS DE EXPERIENCIA', value: 15, prefix: '', suffix: '', decimals: 0 },
-  { label: 'MÁS CAPACIDAD', value: 50, prefix: '', suffix: 'x', decimals: 0 },
-  { label: 'PROYECTOS EN PROD', value: 150, prefix: '', suffix: '+', decimals: 0 },
-  { label: 'CLIENTES ACTIVOS', value: 40, prefix: '', suffix: '+', decimals: 0 },
-  { label: 'MARCA INPI ✓', value: 2025, prefix: '', suffix: '', decimals: 0 },
 ];
 
 export function ImpactMetricsSection() {

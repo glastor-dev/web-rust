@@ -19,27 +19,29 @@ export default function Servicios() {
       {/* 1. Hero Dedicado con ROICalculator */}
       <PageHero
         title={
-          <>
+          <div className="lg:mt-12">
             SERVICIOS
             <br />
             <span className="text-brand">TÉCNICOS.</span>
-          </>
+          </div>
         }
-        titleClass="text-[clamp(3rem,10vw,6rem)] lg:text-[clamp(3rem,4.5vw,6rem)]"
+        titleClass="text-[clamp(2.5rem,8vw,4.5rem)] lg:text-[clamp(2.5rem,3.5vw,4.5rem)]"
         description="Construimos sistemas críticos que escalan, optimizamos infraestructura que cuesta demasiado, y migramos aplicaciones legacy a arquitecturas modernas."
         ctaPrimary={{ text: 'Ver casos de éxito', href: '/proyectos' }}
         ctaSecondary={{ text: 'Solicitar presupuesto', href: '#contacto' }}
-        minHeight="min-h-screen"
+        minHeight="min-h-[600px]"
         visualElement={
-          <div className="w-full max-w-lg mx-auto lg:mr-0">
-            <ROICalculator />
+          <div className="relative w-full h-[400px] lg:h-[450px] flex items-center justify-center lg:justify-end">
+            <div className="w-full max-w-lg">
+              <ROICalculator />
+            </div>
           </div>
         }
       />
 
       <TrustBar />
 
-      <RustServicesSection />
+      <RustServicesSection detailed={true} />
 
       <ProcessSection />
 

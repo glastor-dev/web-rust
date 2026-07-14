@@ -30,16 +30,27 @@ export default function Proyectos() {
       {/* Hero */}
       <PageHero
         title={
-          <>
-            PROYECTOS
-            <br />
-            <span className="text-brand">.</span>
-          </>
+          <span className="whitespace-nowrap pr-4">
+            PROYECTOS<span className="text-brand">.</span>
+          </span>
         }
-        titleClass="text-[clamp(3rem,11vw,6rem)] lg:text-[clamp(3rem,4.5vw,6rem)]"
+        titleClass="text-[clamp(3rem,11vw,6rem)] lg:text-[clamp(3rem,4vw,5.5rem)]"
         description="Sistemas en producción desde 2010. Más de 15 años construyendo software crítico. Aquí tienes una muestra de lo que hacemos."
         ctaPrimary={{ text: 'Solicitar proyecto similar', href: '#contacto' }}
-        minHeight="min-h-[50vh]"
+        minHeight="min-h-[600px]"
+        visualElement={
+          <div className="relative w-full h-[300px] lg:h-[450px] flex items-center justify-center pb-20 lg:pb-0">
+            {/* Ambient Glow behind image */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-brand/20 blur-[120px] rounded-full transform-gpu pointer-events-none z-0" />
+
+            {/* Siéntete libre de cambiar la imagen P1.webp por otra del catálogo si lo deseas */}
+            <img
+              src="/images/P1.webp"
+              alt="Muestra de Proyecto"
+              className="relative z-10 w-full h-full object-contain drop-shadow-[0_0_50px_rgba(0,255,102,0.15)] hover:scale-105 transition-transform duration-700"
+            />
+          </div>
+        }
       />
 
       {/* Nueva Sección de Filtros */}

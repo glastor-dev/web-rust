@@ -7,38 +7,45 @@
   --font-sans: "Red Hat Text", system-ui, sans-serif;
   --font-display: "Red Hat Display", system-ui, sans-serif;
   --font-mono: "Red Hat Mono", monospace;
+
+  --animate-marquee-slow: marquee-scroll 120s linear infinite;
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
 }
 
 @layer base {
   :root {
     --background: 0 0% 2%; /* #050505 */
     --foreground: 0 0% 98%; /* white */
-    
+
     --card: 0 0% 2%;
     --card-foreground: 0 0% 98%;
-    
+
     --popover: 0 0% 2%;
     --popover-foreground: 0 0% 98%;
-    
+
     --primary: 144 100% 50%; /* #00ff66 */
     --primary-foreground: 0 0% 0%; /* black */
-    
+
     --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 98%;
-    
+
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 65%;
-    
+
     --accent: 144 100% 50%;
     --accent-foreground: 0 0% 0%;
-    
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 15%;
     --input: 0 0% 15%;
     --ring: 144 100% 50%;
-    
+
     --radius: 0px; /* Brutalist sharp edges */
   }
 }
@@ -66,7 +73,12 @@ body {
 }
 
 /* Headings use Red Hat Display for editorial look */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
 }
 
@@ -109,23 +121,52 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Noise overlay animation ─────────────────────────────────── */
 @keyframes noise {
-  0%   { transform: translate(0, 0); }
-  10%  { transform: translate(-2%, -3%); }
-  20%  { transform: translate(3%, 2%); }
-  30%  { transform: translate(-1%, 4%); }
-  40%  { transform: translate(4%, -1%); }
-  50%  { transform: translate(-3%, 3%); }
-  60%  { transform: translate(2%, -4%); }
-  70%  { transform: translate(-4%, 1%); }
-  80%  { transform: translate(1%, -2%); }
-  90%  { transform: translate(-2%, 4%); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-2%, -3%);
+  }
+  20% {
+    transform: translate(3%, 2%);
+  }
+  30% {
+    transform: translate(-1%, 4%);
+  }
+  40% {
+    transform: translate(4%, -1%);
+  }
+  50% {
+    transform: translate(-3%, 3%);
+  }
+  60% {
+    transform: translate(2%, -4%);
+  }
+  70% {
+    transform: translate(-4%, 1%);
+  }
+  80% {
+    transform: translate(1%, -2%);
+  }
+  90% {
+    transform: translate(-2%, 4%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 /* ── Ambient floating orb ────────────────────────────────────── */
 @keyframes ambient-float {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-  50% { transform: translateY(-40px) scale(1.08); opacity: 0.6; }
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.08);
+    opacity: 0.6;
+  }
 }
 
 .ambient-orb {
@@ -134,17 +175,39 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Legacy shake (kept for backwards compat) ─────────────────── */
 @keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
 }
 
 .animate-shake {
@@ -164,3 +227,48 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* ── Draw Border Hover Effect ────────────────────────────────── */
+.draw-border {
+  position: relative;
+}
+.draw-border::before,
+.draw-border::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.draw-border::before {
+  top: -1px;
+  left: -1px;
+}
+.draw-border::after {
+  bottom: -1px;
+  right: -1px;
+}
+
+.draw-border:hover::before {
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border-top-color: var(--color-brand);
+  border-right-color: var(--color-brand);
+  transition:
+    width 0.25s ease-out,
+    height 0.25s ease-out 0.25s;
+}
+
+.draw-border:hover::after {
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border-bottom-color: var(--color-brand);
+  border-left-color: var(--color-brand);
+  transition:
+    border-color 0s ease-out 0.5s,
+    width 0.25s ease-out 0.5s,
+    height 0.25s ease-out 0.75s;
+}

@@ -63,8 +63,8 @@ export default function ServicesListSection() {
                 key={service.id}
                 layout
                 onClick={() => setActiveService(isActive ? null : service.id)}
-                className={`group relative bg-white/[0.01] backdrop-blur-sm cursor-pointer transition-all duration-500 overflow-hidden 
-                border-l-[6px] ${isActive ? 'border-brand bg-white/[0.03]' : 'border-transparent hover:border-brand/50 hover:bg-white/[0.04]'} 
+                className={`group relative bg-white/1 backdrop-blur-sm cursor-pointer transition-all duration-500 overflow-hidden 
+                border-l-[6px] ${isActive ? 'border-brand bg-white/3' : 'border-transparent hover:border-brand/50 hover:bg-white/4'} 
                 ${service.star ? 'border-y border-r border-brand/20 shadow-[0_0_40px_rgba(0,255,102,0.05)]' : 'border-y border-r border-white/10'}`}
               >
                 {/* Ambient Glow */}
@@ -110,7 +110,7 @@ export default function ServicesListSection() {
 
                   <div className="md:w-4/12 flex justify-between items-center">
                     <div className="flex flex-col">
-                      <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mb-1">
+                      <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">
                         Impacto Esperado
                       </span>
                       <span className="text-brand font-mono font-bold tracking-tight text-lg">

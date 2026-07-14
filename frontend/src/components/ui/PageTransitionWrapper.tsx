@@ -38,7 +38,15 @@ export function PageTransitionWrapper({ children }: PageTransitionWrapperProps) 
   }, [pathname]);
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence
+      mode="wait"
+      initial={false}
+      onExitComplete={() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        window.dispatchEvent(new Event('force-lenis-reset'));
+      }}
+    >
       <motion.div
         key={pathname}
         variants={VARIANTS}

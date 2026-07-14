@@ -12,7 +12,7 @@ export function FoundersSection() {
             <div className="absolute inset-0 bg-black/50 group-hover:bg-transparent transition-colors z-10 duration-500"></div>
             {/* Founder Image */}
             <img
-              src="/images/mi-perfil.jpg"
+              src="https://res.cloudinary.com/dzualplqi/image/upload/v1783985243/andres-fundador_o9kzlf.png"
               alt="Andres A. Cardoso - Fundador"
               className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
             />
@@ -64,13 +64,13 @@ export function FoundersSection() {
               con alma de Rust
             </span>
           </div>
-          <h3 className="text-2xl font-black text-zinc-600 uppercase tracking-tighter mb-1">
+          <h3 className="text-2xl font-black text-zinc-500 uppercase tracking-tighter mb-1">
             Posición Abierta
           </h3>
           <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-4">
             Sr. Backend Engineer
           </p>
-          <p className="text-zinc-600 text-sm">
+          <p className="text-zinc-500 text-sm">
             Si prefieres compilar binarios nativos antes que levantar containers pesados de Node.js,
             hay un lugar para ti en el núcleo.
           </p>

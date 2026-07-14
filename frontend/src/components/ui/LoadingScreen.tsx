@@ -1,9 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export function LoadingScreen() {
   const [phase, setPhase] = useState<'boot' | 'reveal' | 'done'>('boot');
   const [counter, setCounter] = useState('00000000');
+
+  // EL FIX DEFINITIVO: Obligar a toda la página a clavarse en Top apenas nace el LoadingScreen
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.style.overflow = 'hidden'; // Bloquear scroll durante carga
+
+    return () => {
+      document.body.style.overflow = ''; // Restaurar al desmontar
+      window.scrollTo(0, 0);
+    };
+  }, []);
 
   useEffect(() => {
     // Binary counter animation
@@ -35,7 +47,7 @@ export function LoadingScreen() {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[99999] bg-[#050505] flex items-center justify-center overflow-hidden"
+        className="fixed inset-0 z-99999 bg-[#050505] flex items-center justify-center overflow-hidden"
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
@@ -118,7 +130,7 @@ export function LoadingScreen() {
           </motion.div>
 
           {/* Progress bar */}
-          <motion.div className="w-32 h-[1px] bg-white/10 relative overflow-hidden">
+          <motion.div className="w-32 h-px bg-white/10 relative overflow-hidden">
             <motion.div
               className="absolute inset-y-0 left-0 bg-brand"
               initial={{ width: '0%' }}

@@ -1,4 +1,3 @@
-
 import { Card, CardHeader, CardDescription, CardContent } from '../reutilizables/card';
 import { Database, Activity, Zap } from 'lucide-react';
 import { AnimatedCounter } from '../ui/AnimatedCounter';
@@ -26,7 +25,9 @@ export function IronCoreSection() {
             <div className="text-5xl font-black tracking-tighter mt-4">
               <AnimatedCounter from={0} to={14250} duration={2.5} suffix="+" />
             </div>
-            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">Transacciones Por Segundo</p>
+            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">
+              Transacciones Por Segundo
+            </p>
           </CardContent>
         </Card>
 
@@ -38,9 +39,18 @@ export function IronCoreSection() {
           </CardHeader>
           <CardContent>
             <div className="text-5xl font-black tracking-tighter mt-4 text-white">
-              <AnimatedCounter from={10} to={0.8} duration={2} decimals={1} prefix="<" suffix="ms" />
+              <AnimatedCounter
+                from={10}
+                to={0.8}
+                duration={2}
+                decimals={1}
+                prefix="<"
+                suffix="ms"
+              />
             </div>
-            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">Tiempo de Respuesta Global</p>
+            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">
+              Tiempo de Respuesta Global
+            </p>
           </CardContent>
         </Card>
 

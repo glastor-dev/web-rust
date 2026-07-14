@@ -28,8 +28,10 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
         ) : (
           <div className="space-y-6">
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Inversión Base Estimada</span>
-              <motion.div 
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                Inversión Base Estimada
+              </span>
+              <motion.div
                 key={totalPrice}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -40,8 +42,10 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Roadmap de Ejecución</span>
-              <motion.div 
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                Roadmap de Ejecución
+              </span>
+              <motion.div
                 key={totalMaxWeeks}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -52,9 +56,16 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
             </div>
 
             <div className="pt-8 mt-4 border-t border-white/10">
-              <Button onClick={onGenerate} size="lg" className="w-full h-16 uppercase tracking-wider text-xs sm:text-sm flex items-center justify-between group shadow-[0_0_20px_rgba(0,255,102,0.15)] hover:shadow-[0_0_30px_rgba(0,255,102,0.3)] overflow-hidden">
+              <Button
+                onClick={onGenerate}
+                size="lg"
+                className="w-full h-16 uppercase tracking-wider text-xs sm:text-sm flex items-center justify-between group shadow-[0_0_20px_rgba(0,255,102,0.15)] hover:shadow-[0_0_30px_rgba(0,255,102,0.3)] overflow-hidden"
+              >
                 <span className="truncate pr-2">Obtener Estimación</span>
-                <ArrowRightIcon size={18} className="group-hover:translate-x-2 transition-transform shrink-0" />
+                <ArrowRightIcon
+                  size={18}
+                  className="group-hover:translate-x-2 transition-transform shrink-0"
+                />
               </Button>
               <p className="text-zinc-500 text-[10px] font-mono text-center mt-4 uppercase tracking-widest leading-relaxed">
                 * Estimación orientativa. Sujeta a validación en Discovery.

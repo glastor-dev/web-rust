@@ -1,10 +1,10 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import React, { useRef } from 'react';
 import { Button } from '../reutilizables/button';
-import { NetworkParticles } from './NetworkParticles';
 import { TextRevealGSAP } from './TextRevealGSAP';
 
 interface PageHeroProps {
+  badge?: string;
   title: React.ReactNode;
   description: React.ReactNode;
   ctaPrimary?: {
@@ -18,7 +18,7 @@ interface PageHeroProps {
   socialProof?: React.ReactNode;
   visualElement?: React.ReactNode;
   backgroundImage?: string;
-  minHeight?: 'min-h-[50vh]' | 'min-h-[80vh]' | 'min-h-[90vh]' | 'min-h-screen';
+  minHeight?: string;
   titleClass?: string;
   /** Pass plain text (use \n for line breaks) to enable GSAP word-by-word reveal */
   titleText?: string;
@@ -26,6 +26,7 @@ interface PageHeroProps {
 }
 
 export function PageHero({
+  badge,
   title,
   description,
   ctaPrimary,
@@ -64,13 +65,26 @@ export function PageHero({
       ))
     : null;
 
-  const titleClasses = `${titleClass || (isAsymmetrical ? 'text-fluid-h2 break-keep' : 'text-fluid-display mx-auto')} font-black uppercase tracking-tighter text-white mb-6 leading-[0.9] w-full`;
+  const titleClasses = `${titleClass || (isAsymmetrical ? 'text-fluid-h2 break-keep' : 'text-fluid-display mx-auto')} font-black uppercase tracking-tighter text-white mb-8 md:mb-12 leading-[0.9] w-full`;
 
   return (
     <section
       ref={containerRef}
-      className={`relative ${minHeight} flex flex-col justify-center overflow-hidden w-full`}
+      className={`relative ${minHeight} flex flex-col justify-center overflow-hidden w-full bg-[#050505]`}
     >
+      {/* Subtle Background Layer / Filter */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 60%),
+            linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px)
+          `,
+          backgroundSize: '100% 100%, 64px 64px, 64px 64px',
+          backgroundPosition: 'center center',
+        }}
+      />
       {/* Layer 0: Background photograph */}
       {backgroundImage && (
         <div className="absolute inset-0 z-0 flex justify-center overflow-hidden">
@@ -80,19 +94,19 @@ export function PageHero({
               alt="Hero Background"
               className="w-full h-full object-cover opacity-20 mix-blend-lighten"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505] pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#050505]/50 to-[#050505] pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-r from-[#050505] via-transparent to-[#050505] pointer-events-none" />
           </div>
         </div>
       )}
 
-      {/* Layer 1: Network Particles canvas — represents distributed architecture */}
-      <div className="absolute inset-0 z-[1] mix-blend-screen opacity-65 pointer-events-none">
-        <NetworkParticles nodeCount={60} className="w-full h-full" />
-      </div>
+      {/* Capa de partículas eliminada por petición de limpieza visual */}
 
       {/* Layer 2: Ambient radial glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand/5 rounded-full blur-[180px] pointer-events-none z-[2]" />
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand/5 rounded-full blur-[180px] pointer-events-none z-2 transform-gpu will-change-transform"
+        style={{ transform: 'translate3d(-50%, 0, 0)' }}
+      />
 
       {/* Layer 10: Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-24">
@@ -107,6 +121,11 @@ export function PageHero({
               className="w-full"
             >
               {/* Title: GSAP reveal (preferred) or motion.h1 fallback */}
+              {badge && (
+                <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
+                  {badge}
+                </div>
+              )}
               {titleLines ? (
                 <TextRevealGSAP
                   lines={titleLines}
@@ -116,7 +135,7 @@ export function PageHero({
                   delay={0.2}
                 />
               ) : (
-                <div className="overflow-hidden">
+                <div className="overflow-visible">
                   <motion.h1
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -147,12 +166,12 @@ export function PageHero({
                 className={`flex flex-col sm:flex-row gap-4 mb-8 ${isAsymmetrical ? '' : 'justify-center w-full'}`}
               >
                 {ctaPrimary && (
-                  <Button asChild variant="default">
+                  <Button asChild variant="default" size="lg">
                     <a href={ctaPrimary.href}>{ctaPrimary.text}</a>
                   </Button>
                 )}
                 {ctaSecondary && (
-                  <Button asChild variant="outline">
+                  <Button asChild variant="outline" size="lg">
                     <a href={ctaSecondary.href}>{ctaSecondary.text}</a>
                   </Button>
                 )}

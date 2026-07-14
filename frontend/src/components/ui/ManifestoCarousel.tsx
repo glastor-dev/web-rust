@@ -3,11 +3,26 @@ import { motion, AnimatePresence } from 'motion/react';
 import { EditorialCard } from '../reutilizables/EditorialCard';
 
 const manifesto = [
-  { title: 'Principio 01', text: 'ODIAMOS EL SOFTWARE MEDIOCRE. LA VELOCIDAD NO ES UN LUJO, ES UN REQUISITO TÉCNICO INNEGOCIABLE.' },
-  { title: 'Principio 02', text: 'CREEMOS EN EL CÓDIGO COMPILADO A NIVEL MÁQUINA. SIN ABSTRACCIONES INNECESARIAS. SIN BLOATWARE.' },
-  { title: 'Principio 03', text: 'DECIMOS "NO" A LOS PLAZOS IMPOSIBLES Y A LA DEUDA TÉCNICA CAMUFLADA DE AGILIDAD.' },
-  { title: 'Principio 04', text: 'RUST NO ES UNA MODA, ES NUESTRA RELIGIÓN PARA CONSTRUIR SISTEMAS ROBUSTOS Y SEGUROS.' },
-  { title: 'Principio 05', text: 'NOS GUSTA DORMIR 8 HORAS. POR ESO ESCRIBIMOS TESTS Y TIPADO ESTRICTO.' }
+  {
+    title: 'Principio 01',
+    text: 'ODIAMOS EL SOFTWARE MEDIOCRE. LA VELOCIDAD NO ES UN LUJO, ES UN REQUISITO TÉCNICO INNEGOCIABLE.',
+  },
+  {
+    title: 'Principio 02',
+    text: 'CREEMOS EN EL CÓDIGO COMPILADO A NIVEL MÁQUINA. SIN ABSTRACCIONES INNECESARIAS. SIN BLOATWARE.',
+  },
+  {
+    title: 'Principio 03',
+    text: 'DECIMOS "NO" A LOS PLAZOS IMPOSIBLES Y A LA DEUDA TÉCNICA CAMUFLADA DE AGILIDAD.',
+  },
+  {
+    title: 'Principio 04',
+    text: 'RUST NO ES UNA MODA, ES NUESTRA RELIGIÓN PARA CONSTRUIR SISTEMAS ROBUSTOS Y SEGUROS.',
+  },
+  {
+    title: 'Principio 05',
+    text: 'NOS GUSTA DORMIR 8 HORAS. POR ESO ESCRIBIMOS TESTS Y TIPADO ESTRICTO.',
+  },
 ];
 
 export function ManifestoCarousel() {
@@ -32,7 +47,7 @@ export function ManifestoCarousel() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0 flex items-center justify-center w-full h-full"
           >
-            <EditorialCard 
+            <EditorialCard
               title={manifesto[index].title}
               text={manifesto[index].text}
               fontFamily="Inter, sans-serif"

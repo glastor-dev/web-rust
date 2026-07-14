@@ -6,12 +6,21 @@ export type ProjectCategory =
   | 'Optimización'
   | 'Infraestructura';
 
+import type { ArchitectureNode } from '../../components/ui/ArchitectureDiagram';
+
 export interface CaseStudy {
   id: string;
   title: string;
+  industry: string;
   categories: ProjectCategory[];
   challenge: string[];
   solutionText: string;
+  architectureDiagram?: ArchitectureNode[];
+  testimonial?: {
+    quote: string;
+    author: string;
+    role: string;
+  };
   solutionArchitecture?: string[];
   solutionOptimizations?: string[];
   solutionPhases?: { title: string; points: string[] }[];
@@ -32,6 +41,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: 'pagos-rust',
     title: 'API DE PROCESAMIENTO DE PAGOS EN RUST',
+    industry: 'Fintech & Pagos',
     categories: ['Rust', 'Optimización'],
     challenge: [
       'Plataforma de pagos online con 50,000 transacciones diarias experimentaba:',
@@ -41,6 +51,12 @@ export const caseStudies: CaseStudy[] = [
       'Tiempo de respuesta inconsistente',
     ],
     solutionText: 'Migramos el sistema completo de Node.js a Rust en 8 semanas:',
+    architectureDiagram: [
+      { iconName: 'Users', label: 'Client' },
+      { iconName: 'ServerCrash', label: 'Nginx LB' },
+      { iconName: 'Cpu', label: 'Rust API' },
+      { iconName: 'Database', label: 'PostgreSQL' },
+    ],
     solutionArchitecture: [
       'API REST en Rust con Actix-web',
       'PostgreSQL optimizado con connection pooling',
@@ -74,16 +90,29 @@ export const caseStudies: CaseStudy[] = [
     duration: '8 semanas (2 análisis, 5 desarrollo, 1 despliegue)',
     investment: '€35,000',
     roi: 'Recuperado en 4 meses por ahorro en infraestructura',
+    testimonial: {
+      quote:
+        'Estábamos perdiendo transacciones y clientes en las horas pico. Glastor no solo reescribió nuestro core, sino que redujo nuestros costes operativos a una fracción. La latencia dejó de ser un tema de conversación en la junta directiva.',
+      author: 'Carlos M.',
+      role: 'CTO, Plataforma Top 5 Fintech LATAM',
+    },
   },
   {
     id: 'mensajeria-rt',
     title: 'PLATAFORMA DE MENSAJERÍA EN TIEMPO REAL',
+    industry: 'Social & Comunicaciones',
     categories: ['Rust', 'Servidores', 'Infraestructura'],
     challenge: [
       'Startup de mensajería necesitaba escalar de 10,000 a 1,000,000 usuarios concurrentes.',
       'Sistema actual en Python no podía manejar la carga.',
     ],
     solutionText: 'Sistema distribuido en Rust con arquitectura event-driven:',
+    architectureDiagram: [
+      { iconName: 'Smartphone', label: 'Mobile' },
+      { iconName: 'Network', label: 'Load Balancer' },
+      { iconName: 'Zap', label: 'Rust WebSocket' },
+      { iconName: 'Layers', label: 'Kafka' },
+    ],
     solutionArchitecture: [
       'Servidor de WebSocket en Rust',
       'Sistema de colas distribuidas',
@@ -116,10 +145,17 @@ export const caseStudies: CaseStudy[] = [
     technologies: 'Rust, Tokio, WebSocket, Cassandra, Kafka, Kubernetes',
     duration: '12 semanas',
     investment: '€65,000',
+    testimonial: {
+      quote:
+        'Pasar de 10k a más de un millón de usuarios concurrentes sin que el sistema pestañee es ingeniería pura. El equipo de Glastor nos dio la arquitectura que necesitábamos para sobrevivir a nuestra propia viralidad.',
+      author: 'Elena V.',
+      role: 'VP of Engineering, Startup Mensajería',
+    },
   },
   {
     id: 'erp-legacy',
     title: 'MIGRACIÓN DE ERP LEGACY A ARQUITECTURA MODERNA',
+    industry: 'Manufactura & Logística',
     categories: ['Migraciones', 'Rust'],
     challenge: [
       'Empresa manufacturera con ERP de 15 años:',
@@ -130,6 +166,12 @@ export const caseStudies: CaseStudy[] = [
       'Imposible escalar o añadir funcionalidades',
     ],
     solutionText: 'Migración gradual en 6 meses sin downtime:',
+    architectureDiagram: [
+      { iconName: 'Globe', label: 'React SPA' },
+      { iconName: 'ArrowRightLeft', label: 'API Gateway' },
+      { iconName: 'Cpu', label: 'Rust Core' },
+      { iconName: 'HardDrive', label: 'Legacy DB' },
+    ],
     solutionPhases: [
       {
         title: 'Fase 1: Análisis y planificación (4 semanas)',
@@ -189,10 +231,17 @@ export const caseStudies: CaseStudy[] = [
     duration: '6 meses',
     investment: '€120,000',
     roi: 'Recuperado en 18 meses',
+    testimonial: {
+      quote:
+        'Teníamos pánico de tocar un sistema con 15 años de antigüedad que operaba toda la fábrica. El plan de migración fue clínico, quirúrgico y, lo más importante, no paramos la producción ni un solo día.',
+      author: 'Roberto D.',
+      role: 'Director de Operaciones, Grupo Manufacturero',
+    },
   },
   {
     id: 'infra-opt',
     title: 'REDUCCIÓN DE COSTOS DE INFRAESTRUCTURA EN 75%',
+    industry: 'E-commerce & Retail',
     categories: ['Infraestructura', 'Optimización'],
     challenge: [
       'E-commerce con crecimiento explosivo:',
@@ -203,6 +252,12 @@ export const caseStudies: CaseStudy[] = [
       'Escalado manual y reactivo',
     ],
     solutionText: 'Auditoría completa + optimización en 10 semanas:',
+    architectureDiagram: [
+      { iconName: 'CloudRain', label: 'AWS ALB' },
+      { iconName: 'Network', label: 'K8s Cluster' },
+      { iconName: 'Cpu', label: 'Rust Nodes' },
+      { iconName: 'Database', label: 'AWS RDS' },
+    ],
     solutionPhases: [
       {
         title: 'Análisis inicial',
@@ -269,5 +324,11 @@ export const caseStudies: CaseStudy[] = [
     duration: '10 semanas',
     investment: '€28,000',
     roi: '8x en el primer año',
+    testimonial: {
+      quote:
+        'Pensábamos que nuestra factura de AWS era el precio a pagar por crecer. Glastor nos demostró que estábamos desperdiciando miles de euros por mala arquitectura. Su optimización pagó el proyecto en solo 3 meses.',
+      author: 'Ana S.',
+      role: 'CEO, E-commerce Internacional',
+    },
   },
 ];
