@@ -1,0 +1,3 @@
+module.exports=[859143,a=>{"use strict";var b=a.i(885322);a.s(["default",0,function({children:a}){return(0,b.jsx)(b.Fragment,{children:a})},"metadata",0,{title:"Botón de Arrepentimiento | Glastor",description:"Formulario de arrepentimiento de compra. Cuentas con 10 días para solicitar la cancelación de tu orden."}])},741895,a=>{a.n(a.i(859143))}];
+
+//# sourceMappingURL=src_app_arrepentimiento_layout_tsx_1shqhdy._.js.map

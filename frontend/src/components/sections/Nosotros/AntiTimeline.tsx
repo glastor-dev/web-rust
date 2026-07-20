@@ -83,7 +83,7 @@ const antiTimeline = [
 export function AntiTimeline() {
   return (
     <>
-      <SectionHeader title="LA REALIDAD" subtitle="Nuestros Hitos (y Fracasos)" />
+      <SectionHeader title="La Realidad" subtitle="Nuestros Hitos (y Fracasos)" />
       <p className="text-zinc-400 text-lg mb-16 max-w-2xl font-light">
         No somos perfectos. Pero cada error nos enseñó exactamente lo que funciona.
       </p>
@@ -96,7 +96,7 @@ export function AntiTimeline() {
                 <span className="text-3xl md:text-5xl font-mono text-zinc-500 transition-colors group-hover:text-brand">
                   {item.year}
                 </span>
-                <span className="font-black uppercase tracking-tighter">{item.title}</span>
+                <span className="font-extrabold tracking-tight">{item.title}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pl-22 md:pl-34">

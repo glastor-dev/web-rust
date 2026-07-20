@@ -1,0 +1,12 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/src/app/legales/page": [
+      "static/media/012bcfd9b166d28a-s.p.0gwx39mx-bkmv.woff2",
+      "static/media/8780dfd0812b997c-s.p.37az_hml-lcqo.woff2",
+      "static/media/f83ae72729216bf9-s.p.3uswbe7t4h314.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

@@ -1,5 +1,7 @@
+'use client';
+
 import { motion } from 'motion/react';
-import { CheckCircle } from 'lucide-react';
+import { CheckmarkCircle01Icon } from 'hugeicons-react';
 
 const guarantees = [
   {
@@ -48,8 +50,8 @@ export function GuaranteesSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Garantías
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white leading-none">
-            NUESTRO COMPROMISO
+          <h2 className="text-fluid-h2 font-extrabold text-white leading-none">
+            Nuestro Compromiso
           </h2>
         </div>
 
@@ -63,14 +65,14 @@ export function GuaranteesSection() {
               transition={{ delay: index * 0.1 }}
               className="glass-panel p-8 md:p-10 border-editorial group hover:border-brand/30 transition-colors"
             >
-              <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6 border-b border-white/10 pb-4">
+              <h3 className="text-2xl font-extrabold tracking-tight text-white mb-6 border-b border-white/10 pb-4">
                 {guarantee.title}
               </h3>
 
               <ul className="space-y-4">
                 {guarantee.points.map((point, pIdx) => (
                   <li key={pIdx} className="flex items-start text-zinc-300">
-                    <CheckCircle className="w-5 h-5 text-brand mr-3 shrink-0" />
+                    <CheckmarkCircle01Icon className="w-5 h-5 text-brand mr-3 shrink-0" />
                     <span>{point}</span>
                   </li>
                 ))}

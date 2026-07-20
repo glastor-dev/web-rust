@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card } from '../reutilizables/card';
@@ -80,7 +82,7 @@ export function ProofSection() {
             >
               <Card className="h-full bg-black/50 border border-white/10 hover:border-brand/40 transition-colors p-8 flex flex-col group rounded-none">
                 <div className="border-b border-white/10 pb-4 mb-6">
-                  <span className="text-brand font-mono text-sm uppercase tracking-widest font-black">
+                  <span className="text-brand font-mono text-sm uppercase tracking-wider font-bold">
                     [ {item.metric} ]
                   </span>
                 </div>
@@ -92,7 +94,12 @@ export function ProofSection() {
                 <div className="mt-auto flex items-center gap-4 border-l-2 border-brand/50 pl-4">
                   {item.avatar && (
                     <Avatar>
-                      <AvatarImage src={item.avatar} alt={item.author} />
+                      <AvatarImage
+                        src={item.avatar}
+                        alt={item.author}
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <AvatarFallback>{item.author.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                   )}

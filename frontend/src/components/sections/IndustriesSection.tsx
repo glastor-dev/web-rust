@@ -1,6 +1,8 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, Activity, Cpu, Network } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const industries = [
   {
@@ -55,7 +57,7 @@ export const IndustriesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white"
           >
             Soluciones por <span className="text-zinc-500">Industria</span>
           </motion.h2>
@@ -103,7 +105,7 @@ export const IndustriesSection = () => {
               </div>
 
               <Link
-                to="/proyectos"
+                href="/proyectos"
                 className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white group-hover:text-brand transition-colors duration-300"
               >
                 Ver casos de uso

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Button } from '../reutilizables/button';
 import { Mail, Calendar } from 'lucide-react';
@@ -15,8 +17,8 @@ export function FinalCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white mb-6">
-            ¿LISTO PARA CONSTRUIR ALGO <span className="text-brand">INQUEBRANTABLE?</span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6">
+            ¿Listo para Construir Algo <span className="text-brand">Inquebrantable??</span>
           </h2>
           <p className="text-zinc-400 text-lg md:text-xl font-light mb-12">
             Cuéntanos tu proyecto y te daremos una estimación técnica en 48 horas. Sin compromiso.

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { prepareWithSegments, layoutWithLines } from '@chenglou/pretext';
 
@@ -51,7 +53,7 @@ export function EditorialCard({
   return (
     <div className="bg-[#050505] border border-white/10 p-6 md:p-8 w-full group hover:border-brand hover:shadow-[0_0_40px_rgba(0,255,102,0.05)] transition-all duration-500 rounded-sm">
       <div className="flex justify-between items-end border-b border-white/10 pb-6 mb-6">
-        <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white leading-none">
+        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-none">
           {title}
         </h3>
         <span className="text-brand font-mono text-[10px] uppercase tracking-widest shrink-0 ml-4">

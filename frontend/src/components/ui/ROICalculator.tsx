@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { animate } from 'motion/react';
 
@@ -14,6 +16,19 @@ export const ROICalculator = () => {
 
   const targetSavings = Math.floor(users * 2.5 * baseRustEfficiency);
   const targetLatency = Math.floor(users * msSavedPerRequest * 30); // Monthly projection
+
+  const scrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById('contacto');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    const fallback = document.querySelector('[href="#contacto"]');
+    if (fallback instanceof HTMLElement) {
+      fallback.click();
+    }
+  };
 
   useEffect(() => {
     const controls1 = animate(costSavings, targetSavings, {
@@ -56,7 +71,7 @@ export const ROICalculator = () => {
       />
       <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-      <h3 className="text-xl font-bold uppercase tracking-tight text-white mb-8">
+      <h3 className="text-xl font-bold tracking-tight text-white mb-8">
         Calculadora de ROI (Rust vs Node)
       </h3>
 
@@ -99,6 +114,30 @@ export const ROICalculator = () => {
             -{formatCompact(latencySaved)}ms
           </div>
         </div>
+      </div>
+
+      {/* Lead Magnet Contextual */}
+      <div className="mt-10 p-6 bg-brand/5 border border-brand/20 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group/cta hover:border-brand/40 transition-colors">
+        <div className="absolute inset-0 bg-brand/5 blur-xl -z-10 opacity-0 group-hover/cta:opacity-100 transition-opacity"></div>
+        <div>
+          <h4 className="text-white font-bold text-lg mb-1 tracking-tight">
+            {users > 500000
+              ? '¿Escalando un sistema de alto volumen?'
+              : '¿Quieres alcanzar estos números?'}
+          </h4>
+          <p className="text-zinc-400 text-sm">
+            {users > 500000
+              ? 'Descarga la Guía de Migración a Rust para reducir costes un 70% sin perder uptime.'
+              : 'Agenda una auditoría técnica gratuita para evaluar el ROI real de tu infraestructura.'}
+          </p>
+        </div>
+        <a
+          href="#contacto"
+          onClick={scrollToContact}
+          className="shrink-0 bg-brand text-black font-bold uppercase tracking-widest text-xs px-6 py-3 hover:bg-white transition-colors text-center"
+        >
+          Agendar Auditoría
+        </a>
       </div>
     </div>
   );

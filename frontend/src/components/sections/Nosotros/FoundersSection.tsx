@@ -4,7 +4,7 @@ import { TextRevealGSAP } from '../../ui/TextRevealGSAP';
 export function FoundersSection() {
   return (
     <>
-      <SectionHeader title="EL NÚCLEO" subtitle="Arquitectos detrás de Glastor" />
+      <SectionHeader title="El Núcleo" subtitle="Arquitectos detrás de Glastor" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 mb-32 max-w-4xl mx-auto">
         {/* Founder 1 */}
         <div className="group">
@@ -17,7 +17,7 @@ export function FoundersSection() {
               className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
             />
           </div>
-          <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-1">
+          <h3 className="text-2xl font-black text-white tracking-tighter mb-1">
             <TextRevealGSAP text="Andres A. Cardoso" delay={0.2} />
           </h3>
           <p className="text-brand font-mono text-xs uppercase tracking-widest mb-4">

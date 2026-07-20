@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Code2 } from 'lucide-react';
@@ -48,7 +50,7 @@ export function TypingTerminal() {
   }, [currentLineIndex, currentCharIndex]);
 
   return (
-    <TerminalCard title="glastor_core.rs" className="min-h-[400px]">
+    <TerminalCard title="glastor_core.rs" className="min-h-100">
       <div className="p-6 font-mono text-xs md:text-sm leading-relaxed overflow-hidden">
         {displayedLines.map((line, i) => (
           <p key={i} className={line.class}>

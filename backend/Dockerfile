@@ -36,7 +36,7 @@ WORKDIR /app
 COPY --from=builder /app/target/release/backend /usr/local/bin/backend
 
 # Exponemos el puerto del backend
-EXPOSE 3000
+EXPOSE 3001
 
 # Ejecutamos el demonio de Rust
 CMD ["backend"]

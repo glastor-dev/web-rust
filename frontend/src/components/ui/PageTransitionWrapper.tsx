@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface PageTransitionWrapperProps {
@@ -27,7 +29,7 @@ const TRANSITION = {
 };
 
 export function PageTransitionWrapper({ children }: PageTransitionWrapperProps) {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const prevPathRef = useRef(pathname);
 
   // Only animate when the route actually changes

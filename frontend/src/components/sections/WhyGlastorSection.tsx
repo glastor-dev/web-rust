@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { CheckCircle2 } from 'lucide-react';
 
@@ -82,10 +84,10 @@ export function WhyGlastorSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Por qué Glastor
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white mb-6 leading-none">
-            15 AÑOS CONSTRUYENDO
+          <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
+            15 Años Construyendo
             <br />
-            <span className="text-zinc-600">SOFTWARE QUE FUNCIONA.</span>
+            <span className="text-zinc-600">Software que Funciona.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             No somos una startup de moda. Somos un equipo con trayectoria real, construyendo
@@ -102,7 +104,7 @@ export function WhyGlastorSection() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <h3 className="text-2xl font-black uppercase text-white mb-4 tracking-tight">
+              <h3 className="text-2xl font-extrabold text-white mb-4 tracking-tight">
                 {reason.title}
               </h3>
               <p className="text-zinc-400 mb-6 font-light">{reason.description}</p>

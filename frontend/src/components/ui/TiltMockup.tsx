@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 
@@ -51,7 +53,7 @@ export function TiltMockup({ children }: TiltMockupProps) {
         rotateY,
         transformStyle: 'preserve-3d',
       }}
-      className="relative w-full h-full min-h-[400px] flex items-center justify-center perspective-[1000px] cursor-crosshair"
+      className="relative w-full h-full min-h-100 flex items-center justify-center perspective-[1000px] cursor-crosshair"
     >
       <div style={{ transform: 'translateZ(50px)' }} className="w-full h-full relative">
         {children}

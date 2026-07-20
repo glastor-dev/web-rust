@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { EditorialCard } from '../reutilizables/EditorialCard';
@@ -17,7 +19,7 @@ const manifesto = [
   },
   {
     title: 'Principio 04',
-    text: 'RUST NO ES UNA MODA, ES NUESTRA RELIGIÓN PARA CONSTRUIR SISTEMAS ROBUSTOS Y SEGUROS.',
+    text: 'Rust no es una Moda. ES NUESTRA RELIGIÓN PARA CONSTRUIR SISTEMAS ROBUSTOS Y SEGUROS.',
   },
   {
     title: 'Principio 05',
@@ -37,7 +39,7 @@ export function ManifestoCarousel() {
 
   return (
     <div className="py-16 bg-[#050505] flex justify-center items-center px-6 md:px-12 w-full border-y border-white/10">
-      <div className="w-full max-w-3xl relative h-[450px] md:h-[350px]">
+      <div className="w-full max-w-3xl relative h-[450px] md:h-87.5">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}

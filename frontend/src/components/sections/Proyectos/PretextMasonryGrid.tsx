@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useLayoutEffect } from 'react';
 import { motion } from 'motion/react';
 import { prepare, layout } from '@chenglou/pretext';
@@ -145,7 +147,7 @@ export function PretextMasonryGrid() {
               <div className="absolute top-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-700 ease-out bg-brand" />
 
               <div className="relative z-10 flex flex-col h-full">
-                <h3 className="text-2xl font-black uppercase tracking-tighter text-white mb-4 group-hover:text-brand transition-colors duration-300">
+                <h3 className="text-2xl font-extrabold tracking-tight text-white mb-4 group-hover:text-brand transition-colors duration-300">
                   {pos.item.title}
                 </h3>
                 <p className="text-zinc-400 text-base leading-relaxed mb-6 font-sans">

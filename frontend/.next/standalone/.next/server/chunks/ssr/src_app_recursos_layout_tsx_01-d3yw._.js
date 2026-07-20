@@ -1,0 +1,3 @@
+module.exports=[725403,a=>{"use strict";var b=a.i(885322),c=a.i(979108);a.s(["default",0,function({children:a}){return(0,b.jsx)(c.Suspense,{fallback:null,children:a})},"metadata",0,{title:"Recursos y Documentación Técnica | Glastor",description:"Accede a whitepapers, documentación técnica, guías de instalación y modelos CAD para tu próximo proyecto de infraestructura."}])},818371,a=>{a.n(a.i(725403))}];
+
+//# sourceMappingURL=src_app_recursos_layout_tsx_01-d3yw._.js.map

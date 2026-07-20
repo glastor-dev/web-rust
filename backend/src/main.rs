@@ -1,165 +1,44 @@
+pub mod db;
+pub mod handlers;
+pub mod models;
+pub mod services;
+pub mod state;
+
 use axum::{
-    Json, Router,
-    extract::{DefaultBodyLimit, Path, State},
-    http::{HeaderMap, HeaderValue, Method, StatusCode},
-    response::{IntoResponse, Response},
+    extract::DefaultBodyLimit,
+    http::{HeaderValue, Method},
     routing::{get, post},
+    Router,
 };
-use chrono::Utc;
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
-use serde_json::json;
-use sha2::{Digest, Sha256};
-use sqlx::{FromRow, PgPool, postgres::PgPoolOptions};
+use sqlx::postgres::PgPoolOptions;
 use std::env;
 use std::sync::Arc;
-use thiserror::Error;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
-use tracing::{error, info};
+use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-#[derive(Error, Debug)]
-pub enum AppError {
-    #[error("Failed to send email via Resend: {0}")]
-    ResendError(String),
-    #[error("Network error: {0}")]
-    NetworkError(#[from] reqwest::Error),
-    #[error("Database error: {0}")]
-    DatabaseError(#[from] sqlx::Error),
-    #[error("Internal server error")]
-    InternalServerError,
-}
-
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        let (status, error_message) = match self {
-            AppError::ResendError(msg) => {
-                error!("Resend API Error: {}", msg);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Failed to send email")
-            }
-            AppError::NetworkError(err) => {
-                error!("Reqwest Network Error: {}", err);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Network error")
-            }
-            AppError::DatabaseError(err) => {
-                error!("Database Error: {}", err);
-                (StatusCode::INTERNAL_SERVER_ERROR, "Database error")
-            }
-            AppError::InternalServerError => {
-                error!("Internal Server Error");
-                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error")
-            }
-        };
-
-        let body = Json(json!({
-            "status": "error",
-            "message": error_message,
-        }));
-
-        (status, body).into_response()
-    }
-}
-
-#[derive(Deserialize)]
-struct SowRequest {
-    email: String,
-    name: String,
-    company: String,
-    pdf_base64: String,
-    turnstile_token: String,
-}
-
-#[derive(Deserialize)]
-struct RevocationRequest {
-    nombre: String,
-    apellido: String,
-    dni: String,
-    telefono: String,
-    email: String,
-    orden: String,
-    fecha_compra: String,
-    producto: String,
-    motivo: String,
-    declaracion: bool,
-    turnstile_token: String,
-}
-
-#[derive(Deserialize)]
-struct PageviewRequest {
-    path: String,
-    referrer: Option<String>,
-    screen_size: Option<String>,
-}
-
-#[derive(Deserialize)]
-struct LeaveRequest {
-    path: String,
-    duration_seconds: i32,
-}
-
-#[derive(Deserialize)]
-struct EventRequest {
-    event_name: String,
-    path: String,
-    data: Option<String>,
-}
-
-#[derive(Serialize, FromRow)]
-struct TopPage {
-    path: String,
-    views: i64,
-}
-
-#[derive(Serialize, Deserialize, FromRow)]
-struct ArchitectureModule {
-    id: String,
-    title: String,
-    category: String,
-    base_price: i32,
-    min_weeks: i32,
-    max_weeks: i32,
-    description: String,
-}
-
-#[derive(Serialize, Deserialize, FromRow)]
-pub struct Product {
-    pub id: String,
-    pub name: Option<String>,
-    pub category: Option<String>,
-    pub price: Option<f32>,
-    pub description: Option<String>,
-    pub rating: Option<f32>,
-    pub image: Option<String>,
-    pub badges: Option<serde_json::Value>,
-    pub material: Option<String>,
-    pub dimensions: Option<String>,
-    pub weight: Option<String>,
-    pub stock: Option<i32>,
-    pub reviews: Option<serde_json::Value>,
-    pub gallery: Option<serde_json::Value>,
-    pub status: Option<String>,
-    #[sqlx(rename = "publishDate")]
-    pub publish_date: Option<String>,
-    pub seo: Option<serde_json::Value>,
-    pub variants: Option<serde_json::Value>,
-    pub about_model: Option<String>,
-    pub features: Option<String>,
-    pub specifications: Option<String>,
-}
-
-struct AppState {
-    http_client: Client,
-    resend_api_key: String,
-    resend_from_email: String,
-    db_pool: PgPool,
-    analytics_salt: String,
-    turnstile_secret_key: String,
-}
+use crate::db::init_db;
+use crate::handlers::{
+    analytics::{get_analytics_summary, track_event, track_leave, track_pageview},
+    auth::admin_login,
+    forms::{send_arrepentimiento, send_sow},
+    modules_api::get_modules,
+    products::{
+        create_product, delete_product, get_bestsellers, get_product_by_id, get_product_options,
+        get_product_variants, get_products, update_product, update_product_variants,
+    },
+    sitemap::get_sitemap,
+};
+use crate::state::AppState;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let _ = dotenvy::dotenv();
+    let dotenv_result = dotenvy::dotenv();
+    if let Err(e) = dotenv_result {
+        println!("Failed to load .env file: {:?}", e);
+    }
 
     tracing_subscriber::registry()
         .with(tracing_subscriber::EnvFilter::new(
@@ -169,10 +48,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let db_url = env::var("NEON_DB_URL").unwrap_or_else(|_| "postgresql://neondb_owner:npg_sdOv2ulAn1zo@ep-super-glitter-ahdn7lxs-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require".to_string());
+    let db_url = env::var("NEON_DB_URL").expect("NEON_DB_URL must be set in the environment");
+    let pool_max = env::var("DB_POOL_MAX")
+        .unwrap_or_else(|_| "50".to_string())
+        .parse::<u32>()
+        .unwrap_or(50);
 
     let pool = PgPoolOptions::new()
-        .max_connections(5)
+        .max_connections(pool_max)
         .connect(&db_url)
         .await?;
 
@@ -197,7 +80,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let cors = CorsLayer::new()
         .allow_origin("http://localhost:5173".parse::<HeaderValue>().unwrap())
-        .allow_methods([Method::POST, Method::GET, Method::OPTIONS])
+        .allow_methods([Method::POST, Method::GET, Method::PUT, Method::OPTIONS])
         .allow_headers(tower_http::cors::Any);
 
     let governor_conf = Arc::new(
@@ -209,9 +92,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let app = Router::new()
+        .route("/api/auth/login", post(admin_login))
         .route("/api/modules", get(get_modules))
-        .route("/api/products", get(get_products))
-        .route("/api/products/{id}", get(get_product_by_id))
+        .route("/api/products", get(get_products).post(create_product))
+        .route("/api/products/bestsellers", get(get_bestsellers))
+        .route(
+            "/api/products/{id}",
+            get(get_product_by_id)
+                .put(update_product)
+                .delete(delete_product),
+        )
+        .route("/api/products/{id}/options", get(get_product_options))
+        .route(
+            "/api/products/{id}/variants",
+            get(get_product_variants).put(update_product_variants),
+        )
         .route("/api/sow/send", post(send_sow))
         .route("/api/arrepentimiento/send", post(send_arrepentimiento))
         .route("/api/analytics/pageview", post(track_pageview))
@@ -234,535 +129,4 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )
     .await?;
     Ok(())
-}
-
-async fn init_db(pool: &PgPool) -> Result<(), sqlx::Error> {
-    sqlx::query(
-        r#"
-        CREATE TABLE IF NOT EXISTS architecture_modules (
-            id TEXT PRIMARY KEY,
-            title TEXT NOT NULL,
-            category TEXT NOT NULL,
-            base_price INTEGER NOT NULL,
-            min_weeks INTEGER NOT NULL,
-            max_weeks INTEGER NOT NULL,
-            description TEXT NOT NULL
-        );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    // Descomentar si se quiere limpiar analíticas
-    // let _ = sqlx::query("DROP TABLE IF EXISTS analytics_pageviews").execute(pool).await;
-    // let _ = sqlx::query("DROP TABLE IF EXISTS analytics_events").execute(pool).await;
-
-    sqlx::query(
-        r#"
-        CREATE TABLE IF NOT EXISTS analytics_pageviews (
-            id SERIAL PRIMARY KEY,
-            session_id TEXT NOT NULL,
-            path TEXT NOT NULL,
-            user_agent TEXT NOT NULL,
-            referrer TEXT,
-            screen_size TEXT,
-            duration_seconds INTEGER DEFAULT 0,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
-        CREATE TABLE IF NOT EXISTS analytics_events (
-            id SERIAL PRIMARY KEY,
-            session_id TEXT NOT NULL,
-            event_name TEXT NOT NULL,
-            path TEXT NOT NULL,
-            data TEXT,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    let count: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM architecture_modules")
-        .fetch_one(pool)
-        .await?;
-
-    if count.0 == 0 {
-        info!("Seeding database with initial modules...");
-        let modules = vec![
-            (
-                "m-auditoria",
-                "Auditoría & Discovery (Rust/Bun)",
-                "Diagnóstico",
-                2500,
-                1,
-                2,
-                "Análisis de cuellos de botella y diseño de arquitectura.",
-            ),
-            (
-                "m-core-backend",
-                "Core Backend en Rust",
-                "Ingeniería Core",
-                12500,
-                4,
-                6,
-                "Reescritura del motor crítico. Concurrencia masiva sin Garbage Collector.",
-            ),
-            (
-                "m-mvp-fast",
-                "MVP de Alta Velocidad",
-                "Startups",
-                7500,
-                3,
-                6,
-                "Desarrollo de producto base ultra-optimizado con Next.js/Rust.",
-            ),
-            (
-                "m-webgl-ui",
-                "Frontend Reactivo (WebGL)",
-                "Experiencia Visual",
-                9000,
-                2,
-                4,
-                "Interfaces 3D, Shaders y animaciones inerciales (FCP < 1s).",
-            ),
-            (
-                "m-cloud-refactor",
-                "Refactorización Cloud / Contenedores",
-                "Enterprise",
-                10000,
-                3,
-                5,
-                "Reducción de costos AWS trasladando microservicios pesados.",
-            ),
-            (
-                "m-staff-elite",
-                "Staff Augmentation Élite",
-                "Equipos",
-                6000,
-                4,
-                4,
-                "Inyección de ingenieros Rust Senior por mes.",
-            ),
-        ];
-
-        for m in modules {
-            sqlx::query(
-                "INSERT INTO architecture_modules (id, title, category, base_price, min_weeks, max_weeks, description) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-            )
-            .bind(m.0)
-            .bind(m.1)
-            .bind(m.2)
-            .bind(m.3)
-            .bind(m.4)
-            .bind(m.5)
-            .bind(m.6)
-            .execute(pool)
-            .await?;
-        }
-    }
-
-    Ok(())
-}
-
-fn get_client_ip(headers: &HeaderMap) -> String {
-    headers
-        .get("x-forwarded-for")
-        .and_then(|h| h.to_str().ok())
-        .unwrap_or("127.0.0.1")
-        .split(',')
-        .next()
-        .unwrap_or("127.0.0.1")
-        .trim()
-        .to_string()
-}
-
-fn generate_session_id(ip: &str, user_agent: &str, salt: &str) -> String {
-    let date = Utc::now().format("%Y-%m-%d").to_string();
-    let raw = format!("{}-{}-{}-{}", ip, user_agent, date, salt);
-    let mut hasher = Sha256::new();
-    hasher.update(raw);
-    hex::encode(hasher.finalize())
-}
-
-async fn get_modules(
-    State(state): State<Arc<AppState>>,
-) -> Result<Json<Vec<ArchitectureModule>>, AppError> {
-    let modules = sqlx::query_as::<_, ArchitectureModule>("SELECT * FROM architecture_modules")
-        .fetch_all(&state.db_pool)
-        .await?;
-
-    Ok(Json(modules))
-}
-
-async fn get_products(State(state): State<Arc<AppState>>) -> Result<Json<Vec<Product>>, AppError> {
-    let products = sqlx::query_as::<_, Product>("SELECT * FROM products")
-        .fetch_all(&state.db_pool)
-        .await?;
-
-    Ok(Json(products))
-}
-
-async fn get_product_by_id(
-    State(state): State<Arc<AppState>>,
-    Path(id): Path<String>,
-) -> Result<impl IntoResponse, AppError> {
-    let product = sqlx::query_as::<_, Product>("SELECT * FROM products WHERE id = $1")
-        .bind(id)
-        .fetch_optional(&state.db_pool)
-        .await?;
-
-    match product {
-        Some(p) => Ok((StatusCode::OK, Json(p)).into_response()),
-        None => Ok((
-            StatusCode::NOT_FOUND,
-            Json(json!({"error": "Product not found"})),
-        )
-            .into_response()),
-    }
-}
-
-async fn get_sitemap(State(state): State<Arc<AppState>>) -> Result<impl IntoResponse, AppError> {
-    let products = sqlx::query_as::<_, Product>("SELECT * FROM products")
-        .fetch_all(&state.db_pool)
-        .await?;
-
-    let mut xml = String::from("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    xml.push_str("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
-
-    let static_urls = vec![
-        ("https://glastor.es/", "weekly", "1.0"),
-        ("https://glastor.es/servicios", "monthly", "0.8"),
-        ("https://glastor.es/proyectos", "monthly", "0.8"),
-        ("https://glastor.es/nosotros", "monthly", "0.8"),
-        ("https://glastor.es/arquitectura", "monthly", "0.7"),
-        ("https://glastor.es/tienda", "daily", "0.9"),
-        ("https://glastor.es/legales", "yearly", "0.3"),
-        ("https://glastor.es/arrepentimiento", "yearly", "0.3"),
-    ];
-
-    for (url, freq, prio) in static_urls {
-        xml.push_str(&format!(
-            "  <url>\n    <loc>{}</loc>\n    <changefreq>{}</changefreq>\n    <priority>{}</priority>\n  </url>\n",
-            url, freq, prio
-        ));
-    }
-
-    for p in products {
-        xml.push_str(&format!(
-            "  <url>\n    <loc>https://glastor.es/tienda/{}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n",
-            p.id
-        ));
-    }
-
-    xml.push_str("</urlset>\n");
-
-    let mut headers = HeaderMap::new();
-    headers.insert(
-        axum::http::header::CONTENT_TYPE,
-        HeaderValue::from_static("application/xml; charset=utf-8"),
-    );
-
-    Ok((headers, xml))
-}
-
-async fn send_sow(
-    State(state): State<Arc<AppState>>,
-    Json(payload): Json<SowRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    info!("Received SOW generation request for: {}", payload.email);
-
-    let is_human = verify_turnstile(
-        &payload.turnstile_token,
-        &state.turnstile_secret_key,
-        &state.http_client,
-    )
-    .await?;
-    if !is_human {
-        return Ok((
-            StatusCode::BAD_REQUEST,
-            Json(json!({ "status": "error", "message": "Security verification failed" })),
-        ));
-    }
-
-    let b64_clean = if let Some(idx) = payload.pdf_base64.find(";base64,") {
-        payload.pdf_base64[idx + 8..].to_string()
-    } else {
-        payload.pdf_base64
-    };
-
-    let email_payload = json!({
-        "from": state.resend_from_email,
-        "to": [payload.email],
-        "subject": format!("GLASTOR® - SOW Técnico / Configuración B2B para {}", payload.company),
-        "html": format!(
-            "<h3>Hola {},</h3>\
-            <p>Adjunto encontrarás el documento formal de <strong>Statement of Work (SOW)</strong> generado mediante nuestro Configurador Táctico para <strong>{}</strong>.</p>\
-            <p>Revisa la propuesta técnica, el roadmap y el desglose de inversión. Cuando estés listo para escalar, respóndenos a este correo para coordinar una auditoría de 15 minutos.</p>\
-            <p>Saludos,<br>El equipo de Glastor.</p>",
-            payload.name, payload.company
-        ),
-        "attachments": [
-            {
-                "filename": format!("GLASTOR_SOW_{}.pdf", payload.company.replace(" ", "_")),
-                "content": b64_clean
-            }
-        ]
-    });
-
-    let res = state
-        .http_client
-        .post("https://api.resend.com/emails")
-        .bearer_auth(&state.resend_api_key)
-        .json(&email_payload)
-        .send()
-        .await?;
-
-    if response_is_success(&res) {
-        Ok((
-            StatusCode::OK,
-            Json(json!({ "status": "success", "message": "Email sent" })),
-        ))
-    } else {
-        let err_text = res.text().await.unwrap_or_default();
-        Err(AppError::ResendError(err_text))
-    }
-}
-
-async fn send_arrepentimiento(
-    State(state): State<Arc<AppState>>,
-    Json(payload): Json<RevocationRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    info!("Received Arrepentimiento form from: {}", payload.email);
-
-    let is_human = verify_turnstile(
-        &payload.turnstile_token,
-        &state.turnstile_secret_key,
-        &state.http_client,
-    )
-    .await?;
-    if !is_human {
-        return Ok((
-            StatusCode::BAD_REQUEST,
-            Json(json!({ "status": "error", "message": "Security verification failed" })),
-        ));
-    }
-
-    if !payload.declaracion {
-        return Ok((
-            StatusCode::BAD_REQUEST,
-            Json(json!({ "status": "error", "message": "Debe aceptar la declaración jurada" })),
-        ));
-    }
-
-    let email_payload = json!({
-        "from": state.resend_from_email,
-        "to": [payload.email, state.resend_from_email.clone()],
-        "subject": format!("Constancia de Revocación de Compra (Ley 24.240) - Orden #{}", payload.orden),
-        "html": format!(
-            "<h3>Constancia de Solicitud de Revocación</h3>\
-            <p>Estimado/a {} {},</p>\
-            <p>Hemos recibido su solicitud de revocación de compra de conformidad con el Art. 34 de la Ley 24.240 de Defensa del Consumidor. A continuación se detallan los datos enviados:</p>\
-            <ul>\
-                <li><strong>DNI:</strong> {}</li>\
-                <li><strong>Teléfono:</strong> {}</li>\
-                <li><strong>Orden/Pedido:</strong> {}</li>\
-                <li><strong>Fecha de Compra:</strong> {}</li>\
-                <li><strong>Producto/Servicio:</strong> {}</li>\
-                <li><strong>Motivo:</strong> {}</li>\
-            </ul>\
-            <p>Nuestro equipo procesará la solicitud a la brevedad y se pondrá en contacto con usted.</p>\
-            <p>Atentamente,<br>Departamento Legal - Glastor</p>",
-            payload.nombre, payload.apellido, payload.dni, payload.telefono, payload.orden, payload.fecha_compra, payload.producto, payload.motivo
-        )
-    });
-
-    let res = state
-        .http_client
-        .post("https://api.resend.com/emails")
-        .bearer_auth(&state.resend_api_key)
-        .json(&email_payload)
-        .send()
-        .await?;
-
-    if response_is_success(&res) {
-        Ok((
-            StatusCode::OK,
-            Json(
-                json!({ "status": "success", "message": "Solicitud de revocación enviada correctamente" }),
-            ),
-        ))
-    } else {
-        let err_text = res.text().await.unwrap_or_default();
-        Err(AppError::ResendError(err_text))
-    }
-}
-
-fn response_is_success(res: &reqwest::Response) -> bool {
-    res.status().is_success()
-}
-
-#[derive(Deserialize)]
-struct TurnstileResponse {
-    success: bool,
-}
-
-async fn verify_turnstile(token: &str, secret: &str, client: &Client) -> Result<bool, AppError> {
-    let mut params = std::collections::HashMap::new();
-    params.insert("secret", secret);
-    params.insert("response", token);
-
-    let res = client
-        .post("https://challenges.cloudflare.com/turnstile/v0/siteverify")
-        .form(&params)
-        .send()
-        .await?;
-
-    if res.status().is_success() {
-        let ts_res: TurnstileResponse = res
-            .json()
-            .await
-            .map_err(|_| AppError::InternalServerError)?;
-        Ok(ts_res.success)
-    } else {
-        Ok(false)
-    }
-}
-
-async fn track_pageview(
-    State(state): State<Arc<AppState>>,
-    headers: HeaderMap,
-    Json(payload): Json<PageviewRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    let user_agent = headers
-        .get(axum::http::header::USER_AGENT)
-        .and_then(|h| h.to_str().ok())
-        .unwrap_or("unknown");
-
-    let ip = get_client_ip(&headers);
-    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
-
-    sqlx::query(
-        "INSERT INTO analytics_pageviews (session_id, path, user_agent, referrer, screen_size) VALUES ($1, $2, $3, $4, $5)"
-    )
-    .bind(&session_id)
-    .bind(&payload.path)
-    .bind(user_agent)
-    .bind(&payload.referrer)
-    .bind(&payload.screen_size)
-    .execute(&state.db_pool)
-    .await?;
-
-    Ok((
-        StatusCode::OK,
-        Json(json!({ "status": "success", "session_id": session_id })),
-    ))
-}
-
-async fn track_leave(
-    State(state): State<Arc<AppState>>,
-    headers: HeaderMap,
-    Json(payload): Json<LeaveRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    let user_agent = headers
-        .get(axum::http::header::USER_AGENT)
-        .and_then(|h| h.to_str().ok())
-        .unwrap_or("unknown");
-
-    let ip = get_client_ip(&headers);
-    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
-
-    sqlx::query(
-        "UPDATE analytics_pageviews SET duration_seconds = $1 WHERE id = (SELECT id FROM analytics_pageviews WHERE session_id = $2 AND path = $3 ORDER BY id DESC LIMIT 1)"
-    )
-    .bind(payload.duration_seconds)
-    .bind(&session_id)
-    .bind(&payload.path)
-    .execute(&state.db_pool)
-    .await?;
-
-    Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
-}
-
-async fn track_event(
-    State(state): State<Arc<AppState>>,
-    headers: HeaderMap,
-    Json(payload): Json<EventRequest>,
-) -> Result<impl IntoResponse, AppError> {
-    let user_agent = headers
-        .get(axum::http::header::USER_AGENT)
-        .and_then(|h| h.to_str().ok())
-        .unwrap_or("unknown");
-
-    let ip = get_client_ip(&headers);
-    let session_id = generate_session_id(&ip, user_agent, &state.analytics_salt);
-
-    sqlx::query(
-        "INSERT INTO analytics_events (session_id, event_name, path, data) VALUES ($1, $2, $3, $4)",
-    )
-    .bind(&session_id)
-    .bind(&payload.event_name)
-    .bind(&payload.path)
-    .bind(&payload.data)
-    .execute(&state.db_pool)
-    .await?;
-
-    Ok((StatusCode::OK, Json(json!({ "status": "success" }))))
-}
-
-#[derive(Serialize, FromRow)]
-struct TopEvent {
-    event_name: String,
-    count: i64,
-}
-
-#[derive(Serialize)]
-struct AnalyticsSummary {
-    total_pageviews: i64,
-    unique_visitors: i64,
-    average_duration: i64,
-    top_pages: Vec<TopPage>,
-    top_events: Vec<TopEvent>,
-}
-
-async fn get_analytics_summary(
-    State(state): State<Arc<AppState>>,
-) -> Result<impl IntoResponse, AppError> {
-    let total: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM analytics_pageviews")
-        .fetch_one(&state.db_pool)
-        .await?;
-    let unique: (i64,) =
-        sqlx::query_as("SELECT COUNT(DISTINCT session_id) FROM analytics_pageviews")
-            .fetch_one(&state.db_pool)
-            .await?;
-
-    let avg_duration: (Option<f64>,) = sqlx::query_as(
-        "SELECT AVG(duration_seconds)::FLOAT FROM analytics_pageviews WHERE duration_seconds > 0",
-    )
-    .fetch_one(&state.db_pool)
-    .await?;
-
-    let top_pages = sqlx::query_as::<_, TopPage>(
-        "SELECT path, COUNT(*) as views FROM analytics_pageviews GROUP BY path ORDER BY views DESC LIMIT 5"
-    ).fetch_all(&state.db_pool).await?;
-
-    let top_events = sqlx::query_as::<_, TopEvent>(
-        "SELECT event_name, COUNT(*) as count FROM analytics_events GROUP BY event_name ORDER BY count DESC LIMIT 5"
-    ).fetch_all(&state.db_pool).await?;
-
-    let summary = AnalyticsSummary {
-        total_pageviews: total.0,
-        unique_visitors: unique.0,
-        average_duration: avg_duration.0.unwrap_or(0.0) as i64,
-        top_pages,
-        top_events,
-    };
-
-    Ok((StatusCode::OK, Json(summary)))
 }

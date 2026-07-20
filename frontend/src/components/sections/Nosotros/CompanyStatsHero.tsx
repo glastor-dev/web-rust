@@ -1,10 +1,12 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Button } from '../../reutilizables/button';
 import { ArrowRightIcon } from 'lucide-react';
 
 export function CompanyStatsHero() {
   return (
-    <section className="relative w-full min-h-[600px] flex flex-col justify-center overflow-hidden bg-[#050505]">
+    <section className="relative w-full min-h-150 flex flex-col justify-center overflow-hidden bg-[#050505]">
       {/* Subtle Background Layer / Filter */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
@@ -22,11 +24,11 @@ export function CompanyStatsHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start lg:items-center">
           {/* Columna Izquierda: Texto y CTA */}
           <div className="flex flex-col items-start">
-            <div className="bg-brand text-black font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 mb-8 rounded-sm inline-block">
+            <div className="bg-brand text-black font-mono text-[10px] font-bold tracking-widest px-3 py-1 mb-8 rounded-sm inline-block">
               Sobre Nosotros
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-[80px] font-black uppercase tracking-tighter leading-[0.85] mb-8 text-white">
+            <h1 className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-8 text-white">
               Somos <br />
               <span className="text-brand">Glastor®</span>
             </h1>
@@ -45,7 +47,7 @@ export function CompanyStatsHero() {
             <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
               <Button
                 size="lg"
-                className="bg-brand hover:bg-brand/90 text-black font-bold uppercase tracking-widest text-xs h-12 px-8 rounded-sm"
+                className="bg-brand hover:bg-brand/90 text-black font-bold tracking-widest text-xs h-12 px-8 rounded-sm"
                 asChild
               >
                 <a href="#contacto">Contactar</a>
@@ -53,7 +55,7 @@ export function CompanyStatsHero() {
 
               <a
                 href="mailto:ventas@glastor.es"
-                className="h-12 px-8 flex items-center justify-center gap-2 border border-white/10 hover:border-brand/50 text-zinc-400 hover:text-brand font-mono text-xs uppercase tracking-widest transition-colors rounded-sm"
+                className="h-12 px-8 flex items-center justify-center gap-2 border border-white/10 hover:border-brand/50 text-zinc-400 hover:text-brand font-mono text-xs tracking-widest transition-colors rounded-sm"
               >
                 ventas@glastor.es <ArrowRightIcon size={14} />
               </a>
@@ -67,10 +69,10 @@ export function CompanyStatsHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="border border-brand/20 bg-brand/5 p-8 rounded-xl flex flex-col justify-center min-h-[160px]"
+              className="border border-brand/20 bg-brand/5 p-8 rounded-xl flex flex-col justify-center min-h-40"
             >
               <span className="text-5xl font-black text-brand tracking-tighter mb-2">15+</span>
-              <span className="text-zinc-400 font-mono text-[10px] uppercase tracking-widest font-bold">
+              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
                 Años de Trayectoria
               </span>
             </motion.div>
@@ -80,10 +82,10 @@ export function CompanyStatsHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-[160px]"
+              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
             >
               <span className="text-5xl font-black text-white tracking-tighter mb-2">2010</span>
-              <span className="text-zinc-400 font-mono text-[10px] uppercase tracking-widest font-bold">
+              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
                 Año de Fundación
               </span>
             </motion.div>
@@ -93,10 +95,10 @@ export function CompanyStatsHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-[160px]"
+              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
             >
               <span className="text-5xl font-black text-white tracking-tighter mb-2">ESP</span>
-              <span className="text-zinc-400 font-mono text-[10px] uppercase tracking-widest font-bold">
+              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
                 Girona, España - Sede Central
               </span>
             </motion.div>
@@ -106,10 +108,10 @@ export function CompanyStatsHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-[160px]"
+              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
             >
               <span className="text-5xl font-black text-white tracking-tighter mb-2">3</span>
-              <span className="text-zinc-400 font-mono text-[10px] uppercase tracking-widest font-bold">
+              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
                 Áreas: Rust - Python - Diseño
               </span>
             </motion.div>

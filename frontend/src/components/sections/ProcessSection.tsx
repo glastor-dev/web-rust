@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
@@ -103,10 +105,10 @@ export function ProcessSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Cómo trabajamos
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white mb-6 leading-none">
-            DE LA IDEA A PRODUCCIÓN
+          <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
+            De la Idea a Producción
             <br />
-            <span className="text-zinc-600">EN 5 PASOS.</span>
+            <span className="text-zinc-600">en 5 Pasos.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             No improvisamos. Seguimos un proceso probado en más de 150 proyectos para asegurar que
@@ -147,9 +149,7 @@ export function ProcessSection() {
                       <div className="text-brand font-mono text-sm mb-4 uppercase tracking-widest border-b border-white/5 pb-2 inline-block">
                         Duración: {step.duration}
                       </div>
-                      <h3 className="text-2xl font-black uppercase text-white mb-4">
-                        {step.title}
-                      </h3>
+                      <h3 className="text-2xl font-extrabold text-white mb-4">{step.title}</h3>
                       <p className="text-zinc-400 mb-6">{step.description}</p>
 
                       <div className="mb-6">

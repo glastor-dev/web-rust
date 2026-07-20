@@ -1,103 +1,9 @@
-import { useState } from 'react';
+'use client';
+
 import { motion } from 'motion/react';
-import { ArrowRight, Activity, TrendingDown, RefreshCcw } from 'lucide-react';
-import { ArchitectureDiagram } from '../ui/ArchitectureDiagram';
-import type { ArchitectureNode } from '../ui/ArchitectureDiagram';
-
-import type { ReactNode } from 'react';
-
-type CaseStudy = {
-  icon: ReactNode;
-  title: string;
-  subtitle: string;
-  challenge: string[];
-  solution: string;
-  architecture: ArchitectureNode[];
-  results: { label: string; value: string; sub: string }[];
-  stack: string;
-  roi: string;
-};
-
-const cases: CaseStudy[] = [
-  {
-    icon: <Activity className="w-8 h-8 text-brand" />,
-    title: 'API de Alto Rendimiento en Rust',
-    subtitle: '8 semanas',
-    challenge: [
-      'Latencia p99: 800ms (inaceptable para usuarios)',
-      'Caídas frecuentes durante picos de tráfico',
-      'Costos de servidor: €8,000/mes',
-    ],
-    solution: 'Migración a Rust con Actix-web, PostgreSQL optimizado, Redis y Load balancing.',
-    architecture: [
-      { iconName: 'Users', label: 'Client' },
-      { iconName: 'ServerCrash', label: 'Nginx LB' },
-      { iconName: 'Cpu', label: 'Rust API' },
-      { iconName: 'Database', label: 'PostgreSQL' },
-    ],
-    results: [
-      { label: 'Latencia p99', value: '800ms → 23ms', sub: '97% mejora' },
-      { label: 'Throughput', value: '200 → 15k req/s', sub: '75x mejora' },
-      { label: 'Costo mensual', value: '€8k → €2k', sub: '75% ahorro' },
-    ],
-    stack: 'Rust · Actix-web · PostgreSQL · Redis · Docker · Nginx',
-    roi: 'Recuperado en 4 meses',
-  },
-  {
-    icon: <TrendingDown className="w-8 h-8 text-brand" />,
-    title: 'Reducción de Costos de Infraestructura',
-    subtitle: '10 semanas',
-    challenge: [
-      'Costos AWS: €25,000/mes (insostenible)',
-      '15 microservicios en Node.js ineficientes',
-      'Escalado manual y reactivo',
-    ],
-    solution:
-      'Auditoría, right-sizing de instancias (40% red.), migración a PostgreSQL y Auto-scaling inteligente.',
-    architecture: [
-      { iconName: 'CloudRain', label: 'AWS ALB' },
-      { iconName: 'Network', label: 'K8s Cluster' },
-      { iconName: 'Cpu', label: 'Rust Nodes' },
-      { iconName: 'Database', label: 'AWS RDS' },
-    ],
-    results: [
-      { label: 'Costo AWS', value: '€25k → €6.2k', sub: '75% reducción' },
-      { label: 'Tiempo de carga', value: '4.2s → 1.8s', sub: '57% más rápido' },
-      { label: 'Tiempo despliegue', value: '45m → 8m', sub: 'Automatizado' },
-    ],
-    stack: 'Rust · PostgreSQL · Redis · AWS · Terraform · Kubernetes',
-    roi: '8x en el primer año',
-  },
-  {
-    icon: <RefreshCcw className="w-8 h-8 text-brand" />,
-    title: 'Migración de Sistema Legacy',
-    subtitle: '6 meses',
-    challenge: [
-      'Código en tecnologías obsoletas (15 años)',
-      'Sin API, imposible integrar con otros sistemas',
-      'Caídas diarias, backups manuales',
-    ],
-    solution: 'Migración gradual en 4 fases sin downtime a nueva arquitectura Rust + React.',
-    architecture: [
-      { iconName: 'Globe', label: 'React SPA' },
-      { iconName: 'ArrowRightLeft', label: 'API Gateway' },
-      { iconName: 'Cpu', label: 'Rust Core' },
-      { iconName: 'HardDrive', label: 'Legacy DB' },
-    ],
-    results: [
-      { label: 'Uptime', value: '85% → 99.95%', sub: 'Alta disponibilidad' },
-      { label: 'Nuevas integraciones', value: '0 → 15', sub: 'APIs REST' },
-      { label: 'Tiempo en backups', value: '2h/día → 0', sub: '100% automático' },
-    ],
-    stack: 'Rust · React · PostgreSQL · Docker · Nginx · Redis',
-    roi: 'Recuperado en 18 meses',
-  },
-];
+import { ArrowRight } from 'lucide-react';
 
 export function CaseStudiesSection() {
-  const [showAll, setShowAll] = useState(false);
-  const visibleCases = showAll ? cases : cases.slice(0, 1);
-
   return (
     <section className="py-24 relative bg-[#050505]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -106,10 +12,10 @@ export function CaseStudiesSection() {
             <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
               Casos de Éxito
             </div>
-            <h2 className="text-fluid-h2 font-black uppercase text-white mb-4 leading-none">
-              PROYECTOS EN
+            <h2 className="text-fluid-h2 font-extrabold text-white mb-4 leading-none">
+              Proyectos en
               <br />
-              <span className="text-zinc-500">PRODUCCIÓN.</span>
+              <span className="text-zinc-500">Producción.</span>
             </h2>
             <p className="text-zinc-400 max-w-2xl text-lg font-light mt-6">
               Más de 150 proyectos completados desde 2010. Aquí tienes una muestra de lo que hacemos
@@ -124,96 +30,62 @@ export function CaseStudiesSection() {
           </a>
         </div>
 
-        <div className="space-y-12">
-          {visibleCases.map((caseStudy, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="glass-panel p-8 md:p-12 border-editorial flex flex-col group hover:border-brand/30 transition-colors"
-            >
-              <div className="flex flex-col lg:flex-row gap-12 w-full">
-                {/* Left Column */}
-                <div className="lg:w-1/3">
-                  <div className="mb-6">{caseStudy.icon}</div>
-                  <h3 className="text-2xl font-black uppercase text-white mb-2">
-                    {caseStudy.title}
-                  </h3>
-                  <div className="text-brand font-mono text-sm mb-6">
-                    Duración: {caseStudy.subtitle}
-                  </div>
+        <div className="relative w-full h-87.5 lg:h-137.5 flex items-center justify-center perspective-[2000px] group mt-16 mb-8">
+          {/* Ambient Glow behind images */}
+          <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-[60%] h-[60%] bg-brand/20 blur-[120px] rounded-full transform-gpu pointer-events-none z-0" />
 
-                  <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                    El Desafío:
-                  </h4>
-                  <ul className="space-y-2 mb-6">
-                    {caseStudy.challenge.map((ch, i) => (
-                      <li key={i} className="text-sm text-zinc-400 flex items-start">
-                        <span className="text-red-500 mr-2 mt-0.5">✕</span> {ch}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          {/* Proyecto 4 - Fondo Izquierda */}
+          <img
+            src="/images/proyecto-4.webp"
+            alt="Proyecto 4"
+            className="absolute w-[45%] lg:w-[35%] rounded-xl shadow-2xl border border-white/5 opacity-50 transition-all duration-700 ease-out hover:opacity-100! hover:scale-110 hover:z-50 z-10 translate-x-[-50%] lg:translate-x-[-70%] translate-y-[20%] -rotate-6 group-hover:translate-x-[-60%] lg:group-hover:translate-x-[-90%] group-hover:-rotate-12"
+          />
 
-                {/* Right Column */}
-                <div className="lg:w-2/3 flex flex-col justify-between">
-                  <div>
-                    <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                      La Solución:
-                    </h4>
-                    <p className="text-zinc-300 mb-6">{caseStudy.solution}</p>
+          {/* Proyecto 5 - Fondo Derecha */}
+          <img
+            src="/images/proyecto-5.webp"
+            alt="Proyecto 5"
+            className="absolute w-[45%] lg:w-[35%] rounded-xl shadow-2xl border border-white/5 opacity-50 transition-all duration-700 ease-out hover:opacity-100! hover:scale-110 hover:z-50 z-10 translate-x-[50%] lg:translate-x-[70%] translate-y-[15%] rotate-6 group-hover:translate-x-[60%] lg:group-hover:translate-x-[90%] group-hover:rotate-12"
+          />
 
-                    <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
-                      Resultados:
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                      {caseStudy.results.map((res, i) => (
-                        <div key={i} className="bg-white/5 p-4 rounded-sm border border-white/10">
-                          <div className="text-xs text-zinc-500 font-mono uppercase mb-1">
-                            {res.label}
-                          </div>
-                          <div className="text-lg font-bold text-white mb-1">{res.value}</div>
-                          <div className="text-xs text-brand">{res.sub}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          {/* Proyecto 2 - Medio Izquierda */}
+          <img
+            src="/images/proyecto-2.webp"
+            alt="Proyecto 2"
+            className="absolute w-[55%] lg:w-[45%] rounded-xl shadow-2xl border border-white/10 opacity-75 transition-all duration-700 ease-out hover:opacity-100! hover:scale-110 hover:z-50 z-20 translate-x-[-25%] lg:translate-x-[-35%] translate-y-[-10%] -rotate-3 group-hover:translate-x-[-35%] lg:group-hover:translate-x-[-45%] group-hover:-rotate-6"
+          />
 
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center pt-6 border-t border-white/10 gap-4">
-                    <div className="text-xs font-mono text-zinc-500">
-                      <span className="text-white">Stack:</span> {caseStudy.stack}
-                    </div>
-                    <div className="text-xs font-mono px-3 py-1 bg-brand/10 text-brand rounded-full">
-                      ROI: {caseStudy.roi}
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Proyecto 3 - Medio Derecha */}
+          <img
+            src="/images/proyecto-3.webp"
+            alt="Proyecto 3"
+            className="absolute w-[55%] lg:w-[45%] rounded-xl shadow-2xl border border-white/10 opacity-75 transition-all duration-700 ease-out hover:opacity-100! hover:scale-110 hover:z-50 z-20 translate-x-[25%] lg:translate-x-[35%] translate-y-[-5%] rotate-3 group-hover:translate-x-[35%] lg:group-hover:translate-x-[45%] group-hover:rotate-6"
+          />
 
-              {/* Diagrama arquitectónico a ancho completo */}
-              <div className="mt-8 pt-8 border-t border-white/10 w-full">
-                <ArchitectureDiagram nodes={caseStudy.architecture} />
-              </div>
-            </motion.div>
-          ))}
+          {/* Proyecto 1 - Frente Centro */}
+          <img
+            src="/images/proyecto-1.webp"
+            alt="Proyecto Principal"
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
+            className="absolute w-[65%] lg:w-[55%] rounded-xl shadow-2xl border border-white/20 transition-all duration-700 ease-out hover:scale-105 hover:z-50 z-30 translate-y-0 group-hover:-translate-y-4 drop-shadow-[0_0_40px_rgba(0,255,102,0.2)]"
+          />
         </div>
 
-        {!showAll && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-center mt-12"
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex justify-center mt-12"
+        >
+          <a
+            href="/proyectos"
+            className="inline-flex items-center text-xs font-mono text-white border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all uppercase tracking-widest cursor-pointer"
           >
-            <button
-              onClick={() => setShowAll(true)}
-              className="inline-flex items-center text-xs font-mono text-white border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all uppercase tracking-widest cursor-pointer"
-            >
-              Ver más proyectos <ArrowRight className="w-4 h-4 ml-2" />
-            </button>
-          </motion.div>
-        )}
+            Ver más proyectos <ArrowRight className="w-4 h-4 ml-2" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

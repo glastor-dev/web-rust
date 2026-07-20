@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/arrepentimiento/layout,_N_T_/arrepentimiento/page,_N_T_/arrepentimiento"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/arrepentimiento/__PAGE__",
+    "/arrepentimiento",
+    "/_index",
+    "/_head"
+  ]
+}

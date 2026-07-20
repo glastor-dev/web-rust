@@ -1,0 +1,3 @@
+module.exports=[576568,a=>{"use strict";var b=a.i(885322);a.s(["default",0,function({children:a}){return(0,b.jsx)(b.Fragment,{children:a})},"metadata",0,{title:"Configurador de Arquitectura | Glastor",description:"Configura la arquitectura técnica de tu próximo proyecto con nuestros ingenieros."}])},648972,a=>{a.n(a.i(576568))}];
+
+//# sourceMappingURL=src_app_arquitectura_layout_tsx_20m2dc5._.js.map

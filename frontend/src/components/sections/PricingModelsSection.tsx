@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Button } from '../reutilizables/button';
 import { CheckCircle2Icon } from 'lucide-react';
@@ -14,8 +16,8 @@ export function PricingModelsSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Precios y Modelos
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white leading-none">
-            MODELOS DE TRABAJO
+          <h2 className="text-fluid-h2 font-extrabold text-white leading-none">
+            Modelos de Trabajo
           </h2>
         </div>
 
@@ -35,7 +37,7 @@ export function PricingModelsSection() {
                 </div>
               )}
 
-              <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">
+              <h3 className="text-2xl font-extrabold tracking-tight text-white mb-2">
                 {model.title}
               </h3>
               <div className="text-brand text-sm font-mono mb-8 border-b border-white/10 pb-4">

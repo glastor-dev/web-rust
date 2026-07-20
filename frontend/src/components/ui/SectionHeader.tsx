@@ -16,7 +16,7 @@ export function SectionHeader({
   return (
     <div className={`mb-16 border-b border-white/10 pb-4 ${className}`}>
       <h2
-        className={`${titleClassName} font-black uppercase tracking-tighter text-white mb-4 leading-none`}
+        className={`${titleClassName} font-extrabold tracking-tight text-white mb-4 leading-none`}
       >
         {title}
       </h2>

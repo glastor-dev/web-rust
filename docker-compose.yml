@@ -1,41 +1,31 @@
-version: '3.8'
-
 services:
-  # ==========================================
-  # Frontend: Nginx sirviendo la SPA de React
-  # ==========================================
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: glastor-frontend
-    ports:
-      - "80:80"   # Expuesto al mundo en el puerto 80
-    depends_on:
-      - backend   # Se asegura de que el backend inicie primero
-    restart: unless-stopped
-    networks:
-      - glastor-network
-
-  # ==========================================
-  # Backend: Servidor concurrente en Rust
-  # ==========================================
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: glastor-backend
-
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
     restart: unless-stopped
-    volumes:
-      - backend-data:/app
     networks:
-      - glastor-network
+      - web-rust-net
 
-# Definición de la red interna de Docker para que se comuniquen
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=
+      - BACKEND_URL=http://backend:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - web-rust-net
+
 networks:
-  glastor-network:
+  web-rust-net:
     driver: bridge
-
-volumes:
-  backend-data:

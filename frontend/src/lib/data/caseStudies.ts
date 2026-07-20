@@ -40,7 +40,7 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     id: 'pagos-rust',
-    title: 'API DE PROCESAMIENTO DE PAGOS EN RUST',
+    title: 'API de Procesamiento de Pagos en Rust',
     industry: 'Fintech & Pagos',
     categories: ['Rust', 'Optimización'],
     challenge: [
@@ -52,10 +52,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     solutionText: 'Migramos el sistema completo de Node.js a Rust en 8 semanas:',
     architectureDiagram: [
-      { iconName: 'Users', label: 'Client' },
-      { iconName: 'ServerCrash', label: 'Nginx LB' },
-      { iconName: 'Cpu', label: 'Rust API' },
-      { iconName: 'Database', label: 'PostgreSQL' },
+      { iconName: 'UserGroupIcon', label: 'Client' },
+      { iconName: 'Server01Icon', label: 'Nginx LB' },
+      { iconName: 'CpuIcon', label: 'Rust API' },
+      { iconName: 'DatabaseIcon', label: 'PostgreSQL' },
     ],
     solutionArchitecture: [
       'API REST en Rust con Actix-web',
@@ -99,7 +99,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'mensajeria-rt',
-    title: 'PLATAFORMA DE MENSAJERÍA EN TIEMPO REAL',
+    title: 'Plataforma de Mensajería en Tiempo Real',
     industry: 'Social & Comunicaciones',
     categories: ['Rust', 'Servidores', 'Infraestructura'],
     challenge: [
@@ -108,10 +108,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     solutionText: 'Sistema distribuido en Rust con arquitectura event-driven:',
     architectureDiagram: [
-      { iconName: 'Smartphone', label: 'Mobile' },
-      { iconName: 'Network', label: 'Load Balancer' },
-      { iconName: 'Zap', label: 'Rust WebSocket' },
-      { iconName: 'Layers', label: 'Kafka' },
+      { iconName: 'SmartPhone01Icon', label: 'Mobile' },
+      { iconName: 'AiNetworkIcon', label: 'Load Balancer' },
+      { iconName: 'FlashIcon', label: 'Rust WebSocket' },
+      { iconName: 'Layers01Icon', label: 'Kafka' },
     ],
     solutionArchitecture: [
       'Servidor de WebSocket en Rust',
@@ -154,7 +154,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'erp-legacy',
-    title: 'MIGRACIÓN DE ERP LEGACY A ARQUITECTURA MODERNA',
+    title: 'Migración de ERP Legacy a Arquitectura Moderna',
     industry: 'Manufactura & Logística',
     categories: ['Migraciones', 'Rust'],
     challenge: [
@@ -167,10 +167,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     solutionText: 'Migración gradual en 6 meses sin downtime:',
     architectureDiagram: [
-      { iconName: 'Globe', label: 'React SPA' },
-      { iconName: 'ArrowRightLeft', label: 'API Gateway' },
-      { iconName: 'Cpu', label: 'Rust Core' },
-      { iconName: 'HardDrive', label: 'Legacy DB' },
+      { iconName: 'Globe02Icon', label: 'React SPA' },
+      { iconName: 'Exchange01Icon', label: 'API Gateway' },
+      { iconName: 'CpuIcon', label: 'Rust Core' },
+      { iconName: 'HardDriveIcon', label: 'Legacy DB' },
     ],
     solutionPhases: [
       {
@@ -240,7 +240,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'infra-opt',
-    title: 'REDUCCIÓN DE COSTOS DE INFRAESTRUCTURA EN 75%',
+    title: 'Reducción de Costos de Infraestructura en 75%',
     industry: 'E-commerce & Retail',
     categories: ['Infraestructura', 'Optimización'],
     challenge: [
@@ -253,10 +253,10 @@ export const caseStudies: CaseStudy[] = [
     ],
     solutionText: 'Auditoría completa + optimización en 10 semanas:',
     architectureDiagram: [
-      { iconName: 'CloudRain', label: 'AWS ALB' },
-      { iconName: 'Network', label: 'K8s Cluster' },
-      { iconName: 'Cpu', label: 'Rust Nodes' },
-      { iconName: 'Database', label: 'AWS RDS' },
+      { iconName: 'CloudIcon', label: 'AWS ALB' },
+      { iconName: 'AiNetworkIcon', label: 'K8s Cluster' },
+      { iconName: 'CpuIcon', label: 'Rust Nodes' },
+      { iconName: 'DatabaseIcon', label: 'AWS RDS' },
     ],
     solutionPhases: [
       {

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'motion/react';
 import React, { useRef } from 'react';
 import { Button } from '../reutilizables/button';
@@ -49,7 +51,8 @@ export function PageHero({
 
   const opacityY = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const scaleY = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const translateY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const translateY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const bgTranslateY = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   // Build GSAP-ready lines from titleText prop (highlights RUST keyword)
   const titleLines = titleText
@@ -65,7 +68,7 @@ export function PageHero({
       ))
     : null;
 
-  const titleClasses = `${titleClass || (isAsymmetrical ? 'text-fluid-h2 break-keep' : 'text-fluid-display mx-auto')} font-black uppercase tracking-tighter text-white mb-8 md:mb-12 leading-[0.9] w-full`;
+  const titleClasses = `${titleClass || (isAsymmetrical ? 'text-fluid-h2 break-keep' : 'text-fluid-display mx-auto')} font-extrabold tracking-tight text-white mb-8 md:mb-12 leading-[0.9] w-full`;
 
   return (
     <section
@@ -76,35 +79,34 @@ export function PageHero({
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          background: `
-            radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 60%),
-            linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px)
-          `,
-          backgroundSize: '100% 100%, 64px 64px, 64px 64px',
+          background: `radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.03) 0%, transparent 60%)`,
+          backgroundSize: '100% 100%',
           backgroundPosition: 'center center',
         }}
       />
-      {/* Layer 0: Background photograph */}
+      {/* Layer 0: Background photograph with Parallax */}
       {backgroundImage && (
-        <div className="absolute inset-0 z-0 flex justify-center overflow-hidden">
+        <motion.div
+          className="absolute inset-0 z-0 flex justify-center overflow-hidden pointer-events-none"
+          style={{ y: bgTranslateY }}
+        >
           <div className="w-full max-w-[1920px] h-full relative">
             <img
               src={backgroundImage}
               alt="Hero Background"
-              className="w-full h-full object-cover opacity-20 mix-blend-lighten"
+              className="w-full h-full object-cover opacity-80"
             />
             <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#050505]/50 to-[#050505] pointer-events-none" />
             <div className="absolute inset-0 bg-linear-to-r from-[#050505] via-transparent to-[#050505] pointer-events-none" />
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Capa de partículas eliminada por petición de limpieza visual */}
 
       {/* Layer 2: Ambient radial glow */}
       <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand/5 rounded-full blur-[180px] pointer-events-none z-2 transform-gpu will-change-transform"
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-175 h-175 bg-brand/5 rounded-full blur-[180px] pointer-events-none z-2 transform-gpu will-change-transform"
         style={{ transform: 'translate3d(-50%, 0, 0)' }}
       />
 
@@ -151,7 +153,7 @@ export function PageHero({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
-                className={`text-zinc-400 text-xl md:text-2xl font-light mb-12 ${isAsymmetrical ? 'max-w-xl' : 'max-w-2xl'}`}
+                className={`text-zinc-400 text-xl md:text-2xl font-light mb-12 ${isAsymmetrical ? 'max-w-xl' : 'max-w-2xl mx-auto'}`}
               >
                 {description}
               </motion.div>

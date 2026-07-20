@@ -1,35 +1,42 @@
 # ==========================================
-# Etapa 1: Build (Construcción con Bun y Vite)
+# Etapa 1: Build (Construcción con Node y Next.js)
 # ==========================================
-FROM oven/bun:1-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copiamos primero los archivos de dependencias para aprovechar la caché de capas de Docker
-COPY package.json bun.lock ./
+# Copiamos primero los archivos de dependencias
+COPY package.json pnpm-lock.yaml* ./
+
+# Instalamos pnpm globalmente
+RUN npm install -g pnpm
 
 # Instalamos las dependencias
-RUN bun install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Copiamos el resto del código fuente
 COPY . .
 
-# Compilamos la aplicación de React
-RUN bun run build
+# Compilamos la aplicación Next.js
+RUN pnpm run build
 
 # ==========================================
-# Etapa 2: Runtime (Servidor Web Nginx)
+# Etapa 2: Runtime (Servidor Node.js standalone)
 # ==========================================
-FROM nginx:alpine
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-# Copiamos el build estático generado por Vite hacia la carpeta de Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-# Copiamos nuestra configuración personalizada de Nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copiamos los archivos necesarios de la etapa de build
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
-# Exponemos el puerto 80 (el estándar web)
-EXPOSE 80
+# Exponemos el puerto
+EXPOSE 3000
 
-# Arrancamos Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Ejecutamos el servidor standalone
+CMD ["node", "server.js"]

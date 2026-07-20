@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Card } from '../../reutilizables/card';
 import { Button } from '../../reutilizables/button';
@@ -14,11 +16,21 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
   return (
     <div className="sticky top-32">
       <Card className="p-8 bg-zinc-950 border border-white/10 rounded-none shadow-2xl">
-        <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
-          <CalculatorIcon className="text-brand" size={24} />
-          <h2 className="text-xl font-black uppercase tracking-widest text-white">
-            Estimación Global
-          </h2>
+        <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-6">
+          <div className="flex items-center gap-3">
+            <CalculatorIcon className="text-brand" size={24} />
+            <h2 className="text-xl font-bold uppercase tracking-wider text-white">
+              Estimación Global
+            </h2>
+          </div>
+          {selectedModuleIds.length > 0 && (
+            <button
+              onClick={onGenerate?.bind(null, true)}
+              className="text-[10px] font-mono uppercase tracking-widest text-brand hover:text-white transition-colors"
+            >
+              Reiniciar
+            </button>
+          )}
         </div>
 
         {selectedModuleIds.length === 0 ? (
@@ -35,10 +47,32 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
                 key={totalPrice}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-4xl md:text-5xl font-black tracking-tighter text-brand"
+                className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand"
               >
                 ${totalPrice.toLocaleString()} <span className="text-2xl text-zinc-600">USD</span>
               </motion.div>
+              {(() => {
+                const bundleSize = selectedModuleIds.length;
+                if (bundleSize >= 4)
+                  return (
+                    <span className="text-[10px] font-mono text-brand uppercase tracking-widest">
+                      Bundle -12% aplicado
+                    </span>
+                  );
+                if (bundleSize === 3)
+                  return (
+                    <span className="text-[10px] font-mono text-brand uppercase tracking-widest">
+                      Bundle -8% aplicado
+                    </span>
+                  );
+                if (bundleSize === 2)
+                  return (
+                    <span className="text-[10px] font-mono text-brand uppercase tracking-widest">
+                      Bundle -4% aplicado
+                    </span>
+                  );
+                return null;
+              })()}
             </div>
 
             <div className="flex flex-col gap-2">

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 

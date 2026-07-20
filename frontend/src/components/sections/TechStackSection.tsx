@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Code2, Database, HardDrive, Activity, Wrench } from 'lucide-react';
 
@@ -61,8 +63,8 @@ export function TechStackSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Tecnologías
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white leading-none">
-            STACK TECNOLÓGICO
+          <h2 className="text-fluid-h2 font-extrabold text-white leading-none">
+            Stack Tecnológico
           </h2>
         </div>
 

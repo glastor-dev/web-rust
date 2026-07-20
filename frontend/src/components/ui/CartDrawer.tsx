@@ -1,6 +1,8 @@
+'use client';
+
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useCartStore } from '../../store/cartStore';
 
 export function CartDrawer() {
@@ -33,12 +35,13 @@ export function CartDrawer() {
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-5 h-5 text-white" />
-                <h2 className="text-sm font-black uppercase tracking-widest text-white mt-1">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-white mt-1">
                   CESTA DE COMPRA
                 </h2>
               </div>
               <button
                 onClick={closeDrawer}
+                aria-label="Cerrar carrito"
                 className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/5 rounded-md transition-colors"
               >
                 <X className="w-4 h-4 text-zinc-400" />
@@ -76,7 +79,7 @@ export function CartDrawer() {
                     {/* Info */}
                     <div className="flex flex-col flex-1 justify-between">
                       <div className="pr-6">
-                        <h3 className="text-xs font-black uppercase tracking-wide text-white leading-snug line-clamp-2">
+                        <h3 className="text-xs font-extrabold tracking-wide text-white leading-snug line-clamp-2">
                           {item.name}
                         </h3>
                         <div className="text-brand text-xs font-mono font-bold tracking-widest mt-2">
@@ -88,6 +91,7 @@ export function CartDrawer() {
                       <div className="flex items-center gap-2 mt-4">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          aria-label={`Reducir cantidad de ${item.name}`}
                           className="w-7 h-7 bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 rounded"
                         >
                           <Minus className="w-3 h-3" />
@@ -97,6 +101,7 @@ export function CartDrawer() {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          aria-label={`Aumentar cantidad de ${item.name}`}
                           className="w-7 h-7 bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 rounded"
                         >
                           <Plus className="w-3 h-3" />
@@ -107,6 +112,7 @@ export function CartDrawer() {
                     {/* Botón Borrar */}
                     <button
                       onClick={() => removeItem(item.id)}
+                      aria-label={`Eliminar ${item.name} del carrito`}
                       className="absolute top-4 right-4 text-zinc-500 hover:text-red-500 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -140,7 +146,7 @@ export function CartDrawer() {
                 <hr className="border-white/5 mb-6" />
 
                 <div className="flex justify-between items-end border-t border-white/10 pt-6 mb-8">
-                  <span className="text-sm font-black uppercase tracking-widest text-white">
+                  <span className="text-sm font-bold uppercase tracking-wider text-white">
                     TOTAL A PAGAR
                   </span>
                   <span className="font-mono text-xl font-black text-brand">
@@ -149,9 +155,9 @@ export function CartDrawer() {
                 </div>
 
                 <Link
-                  to="/checkout"
+                  href="/checkout"
                   onClick={closeDrawer}
-                  className="w-full bg-brand text-black font-black uppercase text-sm tracking-widest py-4 rounded-md hover:bg-brand/90 transition-colors shadow-[0_0_20px_rgba(0,255,102,0.15)] flex justify-center items-center gap-2 group"
+                  className="w-full bg-brand text-black font-extrabold text-sm tracking-widest py-4 rounded-md hover:bg-brand/90 transition-colors shadow-[0_0_20px_rgba(0,255,102,0.15)] flex justify-center items-center gap-2 group"
                 >
                   <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin hidden group-hover:block" />
                   PROCEDER A MI ORDEN

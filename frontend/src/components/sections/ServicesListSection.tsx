@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -12,7 +14,7 @@ export default function ServicesListSection() {
   return (
     <section className="py-32 relative max-w-7xl mx-auto px-6 md:px-12" id="servicios">
       <SectionHeader
-        title="NIVELES DE ESCALADO"
+        title="Niveles de Escalado"
         subtitle="Nuestra Arquitectura Táctica"
         titleClassName="text-fluid-h3"
       />
@@ -93,7 +95,7 @@ export default function ServicesListSection() {
                         {service.level}
                       </span>
                       <h3
-                        className={`text-xl md:text-3xl font-black uppercase tracking-tighter transition-colors duration-300 ${
+                        className={`text-xl md:text-3xl font-extrabold tracking-tight transition-colors duration-300 ${
                           isActive || service.star
                             ? 'text-white'
                             : 'text-zinc-400 group-hover:text-white'

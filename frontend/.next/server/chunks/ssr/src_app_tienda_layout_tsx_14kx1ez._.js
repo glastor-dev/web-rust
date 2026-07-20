@@ -1,0 +1,3 @@
+module.exports=[940300,a=>{"use strict";var b=a.i(885322),c=a.i(979108);a.s(["default",0,function({children:a}){return(0,b.jsx)(c.Suspense,{fallback:null,children:a})},"metadata",0,{title:"Catálogo Mayorista B2B | Glastor",description:"El estándar definitivo para obras y manufactura. Acceso exclusivo a inventario B2B con líneas de crédito y logística de alto rendimiento."}])},174772,a=>{a.n(a.i(940300))}];
+
+//# sourceMappingURL=src_app_tienda_layout_tsx_14kx1ez._.js.map

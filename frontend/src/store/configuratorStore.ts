@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 
 export interface ArchitectureModule {
@@ -8,6 +10,7 @@ export interface ArchitectureModule {
   min_weeks: number;
   max_weeks: number;
   description: string;
+  tags?: string[];
 }
 
 interface ConfiguratorState {
@@ -18,9 +21,13 @@ interface ConfiguratorState {
   totalMaxWeeks: number;
   isLoading: boolean;
   error: string | null;
+  searchQuery: string;
+  categoryFilter: string;
   fetchModules: () => Promise<void>;
   toggleModule: (id: string) => void;
   resetConfig: () => void;
+  setSearchQuery: (query: string) => void;
+  setCategoryFilter: (category: string) => void;
 }
 
 const FALLBACK_MODULES: ArchitectureModule[] = [
@@ -32,6 +39,7 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 1,
     max_weeks: 2,
     description: 'Análisis de cuellos de botella y diseño de arquitectura.',
+    tags: ['rust', 'bun'],
   },
   {
     id: 'm-core-backend',
@@ -41,6 +49,7 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 4,
     max_weeks: 6,
     description: 'Reescritura del motor crítico. Concurrencia masiva sin Garbage Collector.',
+    tags: ['rust', 'backend'],
   },
   {
     id: 'm-mvp-fast',
@@ -50,6 +59,7 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 3,
     max_weeks: 6,
     description: 'Desarrollo de producto base ultra-optimizado con Next.js/Rust.',
+    tags: ['next.js', 'rust'],
   },
   {
     id: 'm-webgl-ui',
@@ -59,6 +69,7 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 2,
     max_weeks: 4,
     description: 'Interfaces 3D, Shaders y animaciones inerciales (FCP < 1s).',
+    tags: ['react', 'webgl'],
   },
   {
     id: 'm-cloud-refactor',
@@ -68,6 +79,7 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 3,
     max_weeks: 5,
     description: 'Reducción de costos AWS trasladando microservicios pesados.',
+    tags: ['aws', 'docker'],
   },
   {
     id: 'm-staff-elite',
@@ -77,17 +89,37 @@ const FALLBACK_MODULES: ArchitectureModule[] = [
     min_weeks: 4,
     max_weeks: 4,
     description: 'Inyección de ingenieros Rust Senior por mes.',
+    tags: ['staffing', 'rust'],
   },
 ];
 
+const STORAGE_KEY = 'glastor-configurator-state';
+
+const loadPersistedState = (): Partial<ConfiguratorState> => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return {
+      selectedModuleIds: Array.isArray(parsed.selectedModuleIds) ? parsed.selectedModuleIds : [],
+    };
+  } catch {
+    return {};
+  }
+};
+
+let persistedSelection = loadPersistedState();
+
 export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   availableModules: [],
-  selectedModuleIds: [],
+  selectedModuleIds: persistedSelection.selectedModuleIds || [],
   totalPrice: 0,
   totalMinWeeks: 0,
   totalMaxWeeks: 0,
   isLoading: false,
   error: null,
+  searchQuery: '',
+  categoryFilter: 'all',
 
   fetchModules: async () => {
     set({ isLoading: true, error: null });
@@ -109,11 +141,23 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
       ? state.selectedModuleIds.filter((mId) => mId !== id)
       : [...state.selectedModuleIds, id];
 
-    // Recalcular métricas
     const selectedModules = state.availableModules.filter((m) => newSelectedIds.includes(m.id));
-    const totalPrice = selectedModules.reduce((acc, m) => acc + m.base_price, 0);
     const totalMinWeeks = selectedModules.reduce((acc, m) => acc + m.min_weeks, 0);
     const totalMaxWeeks = selectedModules.reduce((acc, m) => acc + m.max_weeks, 0);
+
+    const baseTotalPrice = selectedModules.reduce((acc, m) => acc + m.base_price, 0);
+
+    const bundleSize = selectedModules.length;
+    let bundleDiscount = 0;
+    if (bundleSize >= 4) {
+      bundleDiscount = 0.12;
+    } else if (bundleSize === 3) {
+      bundleDiscount = 0.08;
+    } else if (bundleSize === 2) {
+      bundleDiscount = 0.04;
+    }
+
+    const totalPrice = Math.round(baseTotalPrice * (1 - bundleDiscount));
 
     set({
       selectedModuleIds: newSelectedIds,
@@ -121,13 +165,30 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
       totalMinWeeks,
       totalMaxWeeks,
     });
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ selectedModuleIds: newSelectedIds }));
+    } catch {
+      // storage unavailable
+    }
   },
 
-  resetConfig: () =>
+  resetConfig: () => {
     set({
       selectedModuleIds: [],
       totalPrice: 0,
       totalMinWeeks: 0,
       totalMaxWeeks: 0,
-    }),
+      searchQuery: '',
+      categoryFilter: 'all',
+    });
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // noop
+    }
+  },
+
+  setSearchQuery: (query: string) => set({ searchQuery: query }),
+  setCategoryFilter: (category: string) => set({ categoryFilter: category }),
 }));

@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import { useMotionValue, useTransform, animate, motion } from 'motion/react';
+import { useMotionValue, useTransform, animate, motion, useInView } from 'motion/react';
 
 interface AnimatedCounterProps {
   from: number;
@@ -18,37 +20,22 @@ export function AnimatedCounter({
   prefix = '',
   decimals = 0,
 }: AnimatedCounterProps) {
+  // Use framer-motion's useInView for reliable triggering (works with Lenis)
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  // Set initial value to 0 for animation, but if JS fails it would render `from`.
+  // Actually, we bind the motion value to `from` initially.
   const count = useMotionValue(from);
   const rounded = useTransform(count, (latest) => `${prefix}${latest.toFixed(decimals)}${suffix}`);
 
-  const ref = useRef<HTMLSpanElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
-
   useEffect(() => {
-    if (hasAnimated) return;
-
-    // Use native IntersectionObserver — works correctly with Lenis
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setHasAnimated(true);
-          animate(count, to, { duration, ease: 'easeOut' });
-          observer.disconnect();
-        }
-      },
-      {
-        // rootMargin: positive value to trigger slightly before element is fully visible
-        rootMargin: '0px 0px -80px 0px',
-        threshold: 0,
-      },
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (isInView) {
+      animate(count, to, { duration, ease: 'easeOut' });
     }
+  }, [count, isInView, to, duration]);
 
-    return () => observer.disconnect();
-  }, [count, to, duration, hasAnimated]);
-
+  // Si no hay javascript, esto idealmente se renderizaría en el servidor, pero al ser un componente cliente,
+  // el initial state de count es `from`. Para SEO y evitar el 0 estancado, nos aseguramos que isInView detone la animación.
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }

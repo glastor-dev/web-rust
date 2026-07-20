@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { motion, AnimatePresence } from 'motion/react';
@@ -26,7 +28,7 @@ export function SOWModal({ isOpen, onClose, onSubmit, isGenerating }: SOWModalPr
   const [formData, setFormData] = useState({ name: '', company: '', email: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,13 +45,13 @@ export function SOWModal({ isOpen, onClose, onSubmit, isGenerating }: SOWModalPr
       return;
     }
 
-    if (!turnstileToken) {
+    if (!turnstileToken && !(process.env.NODE_ENV === 'development')) {
       setErrors({ ...errors, turnstile: 'Esperando validación de seguridad...' });
       return;
     }
 
     setErrors({});
-    onSubmit({ ...formData, turnstileToken });
+    onSubmit({ ...formData, turnstileToken: turnstileToken || 'dev-bypass-token' });
   };
 
   return (
@@ -70,7 +72,7 @@ export function SOWModal({ isOpen, onClose, onSubmit, isGenerating }: SOWModalPr
               <X size={24} />
             </button>
 
-            <h3 className="text-2xl font-black uppercase tracking-tighter text-white mb-2">
+            <h3 className="text-2xl font-extrabold tracking-tight text-white mb-2">
               ESTIMACIÓN <span className="text-brand">TÉCNICA</span>
             </h3>
             <p className="text-zinc-400 text-sm mb-8 font-mono">
@@ -143,8 +145,10 @@ export function SOWModal({ isOpen, onClose, onSubmit, isGenerating }: SOWModalPr
 
               <button
                 type="submit"
-                disabled={isGenerating || !turnstileToken}
-                className="w-full mt-4 h-14 bg-brand text-black hover:bg-white transition-colors uppercase tracking-widest font-black rounded-sm disabled:opacity-50 disabled:pointer-events-none"
+                disabled={
+                  isGenerating || (!turnstileToken && !(process.env.NODE_ENV === 'development'))
+                }
+                className="w-full mt-4 h-14 bg-brand text-black hover:bg-white transition-colors uppercase tracking-wider font-bold rounded-sm disabled:opacity-50 disabled:pointer-events-none"
               >
                 {isGenerating ? 'GENERANDO PDF Y ENVIANDO...' : 'ENVIAR ESTIMACIÓN AL CORREO'}
               </button>

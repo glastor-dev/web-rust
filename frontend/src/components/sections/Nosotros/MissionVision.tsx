@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { CheckCircle2Icon } from 'lucide-react';
 
@@ -27,21 +29,20 @@ export function MissionVision() {
             Misión & Visión
           </div>
 
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] mb-8 text-white">
-            TECNOLOGÍA <br />
-            <span className="text-zinc-500">AL SERVICIO</span> <br />
-            <span className="text-brand">DE TODOS</span>
+          <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[0.85] mb-8 text-white">
+            Tecnología <br />
+            <span className="text-zinc-500">al Servicio</span> <br />
+            <span className="text-brand">de Todos</span>
           </h2>
 
           <p className="text-zinc-300 text-lg leading-relaxed mb-6 max-w-xl">
-            Nuestra misión original fue garantizar que las herramientas digitales avanzadas
-            estuviesen disponibles en beneficio de toda la comunidad tecnológica.
+            Transformamos retos técnicos en productos B2B medibles en rendimiento, costes y
+            crecimiento.
           </p>
 
           <p className="text-zinc-400 text-base leading-relaxed mb-12 max-w-xl">
-            En 2015 evolucionamos hacia una estructura híbrida — permitiéndonos atraer inversores y
-            expandir nuestras capacidades operativas sin abandonar jamás nuestros valores
-            fundacionales de calidad y precisión.
+            Desde 2015 operamos como estudio de ingeniería directa: sin gestores comerciales y con
+            despliegues trazables en producción.
           </p>
 
           <ul className="space-y-4">
@@ -87,7 +88,7 @@ export function MissionVision() {
               <line x1="8" y1="21" x2="16" y2="21"></line>
               <line x1="12" y1="17" x2="12" y2="21"></line>
             </svg>
-            <h3 className="text-white font-bold uppercase tracking-widest text-sm">
+            <h3 className="text-white font-bold tracking-widest text-sm">
               Información Corporativa
             </h3>
           </div>

@@ -57,3 +57,12 @@ milisegundos
 whatsapp
 DATAWEB
 chenglou
+oxlint
+calcom
+marsidev
+drei
+gsap
+hugeicons
+jspdf
+Podés
+\nnombre\napellido\norden\nfecha\ncompra\nproducto\nmotivo\narrepentimiento\nDescomentar\nquiere\nlimpiar\nanalíticas\nAuditoría\nDiagnóstico\nAnálisis\ncuellos\nbotella\ndiseño\narquitectura\nIngeniería\ncrítico\nConcurrencia\nmasiva\nVelocidad\nDesarrollo\noptimizado\nwebgl\nReactivo\nExperiencia\nanimaciones\ninerciales\nContenedores\nReducción\ncostos\ntrasladando\npesados\nÉlite\nEquipos\nInyección\ningenieros\nprio\nTécnico\nConfiguración\nAdjunto\nencontrarás\ndocumento\ngenerado\nmediante\nnuestro\nConfigurador\nTáctico\nRevisa\npropuesta\ntécnica\ndesglose\ninversión\nCuando\nestés\nlisto\nescalar\nrespóndenos\ncorreo\ncoordinar\nauditoría\nminutos\nSaludos\nequipo\nArrepentimiento\nDebe\naceptar\ndeclaración\njurada\nConstancia\nRevocación\nCompra\nOrden\nSolicitud\nEstimado\nHemos\nrecibido\nsolicitud\nrevocación

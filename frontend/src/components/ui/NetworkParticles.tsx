@@ -53,8 +53,7 @@ export function NetworkParticles({ nodeCount = 55, className = '' }: NetworkPart
 
     // ── Mouse ────────────────────────────────────────────────
     const onMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      mouseRef.current = { x: e.offsetX, y: e.offsetY };
     };
     canvas.addEventListener('mousemove', onMouseMove);
 

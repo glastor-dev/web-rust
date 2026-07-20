@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { MonitorIcon, GamepadIcon, CoffeeIcon, TerminalIcon } from 'lucide-react';
 
@@ -57,7 +59,7 @@ export function TeamEasterEgg() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1, duration: 0.6 }}
-            className="group relative h-[400px] rounded-none bg-zinc-900 border border-white/10 hover:border-brand/30 transition-colors duration-500 overflow-hidden cursor-crosshair flex flex-col justify-end p-6"
+            className="group relative h-100 rounded-none bg-zinc-900 border border-white/10 hover:border-brand/30 transition-colors duration-500 overflow-hidden cursor-crosshair flex flex-col justify-end p-6"
           >
             {/* Imagen de fondo (Foto Real) */}
             <div className="absolute inset-0 w-full h-full">

@@ -1,18 +1,23 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
-  const { pathname, hash } = useLocation();
+  const pathname = usePathname();
 
   // Reset scroll on route change (with delay for async layouts like loading screens)
   useEffect(() => {
     const forceReset = () => lenisRef.current?.scrollTo(0, { immediate: true });
+
+    // Check hash on route change
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
 
     if (lenisRef.current && !hash) {
       forceReset();
@@ -25,7 +30,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         window.removeEventListener('force-lenis-reset', forceReset);
       };
     }
-  }, [pathname, hash]);
+  }, [pathname]);
 
   useEffect(() => {
     // Disable native browser scroll restoration heuristic
@@ -52,12 +57,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       touchMultiplier: 2,
     });
 
-    function raf(time: number) {
-      lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
-    }
 
-    requestAnimationFrame(raf);
 
     // Sync GSAP with Lenis
     lenisRef.current.on('scroll', ScrollTrigger.update);

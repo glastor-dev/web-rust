@@ -1,7 +1,9 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Button } from '../reutilizables/button';
 import { ArrowRightIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export function EditorialMetricSection() {
   return (
@@ -28,7 +30,7 @@ export function EditorialMetricSection() {
             className="group rounded-none border-editorial text-white hover:bg-white hover:text-black transition-colors"
             asChild
           >
-            <Link to="/nosotros">
+            <Link href="/nosotros">
               Conoce nuestra metodología
               <ArrowRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>

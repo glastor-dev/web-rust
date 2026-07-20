@@ -1,8 +1,10 @@
+'use client';
+
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 
 const clientLogos: { src: string; alt: string }[] = [
-  { src: '/images/Logo_Fonda_España.svg', alt: 'Fonda España' },
+  { src: '/images/Logo_Fonda_Espana.svg', alt: 'Fonda España' },
   { src: '/images/Logo_g2a_white.svg', alt: 'G2A' },
   { src: '/images/BCG_logo_ok.svg', alt: 'BCG' },
   { src: '/images/CompassInc_Logo.svg', alt: 'Compass Inc' },
@@ -40,7 +42,7 @@ export function ClientMarquee() {
 
   return (
     <div className="w-full border-t border-white/10 bg-[#050505]/60 backdrop-blur-md overflow-hidden py-5 md:py-7 relative">
-      <div className="absolute top-2 left-4 md:left-12 text-[10px] font-mono text-zinc-500 uppercase tracking-widest pointer-events-none z-10">
+      <div className="absolute top-2 left-4 md:left-12 text-[10px] font-mono text-zinc-500 tracking-widest pointer-events-none z-10">
         Trusted By
       </div>
 

@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import type { ProjectCategory } from '../../../lib/data/caseStudies';
+import { caseStudies } from '../../../lib/data/caseStudies';
 
 interface ProjectsFilterSectionProps {
   activeCategory: ProjectCategory;
@@ -18,6 +20,15 @@ export function ProjectsFilterSection({
   activeCategory,
   onSelectCategory,
 }: ProjectsFilterSectionProps) {
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { Todos: caseStudies.length };
+    for (const study of caseStudies) {
+      for (const cat of study.categories) {
+        map[cat] = (map[cat] || 0) + 1;
+      }
+    }
+    return map;
+  }, []);
   return (
     <section className="py-12 border-b border-white/10 bg-[#050505] sticky top-[72px] z-40 backdrop-blur-xl bg-opacity-90">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -35,6 +46,9 @@ export function ProjectsFilterSection({
                 }`}
               >
                 {category}
+                <span className="text-[10px] font-mono text-zinc-500 ml-2">
+                  {counts[category] ?? 0}
+                </span>
               </button>
             ))}
           </div>

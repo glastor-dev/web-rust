@@ -1,19 +1,31 @@
+'use client';
+
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/react';
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ShoppingBag, Heart } from 'lucide-react';
 import { Button } from './reutilizables/button';
 import { useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const { scrollY } = useScroll();
-  const location = useLocation();
+  const pathname = usePathname();
   const { items, openDrawer } = useCartStore();
+  const { items: wishlistItems } = useWishlistStore();
 
   const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
+  const wishlistItemCount = wishlistItems.length;
 
   // Física de Scroll: Esconder al bajar, mostrar al subir
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -32,9 +44,13 @@ export default function Header() {
   });
 
   const navLinks = [
+    /* 
     { name: 'Qué hacemos', path: '/servicios' },
     { name: 'Casos', path: '/proyectos' },
-    { name: 'Quiénes somos', path: '/nosotros' },
+    { name: 'Recursos', path: '/recursos' },
+    */
+    { name: 'Tienda', path: '/tienda' },
+    { name: 'Nosotros', path: '/nosotros' },
   ];
 
   return (
@@ -55,15 +71,18 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
           {/* Logo & Tagline */}
           <Link
-            to="/"
+            href="/"
             className="flex items-center gap-3 group"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="w-10 h-10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-              <img
+            <div className="w-10 h-10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 relative">
+              <Image
                 src="/images/isologo-copm.webp"
                 alt="Glastor"
-                className="w-full h-full object-contain"
+                fill
+                quality={60}
+                sizes="40px"
+                className="object-contain"
               />
             </div>
             <div className="flex flex-col">
@@ -76,17 +95,17 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
+              const isActive = pathname === link.path;
               return (
                 <Link
                   key={link.name}
-                  to={link.path}
-                  className={`relative text-sm font-bold uppercase tracking-widest transition-colors group py-2 ${isActive ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
+                  href={link.path}
+                  className={`relative text-sm font-bold tracking-widest transition-colors group py-2 ${isActive ? 'text-white' : 'text-zinc-400 hover:text-white'}`}
                 >
                   {link.name}
                   {/* CSS Animated Underline */}
                   <span
-                    className={`absolute left-0 bottom-0 w-full h-[2px] bg-brand origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}
+                    className={`absolute left-0 bottom-0 w-full h-0.5 bg-brand origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}
                   />
                 </Link>
               );
@@ -95,36 +114,66 @@ export default function Header() {
 
           {/* Right Actions: Greeting & CTA */}
           <div className="hidden md:flex items-center gap-6">
-            <button
-              onClick={openDrawer}
-              className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
-            >
-              <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              {cartItemCount > 0 && (
-                <span className="absolute 1 top-0.5 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
-                  {cartItemCount}
-                </span>
-              )}
-            </button>
+            <div className="flex items-center gap-4">
+              <Link
+                href="#"
+                aria-label="Ver lista de deseos"
+                className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
+              >
+                <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                {mounted && wishlistItemCount > 0 && (
+                  <span className="absolute top-0.5 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
+                    {wishlistItemCount}
+                  </span>
+                )}
+              </Link>
+              <button
+                onClick={openDrawer}
+                aria-label="Abrir carrito"
+                className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
+              >
+                <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                {mounted && cartItemCount > 0 && (
+                  <span className="absolute 1 top-0.5 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
+                    {cartItemCount}
+                  </span>
+                )}
+              </button>
+            </div>
 
+            {/* 
             <Button
               asChild
               variant="default"
               size="sm"
-              className="px-6 uppercase tracking-widest text-xs font-bold rounded-sm h-10 shadow-[0_0_15px_rgba(0,255,102,0.15)] hover:shadow-[0_0_25px_rgba(0,255,102,0.3)] transition-all"
+              className="px-6 tracking-widest text-xs font-bold rounded-sm h-10 shadow-[0_0_15px_rgba(0,255,102,0.15)] hover:shadow-[0_0_25px_rgba(0,255,102,0.3)] transition-all"
             >
-              <Link to="/arquitectura">Cotizar</Link>
+              <Link href="/arquitectura">Cotizar</Link>
             </Button>
+            */}
           </div>
 
           {/* Mobile Menu Toggle & Cart */}
           <div className="md:hidden flex items-center gap-4">
+            <Link
+              href="#"
+              aria-label="Ver lista de deseos"
+              className="relative p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <Heart className="w-5 h-5" />
+              {mounted && wishlistItemCount > 0 && (
+                <span className="absolute top-0 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
+                  {wishlistItemCount}
+                </span>
+              )}
+            </Link>
             <button
               onClick={openDrawer}
+              aria-label="Abrir carrito"
               className="relative p-2 text-zinc-400 hover:text-white transition-colors"
             >
               <ShoppingBag className="w-5 h-5" />
-              {cartItemCount > 0 && (
+              {mounted && cartItemCount > 0 && (
                 <span className="absolute top-0 right-0 bg-brand text-black text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center translate-x-1/4 -translate-y-1/4">
                   {cartItemCount}
                 </span>
@@ -164,8 +213,8 @@ export default function Header() {
                   transition={{ delay: 0.2 + idx * 0.1 }}
                 >
                   <Link
-                    to={link.path}
-                    className="text-5xl sm:text-7xl font-black uppercase tracking-tighter text-white hover:text-brand transition-colors block leading-[0.9]"
+                    href={link.path}
+                    className="text-5xl sm:text-7xl font-extrabold tracking-tight text-white hover:text-brand transition-colors block leading-[0.9]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}
@@ -178,6 +227,7 @@ export default function Header() {
                 transition={{ delay: 0.2 + navLinks.length * 0.1 }}
                 className="mt-12"
               >
+                {/* 
                 <Button
                   asChild
                   variant="default"
@@ -185,8 +235,9 @@ export default function Header() {
                   className="w-full h-16 text-lg uppercase tracking-widest"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <Link to="/arquitectura">Cotizar</Link>
+                  <Link href="/arquitectura">Cotizar</Link>
                 </Button>
+                */}
               </motion.div>
             </nav>
 

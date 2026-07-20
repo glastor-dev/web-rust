@@ -1,27 +1,29 @@
+'use client';
+
 import { motion } from 'motion/react';
 
 const timelineEvents = [
   {
     year: '2010',
-    title: 'FUNDACIÓN',
+    title: 'Fundación',
     description:
       'Glastor nace con la misión de democratizar herramientas digitales avanzadas y ponerlas al alcance de la comunidad técnica y corporativa.',
   },
   {
     year: '2015',
-    title: 'ESTRUCTURA HÍBRIDA',
+    title: 'Estructura Híbrida',
     description:
       'Transformación en entidad para escalar operaciones, atrayendo talento e infraestructura sin perder los valores fundacionales.',
   },
   {
     year: '2019',
-    title: 'PLATAFORMA CLOUD',
+    title: 'Plataforma Cloud',
     description:
       'Desarrollo de infraestructura robusta de alta computación y rendimiento (HPC). Lanzamiento de servicios B2B.',
   },
   {
     year: '2023',
-    title: 'GIRONA, ESPAÑA',
+    title: 'Girona, España',
     description:
       'Traslado de operaciones HQ a Girona, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
   },
@@ -34,9 +36,9 @@ export function EvolutionTimeline() {
         Línea de Tiempo
       </div>
 
-      <h2 className="text-5xl md:text-7xl lg:text-[80px] font-black uppercase tracking-tighter leading-[0.85] mb-16 text-white max-w-4xl">
-        UNA HISTORIA <br />
-        <span className="text-zinc-500">DE EVOLUCIÓN</span>
+      <h2 className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-16 text-white max-w-4xl">
+        Una Historia <br />
+        <span className="text-zinc-500">de Evolución</span>
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -52,9 +54,7 @@ export function EvolutionTimeline() {
             <span className="text-brand font-mono text-sm font-bold uppercase tracking-widest mb-6">
               // {item.year}
             </span>
-            <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-4">
-              {item.title}
-            </h3>
+            <h3 className="text-xl font-black text-white tracking-tighter mb-4">{item.title}</h3>
             <p className="text-zinc-400 text-sm leading-relaxed">{item.description}</p>
           </motion.div>
         ))}

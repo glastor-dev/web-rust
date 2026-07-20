@@ -1,5 +1,8 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { AnimatedCounter } from '../ui/AnimatedCounter';
+
 import { TextRevealGSAP } from '../ui/TextRevealGSAP';
 
 const metrics = [
@@ -16,12 +19,12 @@ export function ImpactMetricsSection() {
         <div className="mb-16 text-center md:text-left">
           <TextRevealGSAP
             lines={[
-              'RESULTADOS MEDIBLES,',
+              'Resultados Medibles,',
               <span key="sub" className="text-zinc-600">
-                NO PROMESAS.
+                No Promesas.
               </span>,
             ]}
-            className="text-fluid-h2 font-black uppercase text-white mb-4 leading-none"
+            className="text-fluid-h2 font-extrabold text-white mb-4 leading-none"
             start="top 85%"
           />
           <p className="text-zinc-400 max-w-2xl text-lg font-light mt-6">

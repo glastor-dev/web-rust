@@ -9,7 +9,7 @@ export function MetricsSection() {
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 text-center lg:text-left">
         <div className="lg:col-span-1 flex flex-col justify-center">
-          <h2 className="text-3xl font-black uppercase tracking-tighter text-white mb-4">
+          <h2 className="text-3xl font-extrabold tracking-tight text-white mb-4">
             ¿Funciona
             <br />
             <span className="text-brand">Lo que hacemos?</span>

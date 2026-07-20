@@ -6,8 +6,8 @@ export function IronCoreSection() {
   return (
     <section className="py-24 max-w-7xl mx-auto px-6 md:px-12 relative z-10 border-t border-editorial">
       <div className="mb-16">
-        <h2 className="text-fluid-h3 font-black uppercase tracking-tighter text-white leading-none">
-          EL NÚCLEO DE HIERRO
+        <h2 className="text-fluid-h3 font-extrabold tracking-tight text-white leading-none">
+          El Núcleo DE HIERRO
         </h2>
         <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest mt-4">
           Datos de Telemetría // Tiempo Real
@@ -22,7 +22,7 @@ export function IronCoreSection() {
             <Zap className="h-4 w-4 text-brand opacity-50" />
           </CardHeader>
           <CardContent>
-            <div className="text-5xl font-black tracking-tighter mt-4">
+            <div className="text-5xl font-extrabold tracking-tight mt-4">
               <AnimatedCounter from={0} to={14250} duration={2.5} suffix="+" />
             </div>
             <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">
@@ -38,7 +38,7 @@ export function IronCoreSection() {
             <Activity className="h-4 w-4 text-zinc-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-5xl font-black tracking-tighter mt-4 text-white">
+            <div className="text-5xl font-extrabold tracking-tight mt-4 text-white">
               <AnimatedCounter
                 from={10}
                 to={0.8}
@@ -61,7 +61,7 @@ export function IronCoreSection() {
             <Database className="h-4 w-4 text-zinc-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-5xl font-black tracking-tighter mt-4 text-white">
+            <div className="text-5xl font-extrabold tracking-tight mt-4 text-white">
               <AnimatedCounter from={0} to={99.99} duration={3} decimals={2} suffix="%" />
             </div>
             <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">Uptime Garantizado</p>

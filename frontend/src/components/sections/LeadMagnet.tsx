@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Button } from '../reutilizables/button';
@@ -37,7 +39,7 @@ export function LeadMagnet() {
             </span>
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-6 leading-[0.9]">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-6 leading-[0.9]">
             De Node.js a Rust:
             <br />
             <span className="text-zinc-500">Guía de Migración.</span>
@@ -74,7 +76,7 @@ export function LeadMagnet() {
         >
           <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8 md:p-12 shadow-2xl relative group">
             {/* Top Border Accent */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand to-brand/20" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-brand to-brand/20" />
 
             {submitted ? (
               <motion.div

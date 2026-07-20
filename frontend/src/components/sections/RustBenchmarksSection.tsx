@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { AnimatedCounter } from '../ui/AnimatedCounter';
 
@@ -13,10 +15,10 @@ export function RustBenchmarksSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Por qué Rust
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white mb-6 leading-none">
-            RUST NO ES UNA MODA.
+          <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
+            Rust no es una Moda.
             <br />
-            <span className="text-zinc-600">ES INGENIERÍA.</span>
+            <span className="text-zinc-600">Es Ingeniería.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             Elegimos Rust no porque sea popular, sino porque nos permite construir sistemas que
@@ -68,7 +70,7 @@ export function RustBenchmarksSection() {
           {/* Advantages & Security */}
           <div className="space-y-12">
             <div>
-              <h3 className="text-2xl font-black uppercase text-white mb-8">
+              <h3 className="text-2xl font-extrabold text-white mb-8">
                 ¿Qué significa esto para tu negocio?
               </h3>
               <ul className="space-y-6">
@@ -108,9 +110,7 @@ export function RustBenchmarksSection() {
             </div>
 
             <div className="glass-panel p-8 border-editorial bg-[#0A0A0A]">
-              <h3 className="text-xl font-black uppercase text-brand mb-4">
-                Seguridad desde el diseño
-              </h3>
+              <h3 className="text-xl font-extrabold text-brand mb-4">Seguridad desde el diseño</h3>
               <p className="text-zinc-400 text-sm mb-6">
                 Rust elimina problemas que otros lenguajes arrastran desde hace décadas:
               </p>

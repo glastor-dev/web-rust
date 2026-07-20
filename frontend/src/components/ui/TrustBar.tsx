@@ -1,19 +1,21 @@
+'use client';
+
 import { motion } from 'motion/react';
 
-const technologies = [
-  { name: 'RUST', icon: '/icons/rust.svg' },
-  { name: 'BUN', icon: '/icons/bun.svg' },
-  { name: 'POSTGRESQL', icon: '/icons/postgresql.svg' },
-  { name: 'KAFKA', icon: '/icons/kafka.svg' },
-  { name: 'REDIS', icon: '/icons/redis.svg' },
-  { name: 'KUBERNETES', icon: '/icons/kubernetes.svg' },
-  { name: 'DOCKER', icon: '/icons/docker.svg' },
-  { name: 'CLOUDFLARE', icon: '/icons/cloudflare.svg' },
-  { name: 'TERRAFORM', icon: '/icons/terraform.svg' },
+const trustSignals = [
+  { name: 'CERTIFICACIÓN ISO 9001' },
+  { name: 'ENVÍOS EN 24/48H' },
+  { name: 'GARANTÍA OFICIAL' },
+  { name: 'PAGOS B2B SEGUROS' },
+  { name: 'INTEGRACIÓN ERP' },
+  { name: 'SOPORTE TÉCNICO 24/7' },
+  { name: 'CATÁLOGOS PUNCHOUT' },
+  { name: 'STOCK PERMANENTE' },
+  { name: 'DEVOLUCIÓN 30 DÍAS' },
 ];
 
 // Triplicar para asegurar el bucle continuo sin saltos visuales en pantallas anchas
-const duplicatedTech = [...technologies, ...technologies, ...technologies, ...technologies];
+const duplicatedSignals = [...trustSignals, ...trustSignals, ...trustSignals, ...trustSignals];
 
 export function TrustBar() {
   return (
@@ -32,22 +34,17 @@ export function TrustBar() {
             repeat: Infinity,
           }}
         >
-          {duplicatedTech.map((tech, idx) => (
+          {duplicatedSignals.map((signal, idx) => (
             <div
               key={idx}
               className="flex items-center gap-8 md:gap-24 group-hover:opacity-100 opacity-80 hover:opacity-100! transition-opacity duration-300"
             >
               <div className="flex items-center gap-6">
-                <img
-                  src={tech.icon}
-                  alt={tech.name}
-                  className="w-12 h-12 md:w-16 md:h-16 object-contain grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-                />
                 <span
-                  className="text-3xl md:text-6xl font-black uppercase tracking-tighter transition-colors duration-500 text-transparent cursor-default block"
+                  className="text-2xl md:text-4xl font-extrabold tracking-tight transition-colors duration-500 text-transparent cursor-default block py-1 leading-normal"
                   style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.4)' }}
                 >
-                  {tech.name}
+                  {signal.name}
                 </span>
               </div>
               <span className="text-brand opacity-60 text-2xl">✦</span>

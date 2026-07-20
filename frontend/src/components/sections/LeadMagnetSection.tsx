@@ -1,9 +1,12 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Download, FileText, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
 export const LeadMagnetSection = () => {
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -11,8 +14,11 @@ export const LeadMagnetSection = () => {
     if (email) {
       // Here would go the actual form submission logic to CRM (e.g. HubSpot)
       setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 5000);
-      setEmail('');
+      setTimeout(() => {
+        setSubmitted(false);
+        setEmail('');
+        setRole('');
+      }, 5000);
     }
   };
 
@@ -38,7 +44,7 @@ export const LeadMagnetSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-[#050505] text-brand font-mono text-[10px] uppercase tracking-widest mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-[#050505] text-brand font-mono text-[10px] tracking-widest mb-8"
             >
               <FileText className="w-3 h-3" />
               Whitepaper Técnico Gratuito
@@ -49,7 +55,7 @@ export const LeadMagnetSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-[4rem] font-black uppercase tracking-tighter leading-[0.9] mb-8"
+              className="text-4xl md:text-5xl lg:text-[4rem] font-extrabold tracking-tight leading-[0.9] mb-8"
             >
               Reduce tu factura de AWS un 40% migrando a Rust
             </motion.h2>
@@ -95,7 +101,7 @@ export const LeadMagnetSection = () => {
             transition={{ delay: 0.4 }}
             className="order-1 lg:order-2 bg-[#050505] p-8 md:p-12 border border-brand/30 shadow-[20px_20px_0px_rgba(0,0,0,0.2)]"
           >
-            <h3 className="text-white text-2xl font-bold uppercase tracking-tight mb-2">
+            <h3 className="text-white text-2xl font-bold tracking-tight mb-2">
               Descargar Guía Técnica
             </h3>
             <p className="text-zinc-400 font-mono text-xs mb-8">
@@ -105,9 +111,7 @@ export const LeadMagnetSection = () => {
             {submitted ? (
               <div className="bg-brand/10 border border-brand p-6 text-center animate-in fade-in">
                 <CheckCircle2 className="w-12 h-12 text-brand mx-auto mb-4" />
-                <p className="text-brand font-bold uppercase tracking-widest text-sm">
-                  ¡Enviado a tu email!
-                </p>
+                <p className="text-brand font-bold tracking-widest text-sm">¡Enviado a tu email!</p>
                 <p className="text-zinc-400 font-mono text-xs mt-2">
                   Revisa tu bandeja de entrada.
                 </p>
@@ -116,8 +120,32 @@ export const LeadMagnetSection = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label
+                    htmlFor="role"
+                    className="block text-xs font-mono text-zinc-500 tracking-widest mb-2"
+                  >
+                    Rol / Puesto en la Empresa
+                  </label>
+                  <select
+                    id="role"
+                    required
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full bg-[#0a0a0a] border border-white/10 text-white px-4 py-4 font-mono text-sm focus:outline-none focus:border-brand transition-colors appearance-none cursor-pointer"
+                  >
+                    <option value="" disabled>
+                      Selecciona tu rol...
+                    </option>
+                    <option value="CTO">CTO / Director IT</option>
+                    <option value="CEO">CEO / Fundador</option>
+                    <option value="Lead Developer">Lead Developer / Arquitecto</option>
+                    <option value="Product Manager">Product Manager</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div>
+                  <label
                     htmlFor="email"
-                    className="block text-xs font-mono text-zinc-500 uppercase tracking-widest mb-2"
+                    className="block text-xs font-mono text-zinc-500 tracking-widest mb-2"
                   >
                     Email Corporativo
                   </label>
@@ -133,7 +161,7 @@ export const LeadMagnetSection = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-brand text-[#050505] font-bold uppercase tracking-widest px-8 py-4 flex items-center justify-center gap-3 hover:bg-white transition-colors duration-300"
+                  className="w-full bg-brand text-[#050505] font-bold tracking-widest px-8 py-4 flex items-center justify-center gap-3 hover:bg-white transition-colors duration-300"
                 >
                   <Download className="w-5 h-5" />
                   Descargar Ahora

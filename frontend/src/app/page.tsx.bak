@@ -1,0 +1,40 @@
+import HeroSection from '@/components/HeroSection';
+
+// New Sections
+import { ImpactMetricsSection } from '@/components/sections/ImpactMetricsSection';
+import { RustServicesSection } from '@/components/sections/RustServicesSection';
+import { RustBenchmarksSection } from '@/components/sections/RustBenchmarksSection';
+import { WhyGlastorSection } from '@/components/sections/WhyGlastorSection';
+import { CaseStudiesSection } from '@/components/sections/CaseStudiesSection';
+import { IndustriesSection } from '@/components/sections/IndustriesSection';
+import { LeadMagnetSection } from '@/components/sections/LeadMagnetSection';
+import { EngineeringBlogSection } from '@/components/sections/EngineeringBlogSection';
+import { MultiStepContactForm } from '@/components/sections/MultiStepContactForm';
+
+export default function Home() {
+  return (
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+
+      <HeroSection />
+
+      <ImpactMetricsSection />
+
+      <RustServicesSection />
+
+      <IndustriesSection />
+
+      <RustBenchmarksSection />
+
+      <WhyGlastorSection />
+
+      <CaseStudiesSection />
+
+      <EngineeringBlogSection />
+
+      <LeadMagnetSection />
+
+      <MultiStepContactForm />
+    </div>
+  );
+}

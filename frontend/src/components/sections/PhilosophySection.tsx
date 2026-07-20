@@ -34,7 +34,7 @@ export default function PhilosophySection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <h3 className="text-xl font-black uppercase tracking-widest text-zinc-500 mb-8">
+        <h3 className="text-xl font-bold uppercase tracking-wider text-zinc-500 mb-8">
           El Stack de Hierro
         </h3>
 

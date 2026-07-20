@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { AnimatedCounter } from '../../ui/AnimatedCounter';
 
@@ -34,8 +36,8 @@ export function GlobalMetricsSection() {
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Métricas Globales
           </div>
-          <h2 className="text-fluid-h2 font-black uppercase text-white leading-none">
-            NÚMEROS QUE HABLAN
+          <h2 className="text-fluid-h2 font-extrabold text-white leading-none">
+            Números que Hablan
           </h2>
         </div>
 
