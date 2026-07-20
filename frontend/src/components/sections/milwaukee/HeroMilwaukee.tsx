@@ -11,7 +11,7 @@ export function HeroMilwaukee() {
 
   const slides = [
     {
-      image: '/images/hero21.webp',
+      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578762/hero21_mjrcgh.webp',
       title: (
         <>
           POTENCIA EXTREMA. <br />
@@ -25,7 +25,7 @@ export function HeroMilwaukee() {
       bullets: ['Despacho en 24h', 'Garantía de 3 Años', 'Stock Inmediato'],
     },
     {
-      image: '/images/hero22.webp',
+      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578776/hero22_qwczfo.webp',
       title: (
         <>
           CORTES 30% MÁS RÁPIDOS. <br />
@@ -39,7 +39,7 @@ export function HeroMilwaukee() {
       bullets: ['Compra por Volumen', 'Soporte Técnico', 'Línea de Crédito'],
     },
     {
-      image: '/images/hero23.webp',
+      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578790/hero23_ri3tjh.webp',
       title: (
         <>
           TORQUE INSUPERABLE. <br />
