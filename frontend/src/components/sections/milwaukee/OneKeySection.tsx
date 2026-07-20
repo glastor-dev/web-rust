@@ -55,7 +55,7 @@ export function OneKeySection() {
 
         <div className="relative h-64 md:h-[420px] flex items-center justify-center w-full">
           <img
-            src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_300/v1784440743/openkey2_zjgke4.png"
+            src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_800/v1784440743/openkey2_zjgke4.png"
             alt="One-Key Glastor Connect"
             className="w-full h-full object-contain mix-blend-multiply hover:scale-105 transition-transform duration-500"
           />
