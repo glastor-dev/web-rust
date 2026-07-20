@@ -6,10 +6,28 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Images
+        run: |
+          docker build -t web-rust-frontend:latest ./frontend
+          docker build -t web-rust-backend:latest ./backend
+          docker save web-rust-frontend:latest web-rust-backend:latest | gzip > images.tar.gz
+
+      - name: Copy Images to Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          password: ${{ secrets.DO_PASSWORD }}
+          source: "images.tar.gz"
+          target: "/root/web-rust"
+
+      - name: Load and Restart Server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DO_HOST }}
@@ -17,8 +35,11 @@ jobs:
           password: ${{ secrets.DO_PASSWORD }}
           script: |
             cd ~/web-rust
-            git pull
-            # Construir por separado para evitar OOM (Out Of Memory) en servidores de 1GB
-            docker compose build frontend
-            docker compose build backend
-            docker compose up -d
+            git pull origin master
+            
+            echo "Cargando nuevas imagenes de Docker..."
+            docker load -i images.tar.gz
+            rm images.tar.gz
+            
+            echo "Reiniciando servicios..."
+            docker compose up -d --no-build
