@@ -110,31 +110,31 @@ export function SystemsExplorer() {
       name: 'Inalambricos',
       badge: '127 productos',
       promise: 'Envío en 24h',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_150/v1784392987/sis1_lj5pol.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784392987/sis1_lj5pol.webp',
     },
     {
       name: 'Iluminacion',
       badge: '34 productos',
       promise: 'Stock permanente',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_150/v1784393069/sis2_ljbtwa.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784393069/sis2_ljbtwa.webp',
     },
     {
       name: 'Con cable',
       badge: '19 productos',
       promise: 'Garantía oficial',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_150/v1784393661/sis3_n6oobe.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784393661/sis3_n6oobe.webp',
     },
     {
       name: 'Cargadores y baterias',
       badge: '45 productos',
       promise: 'Rango supervisión',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_150/v1784393798/sis4_tdusrf.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784393798/sis4_tdusrf.webp',
     },
     {
       name: 'MAKTRAK',
       badge: 'Nuevo Sistema',
       promise: 'Almacenamiento Modular',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_150/v1784547815/maktrak-s_w1xoyl.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784547815/maktrak-s_w1xoyl.webp',
     },
   ];
 
