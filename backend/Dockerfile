@@ -15,8 +15,9 @@ RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo build --release
 RUN rm -rf src
 
-# Copiamos el código real
+# Copiamos el código real y las migraciones de base de datos
 COPY src ./src
+COPY migrations ./migrations
 
 # Forzamos la recompilación del código real (touch obliga a ignorar el caché del main dummy)
 RUN touch src/main.rs
