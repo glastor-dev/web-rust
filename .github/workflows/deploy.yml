@@ -18,13 +18,13 @@ jobs:
           docker build -t web-rust-backend:latest ./backend
           docker save web-rust-frontend:latest web-rust-backend:latest | gzip > images.tar.gz
 
-      - name: Copy Images to Server
+      - name: Copy Images and Config to Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
           password: ${{ secrets.DO_PASSWORD }}
-          source: "images.tar.gz"
+          source: "images.tar.gz,docker-compose.yml"
           target: "/root/web-rust"
 
       - name: Load and Restart Server
@@ -35,7 +35,6 @@ jobs:
           password: ${{ secrets.DO_PASSWORD }}
           script: |
             cd ~/web-rust
-            git pull origin master
             
             echo "Cargando nuevas imagenes de Docker..."
             docker load -i images.tar.gz
