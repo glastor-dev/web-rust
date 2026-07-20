@@ -78,7 +78,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.8",
     "oxlint": "^1.71.0",
-    "postcss": "^8.5.16",
+    "postcss": "^8.5.20",
     "release-it": "^20.2.1",
     "tailwindcss": "^4.3.2",
     "typescript": "~6.0.2",
