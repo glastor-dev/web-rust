@@ -12,11 +12,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker Images
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          tags: web-rust-frontend:latest
+          outputs: type=docker,dest=/tmp/frontend.tar
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Build Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          tags: web-rust-backend:latest
+          outputs: type=docker,dest=/tmp/backend.tar
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Compress Images
         run: |
-          docker build -t web-rust-frontend:latest ./frontend
-          docker build -t web-rust-backend:latest ./backend
-          docker save web-rust-frontend:latest web-rust-backend:latest | gzip > images.tar.gz
+          cat /tmp/frontend.tar /tmp/backend.tar | gzip > images.tar.gz
 
       - name: Copy Images and Config to Server
         uses: appleboy/scp-action@v0.1.7
