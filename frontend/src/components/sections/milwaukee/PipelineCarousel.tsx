@@ -41,7 +41,7 @@ export function PipelineCarousel() {
   return (
     <section className="w-full bg-[#050505] py-14 relative overflow-hidden border-b-4 border-brand">
       <div className="absolute inset-0 opacity-80 pointer-events-none mix-blend-screen">
-        <Image src="/images/glastor_pipeline_bg.png" alt="Background" fill quality={60} sizes="100vw" className="object-cover object-center" />
+        <Image src="https://res.cloudinary.com/dzualplqi/image/upload/v1784578811/glastor_pipeline_bg_qhic8z.jpg" alt="Background" fill quality={60} sizes="100vw" className="object-cover object-center" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex flex-col md:flex-row items-start gap-10">
