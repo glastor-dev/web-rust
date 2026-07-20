@@ -1,6 +1,5 @@
 services:
   backend:
-    image: web-rust-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -13,7 +12,6 @@ services:
       - web-rust-net
 
   frontend:
-    image: web-rust-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile

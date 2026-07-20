@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -12,41 +13,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Frontend
-        uses: docker/build-push-action@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          context: ./frontend
-          tags: web-rust-frontend:latest
-          outputs: type=docker,dest=/tmp/frontend.tar
-          cache-from: type=gha,scope=frontend
-          cache-to: type=gha,mode=max,scope=frontend
+          node-version: '20'
 
-      - name: Build Backend
-        uses: docker/build-push-action@v5
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
-          context: ./backend
-          tags: web-rust-backend:latest
-          outputs: type=docker,dest=/tmp/backend.tar
-          cache-from: type=gha,scope=backend
-          cache-to: type=gha,mode=max,scope=backend
+          version: 8
 
-      - name: Compress Images
+      - name: Build Frontend (Next.js)
+        working-directory: ./frontend
         run: |
-          cat /tmp/frontend.tar /tmp/backend.tar | gzip > images.tar.gz
+          pnpm install --frozen-lockfile
+          pnpm run build
+          tar -czf frontend-build.tar.gz .next/standalone .next/static public package.json
 
-      - name: Copy Images and Config to Server
+      - name: Copy Build to Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
           password: ${{ secrets.DO_PASSWORD }}
-          source: "images.tar.gz,docker-compose.yml"
+          source: "frontend/frontend-build.tar.gz,docker-compose.yml"
           target: "/root/web-rust"
 
-      - name: Load and Restart Server
+      - name: Deploy on Server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.DO_HOST }}
@@ -55,9 +48,25 @@ jobs:
           script: |
             cd ~/web-rust
             
-            echo "Cargando nuevas imagenes de Docker..."
-            docker load -i images.tar.gz
-            rm images.tar.gz
+            # Extraer la app compilada
+            cd frontend
+            tar -xzf frontend-build.tar.gz
+            rm frontend-build.tar.gz
             
-            echo "Reiniciando servicios..."
-            docker compose up -d --no-build
+            # Crear un Dockerfile ultra-ligero que NO compila, solo copia los archivos
+            cat << 'EOF' > Dockerfile
+            FROM node:20-alpine
+            WORKDIR /app
+            COPY .next/standalone ./
+            COPY .next/static ./.next/static
+            COPY public ./public
+            EXPOSE 3000
+            ENV PORT=3000
+            ENV HOSTNAME="0.0.0.0"
+            CMD ["node", "server.js"]
+            EOF
+            cd ..
+            
+            # Reiniciar solo el frontend (toma 1 segundo, 0 de RAM)
+            docker compose build frontend
+            docker compose up -d frontend
