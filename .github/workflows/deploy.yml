@@ -19,14 +19,12 @@ jobs:
           node-version: '20'
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Build Frontend (Next.js)
         working-directory: ./frontend
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install
           pnpm run build
           tar -czf frontend-build.tar.gz .next/standalone .next/static public package.json
 
