@@ -182,7 +182,7 @@ export default function Store() {
           title="ARSENAL INDUSTRIAL"
           description="El estándar definitivo para obras y manufactura. Acceso exclusivo a inventario B2B con líneas de crédito y logística de alto rendimiento."
           minHeight="min-h-150"
-          backgroundImage="/images/glastor_pipeline_bg.png"
+          backgroundImage="https://res.cloudinary.com/dzualplqi/image/upload/v1784578811/glastor_pipeline_bg_qhic8z.jpg"
         />
         {/* Content Wrapper */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-24">
