@@ -1,111 +1,11 @@
 import Link from 'next/link';
 import { StaggeredGrid, StaggeredItem } from '@/components/ui/StaggeredGrid';
 import { QuickAddToCart } from '@/components/ui/QuickAddToCart';
-
-interface Product {
-  id: string;
-  name?: string;
-  category?: string;
-  price?: number;
-  description?: string;
-  image?: string;
-  status?: string;
-}
+import { getBestsellers } from '@/lib/api/products';
+import type { Product } from '@/lib/constants/dummyProducts';
 
 export async function AccessoriesGrid({ category }: { category?: string }) {
-  let fetchUrl = 'http://127.0.0.1:3001/api/products/bestsellers?limit=8';
-  if (category && category.toUpperCase() !== 'TODO') {
-    fetchUrl += `&category=${encodeURIComponent(category)}`;
-  }
-
-  let products: Product[] = [];
-  let totalCount = 102;
-  try {
-    const res = await fetch(fetchUrl, {
-      next: { revalidate: 60 },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data && typeof data === 'object' && 'products' in data) {
-        products = data.products;
-        totalCount = data.total;
-      } else {
-        products = data;
-      }
-    }
-  } catch (error) {
-    console.error('Failed to fetch bestsellers', error);
-  }
-
-  // Fallback to dummy data if db is empty just to maintain layout while testing
-  if (products.length === 0) {
-    products = [
-      {
-        id: '1',
-        name: 'KIT SDS-MAX III',
-        category: 'MARTILLO',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782126676/mlltz37idqfdhud9cf2z.webp',
-        status: 'NUEVO',
-      },
-      {
-        id: '2',
-        name: 'CINTA ALTA VISIBILIDAD',
-        category: 'PROTECCIÓN',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782126243/crgveynglkgdgtz4f4po.webp',
-        status: 'OFERTA',
-      },
-      {
-        id: '3',
-        name: 'JUEGO DE PUNTAS',
-        category: 'ACCESORIOS',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782125519/xmuczhmrbfce9h3gasgz.webp',
-        status: 'TOP',
-      },
-      {
-        id: '4',
-        name: 'ADAPTADOR DE IMPACTO',
-        category: 'CONECTIVIDAD',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782125093/dgrjuadpmjhz2sbxvbhb.webp',
-        status: 'BAJO STOCK',
-      },
-      {
-        id: '5',
-        name: 'INTERCAMBIADOR M12',
-        category: 'CONECTIVIDAD',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782126676/mlltz37idqfdhud9cf2z.webp',
-        status: 'TOP',
-      },
-      {
-        id: '6',
-        name: 'CONTENEDOR PACKOUT',
-        category: 'ALMACENAMIENTO',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782126243/crgveynglkgdgtz4f4po.webp',
-        status: 'MÁS VENDIDO',
-      },
-      {
-        id: '7',
-        name: 'SOPORTE MAGNÉTICO',
-        category: 'ACCESORIOS',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782125519/xmuczhmrbfce9h3gasgz.webp',
-        status: 'NUEVO',
-      },
-      {
-        id: '8',
-        name: 'KIT CONECTOR',
-        category: 'ADAPTADORES',
-        image:
-          'https://res.cloudinary.com/dzualplqi/image/upload/v1782125093/dgrjuadpmjhz2sbxvbhb.webp',
-        status: 'NUEVO',
-      },
-    ];
-  }
+  const { products, total: totalCount } = await getBestsellers(category);
 
   return (
     <section className="w-full bg-[#0a0a0a] py-16 border-t border-brand/20" id="bestsellers">

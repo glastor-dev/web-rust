@@ -2,22 +2,7 @@
 
 import { motion } from 'motion/react';
 import { CheckCircle2Icon } from 'lucide-react';
-
-const bullets = [
-  {
-    title: 'Innovación constante',
-    desc: 'empujamos los límites de la tecnología en cada proyecto',
-  },
-  { title: 'Colaboración abierta', desc: 'código open source y aportes para la comunidad' },
-  {
-    title: 'Excelencia técnica',
-    desc: 'infraestructura de alto rendimiento (HPC) sin concesiones',
-  },
-  {
-    title: 'Estructura híbrida',
-    desc: 'combinamos impacto tecnológico con crecimiento sostenible',
-  },
-];
+import { MISSION_BULLETS as bullets, CORPORATE_INFO } from '@/lib/constants/aboutData';
 
 export function MissionVision() {
   return (
@@ -94,46 +79,16 @@ export function MissionVision() {
           </div>
 
           <div className="space-y-6">
-            <div className="border-b border-white/5 pb-6">
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
-                Empresa / Marca Registrada
-              </span>
-              <span className="text-white font-bold text-sm">
-                GLASTOR® (INPI Reg. 4559568 y 4559567 — 19/08/2025)
-              </span>
-            </div>
-
-            <div className="border-b border-white/5 pb-6">
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
-                Fundación
-              </span>
-              <span className="text-white font-bold text-sm">
-                2010 — Enfoque inicial de alto rendimiento
-              </span>
-            </div>
-
-            <div className="border-b border-white/5 pb-6">
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
-                Estructura Actual
-              </span>
-              <span className="text-white font-bold text-sm">Entidad híbrida desde 2015</span>
-            </div>
-
-            <div className="border-b border-white/5 pb-6">
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
-                Sede Actual
-              </span>
-              <span className="text-white font-bold text-sm">Girona, España (desde 2023)</span>
-            </div>
-
-            <div className="border-b border-white/5 pb-6">
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
-                Áreas de Actividad
-              </span>
-              <span className="text-white font-bold text-sm">
-                Rust · Python · Diseño Creativo y Contenido
-              </span>
-            </div>
+            {CORPORATE_INFO.map((info, idx) => (
+              <div key={idx} className="border-b border-white/5 pb-6">
+                <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">
+                  {info.label}
+                </span>
+                <span className="text-white font-bold text-sm">
+                  {info.value}
+                </span>
+              </div>
+            ))}
 
             <div className="pt-2">
               <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest font-bold block mb-1">

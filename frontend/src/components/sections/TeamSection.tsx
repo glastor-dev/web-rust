@@ -3,30 +3,7 @@
 import { motion } from 'motion/react';
 import { SectionHeader } from '../ui/SectionHeader';
 import { Linkedin02Icon, GithubIcon } from 'hugeicons-react';
-
-const teamMembers = [
-  {
-    name: 'Marcus Vance',
-    role: 'CEO & Arquitecto Jefe',
-    image: '/images/team_ceo.png',
-    specialty: 'Rust y sistemas distribuidos',
-    bio: 'Lidera la ejecución de arquitecturas críticas y la reducción de latencia en producción.',
-  },
-  {
-    name: 'Elena Silva',
-    role: 'CTO & Sistemas Cloud',
-    image: '/images/team_cto.png',
-    specialty: 'Cloud, Kubernetes y Fintech/Salud',
-    bio: 'Diseña e infraestructura entornos de alto tráfico y cumplimiento operativo.',
-  },
-  {
-    name: 'David Torres',
-    role: 'Lead Full-Stack',
-    image: '/images/team_lead.png',
-    specialty: 'WebGL/React y experiencias producto',
-    bio: 'Transforma requerimientos complejos en interfaces de alto rendimiento.',
-  },
-];
+import { TEAM_MEMBERS as teamMembers } from '@/lib/constants/aboutData';
 
 export const TeamSection = () => {
   return (

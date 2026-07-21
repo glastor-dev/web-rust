@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { useCartStore } from '@/store/cartStore';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Turnstile } from '@marsidev/react-turnstile';
 import {
   ChevronLeft,
   ShieldCheck,
@@ -16,22 +20,32 @@ import {
   Building2,
   Square,
   CheckSquare,
+  AlertCircle,
 } from 'lucide-react';
+
+const checkoutSchema = z.object({
+  email: z.string().email('Email inválido'),
+  firstName: z.string().min(2, 'Mínimo 2 caracteres'),
+  lastName: z.string().min(2, 'Mínimo 2 caracteres'),
+  company: z.string().optional(),
+  address: z.string().min(5, 'Dirección requerida'),
+  city: z.string().min(2, 'Ciudad requerida'),
+  postalCode: z.string().min(4, 'CP requerido'),
+});
+
+type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 export default function Checkout() {
   const { items, clearCart } = useCartStore();
   const navigate = useRouter();
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // Estados del formulario mockeados
-  const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    company: '',
-    address: '',
-    city: '',
-    postalCode: '',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -46,20 +60,18 @@ export default function Checkout() {
     }
   }, [items, navigate, isProcessing]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: CheckoutFormData) => {
+    if (!humanityVerified) return;
     setIsProcessing(true);
 
-    // Simular un procesamiento de pago de 2 segundos
+    // Mock API call
+    console.log('Datos validados enviados:', data);
+
     setTimeout(() => {
       clearCart();
       alert('¡Orden generada con éxito! Nos pondremos en contacto en breve.');
       navigate('/tienda');
     }, 2000);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -90,7 +102,7 @@ export default function Checkout() {
               </p>
             </div>
 
-            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-12">
+            <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="space-y-12">
               {/* Sección 1: Contacto */}
               <div className="bg-[#0a0a0a] border border-white/5 p-8 rounded-xl shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 rounded-bl-full blur-3xl pointer-events-none" />
@@ -106,14 +118,16 @@ export default function Checkout() {
                       Correo Electrónico
                     </label>
                     <input
-                      required
+                      {...register('email')}
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                      className={`w-full bg-[#050505] border ${errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]`}
                       placeholder="ejemplo@empresa.com"
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {errors.email.message}
+                      </p>
+                    )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -121,26 +135,30 @@ export default function Checkout() {
                         Nombre
                       </label>
                       <input
-                        required
+                        {...register('firstName')}
                         type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                        className={`w-full bg-[#050505] border ${errors.firstName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
+                      {errors.firstName && (
+                        <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.firstName.message}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
                         Apellidos
                       </label>
                       <input
-                        required
+                        {...register('lastName')}
                         type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                        className={`w-full bg-[#050505] border ${errors.lastName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
+                      {errors.lastName && (
+                        <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.lastName.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div>
@@ -148,10 +166,8 @@ export default function Checkout() {
                       Razón Social / Empresa (Opcional)
                     </label>
                     <input
+                      {...register('company')}
                       type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
                       className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
                     />
                   </div>
@@ -171,13 +187,15 @@ export default function Checkout() {
                       Dirección (Calle, Altura, Piso)
                     </label>
                     <input
-                      required
+                      {...register('address')}
                       type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                      className={`w-full bg-[#050505] border ${errors.address ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                     />
+                    {errors.address && (
+                      <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {errors.address.message}
+                      </p>
+                    )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -185,26 +203,30 @@ export default function Checkout() {
                         Ciudad
                       </label>
                       <input
-                        required
+                        {...register('city')}
                         type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                        className={`w-full bg-[#050505] border ${errors.city ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
+                      {errors.city && (
+                        <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.city.message}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
                         Código Postal
                       </label>
                       <input
-                        required
+                        {...register('postalCode')}
                         type="text"
-                        name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleChange}
-                        className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                        className={`w-full bg-[#050505] border ${errors.postalCode ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
+                      {errors.postalCode && (
+                        <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.postalCode.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -317,26 +339,28 @@ export default function Checkout() {
                       </p>
                     </div>
 
-                    {/* Captcha */}
-                    <div className="border border-white/10 rounded-md bg-[#050505] p-4 flex items-center justify-between mt-4">
+                    {/* Captcha Turnstile */}
+                    <div className="border border-white/10 rounded-md bg-[#050505] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 min-h-[90px]">
                       <div className="flex items-center gap-4">
-                        <button
-                          type="button"
-                          onClick={() => setHumanityVerified(true)}
-                          className={`w-8 h-8 border flex items-center justify-center transition-colors ${humanityVerified ? 'border-brand bg-brand/10 text-brand' : 'border-zinc-600 bg-black hover:border-zinc-400'}`}
-                        >
-                          {humanityVerified && <ShieldCheck className="w-5 h-5" />}
-                        </button>
+                        <ShieldCheck className={`w-6 h-6 ${humanityVerified ? 'text-brand' : 'text-zinc-500'}`} />
                         <div className="flex flex-col">
-                          <span className="text-white font-bold text-sm">Verificar humanidad</span>
+                          <span className="text-white font-bold text-sm">Verificación de Humanidad</span>
                           <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
-                            {humanityVerified ? 'VERIFICADO' : 'REQUERIDO PARA CONTINUAR'}
+                            {humanityVerified ? 'VERIFICADO SEGURO' : 'PROTECCIÓN CLOUDFLARE B2B'}
                           </span>
                         </div>
                       </div>
-                      <span className="text-zinc-700 font-mono font-black text-xl opacity-20 pointer-events-none select-none tracking-tighter">
-                        G-SHIELD
-                      </span>
+                      
+                      <div className="flex justify-center shrink-0">
+                        <Turnstile
+                          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'}
+                          onSuccess={(token) => setHumanityVerified(true)}
+                          options={{
+                            theme: 'dark',
+                            size: 'normal',
+                          }}
+                        />
+                      </div>
                     </div>
 
                     {/* Botonazo */}
@@ -349,10 +373,10 @@ export default function Checkout() {
                           !humanityVerified ||
                           paymentMethod !== 'BANK'
                         }
-                        className={`w-full font-extrabold text-sm tracking-widest py-5 rounded-md flex justify-center items-center gap-3 transition-all ${termsAccepted && humanityVerified ? 'bg-[#1a1a1a] text-white border border-brand/50 hover:bg-zinc-800' : 'bg-[#111] text-zinc-500 cursor-not-allowed border border-white/5'}`}
+                        className={`w-full font-extrabold text-sm tracking-widest py-5 rounded-md flex justify-center items-center gap-3 transition-all ${termsAccepted && humanityVerified ? 'bg-[#1a1a1a] text-white border border-brand/50 hover:bg-brand hover:text-black' : 'bg-[#111] text-zinc-500 cursor-not-allowed border border-white/5'}`}
                       >
                         {isProcessing ? (
-                          <div className="w-4 h-4 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                         ) : (
                           <ShieldCheck className="w-5 h-5" />
                         )}
@@ -425,7 +449,6 @@ export default function Checkout() {
                 </span>
               </div>
 
-              {/* Se ha movido el submit principal al formulario lateral izquierdo, este queda como un recordatorio B2B visual */}
               <div className="w-full bg-[#111] border border-white/5 text-zinc-500 font-extrabold text-xs tracking-widest py-3 rounded-md flex justify-center items-center gap-2 cursor-not-allowed">
                 <ShieldCheck className="w-4 h-4" />
                 VERIFICACIÓN PENDIENTE

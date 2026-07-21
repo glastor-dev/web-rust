@@ -141,9 +141,11 @@ export default function HeroSection() {
                 href="#"
                 className="block bg-white/5 border border-white/10 px-2 py-1.5 rounded-sm opacity-60 hover:opacity-100 hover:border-brand/50 hover:shadow-[0_0_15px_rgba(0,255,102,0.2)] transition-all duration-300 grayscale hover:grayscale-0"
               >
-                <img
+                <Image
                   src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_300/v1783915584/AWS-Partner-Advanced_1200x900_Lo_db1hgy.webp"
                   alt="AWS Advanced Partner"
+                  width={150}
+                  height={40}
                   className="h-6 md:h-10 w-auto object-contain"
                 />
               </a>
@@ -151,9 +153,11 @@ export default function HeroSection() {
                 href="#"
                 className="block bg-white/5 border border-white/10 px-2 py-1.5 rounded-sm opacity-60 hover:opacity-100 hover:border-brand/50 hover:shadow-[0_0_15px_rgba(0,255,102,0.2)] transition-all duration-300 grayscale hover:grayscale-0"
               >
-                <img
+                <Image
                   src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_60/v1783566465/iso-27001_hzcz5n.webp"
                   alt="ISO 27001 Certified"
+                  width={60}
+                  height={40}
                   className="h-6 md:h-10 w-auto object-contain"
                 />
               </a>
@@ -161,9 +165,11 @@ export default function HeroSection() {
                 href="#"
                 className="block bg-white/5 border border-white/10 px-2 py-1.5 rounded-sm opacity-60 hover:opacity-100 hover:border-brand/50 hover:shadow-[0_0_15px_rgba(0,255,102,0.2)] transition-all duration-300 grayscale hover:grayscale-0"
               >
-                <img
+                <Image
                   src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_300/v1783916112/Clutch_5_Star_Logo_PNG_SVG_Vector_abzk6x.svg"
                   alt="Clutch 5 Stars"
+                  width={120}
+                  height={40}
                   className="h-6 md:h-10 w-auto object-contain"
                 />
               </a>

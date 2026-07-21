@@ -28,6 +28,7 @@ use crate::handlers::{
     products::{
         create_product, delete_product, get_bestsellers, get_product_by_id, get_product_options,
         get_product_variants, get_products, update_product, update_product_variants,
+        product_stock_stream,
     },
     sitemap::get_sitemap,
 };
@@ -79,7 +80,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     let cors = CorsLayer::new()
-        .allow_origin("http://localhost:5173".parse::<HeaderValue>().unwrap())
+        .allow_origin(vec![
+            "http://localhost:5173".parse::<HeaderValue>().unwrap(),
+            "http://localhost:3000".parse::<HeaderValue>().unwrap(),
+        ])
         .allow_methods([Method::POST, Method::GET, Method::PUT, Method::OPTIONS])
         .allow_headers(tower_http::cors::Any);
 
@@ -95,6 +99,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/api/auth/login", post(admin_login))
         .route("/api/modules", get(get_modules))
         .route("/api/products", get(get_products).post(create_product))
+        .route("/api/products/stream", get(product_stock_stream))
         .route("/api/products/bestsellers", get(get_bestsellers))
         .route(
             "/api/products/{id}",

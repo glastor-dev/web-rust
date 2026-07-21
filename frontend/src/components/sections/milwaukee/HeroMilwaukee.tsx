@@ -5,54 +5,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight01Icon, ArrowLeft01Icon } from 'hugeicons-react';
+import { HERO_SLIDES as slides } from '@/lib/constants/heroSlides';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 
 export function HeroMilwaukee() {
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const slides = [
-    {
-      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578762/hero21_mjrcgh.webp',
-      title: (
-        <>
-          POTENCIA EXTREMA. <br />
-          MARTILLO SDS MAX <br />
-          M18 FUEL™ DE 1-9/16"
-        </>
-      ),
-      link: '/producto/martillo',
-      tag: 'LANZAMIENTO M18™',
-      price: 'Desde USD 499',
-      bullets: ['Despacho en 24h', 'Garantía de 3 Años', 'Stock Inmediato'],
-    },
-    {
-      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578776/hero22_qwczfo.webp',
-      title: (
-        <>
-          CORTES 30% MÁS RÁPIDOS. <br />
-          SIERRA CIRCULAR <br />
-          M18 FUEL™ DE 7-1/4"
-        </>
-      ),
-      link: '/producto/sierra',
-      tag: 'INNOVACIÓN FUEL™',
-      price: 'PRECIO B2B',
-      bullets: ['Compra por Volumen', 'Soporte Técnico', 'Línea de Crédito'],
-    },
-    {
-      image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578790/hero23_ri3tjh.webp',
-      title: (
-        <>
-          TORQUE INSUPERABLE. <br />
-          LLAVE DE IMPACTO <br />
-          M18 FUEL™ DE 1/2"
-        </>
-      ),
-      link: '/producto/impacto',
-      tag: 'BEST SELLER',
-      price: 'Desde USD 385',
-      bullets: ['Ecosistema PACKOUT™', 'Demo en Obra', 'Garantía de Retorno'],
-    },
-  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -154,19 +111,21 @@ export function HeroMilwaukee() {
                   }}
                   className="inline-flex flex-wrap justify-end gap-3"
                 >
-                  <Link
+                  <MagneticButton
                     href="/tienda"
+                    as="a"
                     className="inline-flex items-center gap-2 border-2 border-white text-white bg-black/30 backdrop-blur-sm font-bold uppercase tracking-widest px-8 py-3 text-xs md:text-sm hover:bg-white hover:text-black transition-colors group"
                   >
                     Comprar ahora
                     <ArrowRight01Icon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <a
+                  </MagneticButton>
+                  <MagneticButton
                     href="mailto:ventas@glastor.es?subject=Cotización%20desde%20Hero%20Milwaukee"
+                    as="a"
                     className="inline-flex items-center gap-2 border-2 border-brand text-black bg-brand/90 font-bold uppercase tracking-widest px-8 py-3 text-xs md:text-sm hover:bg-brand transition-colors"
                   >
                     Cotizar
-                  </a>
+                  </MagneticButton>
                 </motion.div>
 
                 <motion.div

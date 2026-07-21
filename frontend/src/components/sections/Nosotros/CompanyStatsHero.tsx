@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { Button } from '../../reutilizables/button';
 import { ArrowRightIcon } from 'lucide-react';
+import { COMPANY_STATS } from '@/lib/constants/aboutData';
 
 export function CompanyStatsHero() {
   return (
@@ -62,59 +63,31 @@ export function CompanyStatsHero() {
             </div>
           </div>
 
-          {/* Columna Derecha: Grilla de Estadísticas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:mt-16">
-            {/* Tarjeta 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="border border-brand/20 bg-brand/5 p-8 rounded-xl flex flex-col justify-center min-h-40"
-            >
-              <span className="text-5xl font-black text-brand tracking-tighter mb-2">15+</span>
-              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
-                Años de Trayectoria
-              </span>
-            </motion.div>
-
-            {/* Tarjeta 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
-            >
-              <span className="text-5xl font-black text-white tracking-tighter mb-2">2010</span>
-              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
-                Año de Fundación
-              </span>
-            </motion.div>
-
-            {/* Tarjeta 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
-            >
-              <span className="text-5xl font-black text-white tracking-tighter mb-2">ESP</span>
-              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
-                Girona, España - Sede Central
-              </span>
-            </motion.div>
-
-            {/* Tarjeta 4 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="border border-white/10 hover:border-white/20 transition-colors p-8 rounded-xl flex flex-col justify-center min-h-40"
-            >
-              <span className="text-5xl font-black text-white tracking-tighter mb-2">3</span>
-              <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
-                Áreas: Rust - Python - Diseño
-              </span>
-            </motion.div>
+            {COMPANY_STATS.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * (i + 1) }}
+                className={`border p-8 rounded-xl flex flex-col justify-center min-h-40 transition-colors ${
+                  stat.highlight
+                    ? 'border-brand/20 bg-brand/5'
+                    : 'border-white/10 hover:border-white/20'
+                }`}
+              >
+                <span
+                  className={`text-5xl font-black tracking-tighter mb-2 ${
+                    stat.highlight ? 'text-brand' : 'text-white'
+                  }`}
+                >
+                  {stat.value}
+                </span>
+                <span className="text-zinc-400 font-mono text-[10px] tracking-widest font-bold">
+                  {stat.label}
+                </span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

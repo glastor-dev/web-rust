@@ -1,9 +1,12 @@
 use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
-    response::IntoResponse,
+    response::{IntoResponse, sse::{Event, Sse}},
     Json,
 };
+use std::convert::Infallible;
+use futures::stream::Stream;
+use tokio::time::{interval, Duration};
 use serde_json::json;
 use std::sync::Arc;
 
@@ -252,4 +255,40 @@ pub async fn update_product_variants(
     tx.commit().await?;
 
     Ok((StatusCode::OK, Json(json!({"status": "success"}))).into_response())
+}
+
+// SSE Stream for real-time stock/price updates
+pub async fn product_stock_stream() -> Sse<impl Stream<Item = Result<Event, Infallible>>> {
+    let mut interval = interval(Duration::from_secs(8)); // Simulate updates every 8 seconds
+
+    let stream = async_stream::stream! {
+        loop {
+            interval.tick().await;
+
+            let product_ids = [
+                "glstr-drill-m18",
+                "glstr-hammer-20v",
+                "glstr-impact-18v",
+                "glstr-saw-circ",
+                "glstr-packout-xl",
+            ];
+            let now_ms = chrono::Utc::now().timestamp_millis();
+            let random_idx = (now_ms as usize) % product_ids.len();
+            let random_stock = (now_ms % 50) as u32;
+
+            let data = json!({
+                "product_id": product_ids[random_idx],
+                "stock": random_stock,
+                "timestamp": chrono::Utc::now().to_rfc3339()
+            });
+
+            yield Ok(Event::default().data(data.to_string()).event("stock_update"));
+        }
+    };
+
+    Sse::new(stream).keep_alive(
+        axum::response::sse::KeepAlive::new()
+            .interval(Duration::from_secs(1))
+            .text("keep-alive-text"),
+    )
 }

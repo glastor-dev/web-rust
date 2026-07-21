@@ -1,146 +1,49 @@
 'use client';
 
-import { useState, useLayoutEffect, useMemo } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useLayoutEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { ProductCard, type Product } from '@/components/ui/ProductCard';
 import { PageHero } from '@/components/ui/PageHero';
 import { Package, ShieldCheck, Zap } from 'lucide-react';
-import { StoreFilterPanel } from '@/components/ui/StoreFilterPanel';
+import { useProductsQuery } from '@/lib/api/queries';
+import { useStoreFilters } from '@/hooks/useStoreFilters';
+import { useRealtimeStock } from '@/hooks/useRealtimeStock';
+
+const StoreFilterPanel = dynamic(() => import('@/components/ui/StoreFilterPanel').then(mod => mod.StoreFilterPanel), {
+  ssr: false, // El panel de filtros no necesita renderizado inicial en servidor, reduce JS inicial
+});
 
 export default function Store() {
   const {
     data: products = [],
     isLoading: loading,
     error,
-  } = useQuery<Product[]>({
-    queryKey: ['products'],
-    queryFn: async () => {
-      const url = process.env.NEXT_PUBLIC_API_URL || '';
-      const response = await fetch(`${url}/api/products`);
-      if (!response.ok) {
-        throw new Error('No se pudieron cargar los productos');
-      }
-      return response.json();
-    },
-  });
+  } = useProductsQuery();
 
-  // View Mode & Pagination State
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [visibleCount, setVisibleCount] = useState(12);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  // Activar actualizaciones en tiempo real (SSE)
+  useRealtimeStock();
 
-  // Filter States with URL Sync (Deep Linking)
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const setSearchParams = (
-    updater: (prev: URLSearchParams) => URLSearchParams,
-    options?: { replace?: boolean },
-  ) => {
-    const prev = new URLSearchParams(searchParams.toString());
-    const newParams = updater(prev);
-    const queryString = newParams.toString();
-    const url = queryString ? `${pathname}?${queryString}` : pathname;
-
-    if (options?.replace) {
-      router.replace(url, { scroll: false });
-    } else {
-      router.push(url, { scroll: false });
-    }
-  };
-
-  const searchQuery = searchParams.get('q') || '';
-  const selectedCategory = searchParams.get('cat') || 'all';
-  const selectedBrand = searchParams.get('brand') || 'all';
-  const sortBy = searchParams.get('sort') || 'relevance';
-
-  const setSearchQuery = (val: string) =>
-    setSearchParams(
-      (prev) => {
-        if (val) prev.set('q', val);
-        else prev.delete('q');
-        return prev;
-      },
-      { replace: true },
-    );
-  const setSelectedCategory = (val: string) =>
-    setSearchParams((prev) => {
-      if (val !== 'all') prev.set('cat', val);
-      else prev.delete('cat');
-      return prev;
-    });
-  const setSelectedBrand = (val: string) =>
-    setSearchParams((prev) => {
-      if (val !== 'all') prev.set('brand', val);
-      else prev.delete('brand');
-      return prev;
-    });
-  const setSortBy = (val: string) =>
-    setSearchParams((prev) => {
-      if (val !== 'relevance') prev.set('sort', val);
-      else prev.delete('sort');
-      return prev;
-    });
-
-  // Derive categories (tool type) and brands dynamically from fetched products
-  const categories = useMemo(() => {
-    const cats = new Set(
-      products.map((p) => {
-        const parts = p.name.split(' ');
-        return parts[0].toUpperCase();
-      }),
-    );
-    return Array.from(cats).filter(Boolean).sort();
-  }, [products]);
-
-  const brands = useMemo(() => {
-    const brs = new Set(products.map((p) => p.category));
-    return Array.from(brs).filter(Boolean).sort();
-  }, [products]);
-
-  // Derived Filtered Products
-  const filteredProducts = useMemo(() => {
-    let result = [...products];
-    console.log(`[DEBUG] Initial products count: ${result.length}`);
-
-    // 1. Search Filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.description?.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q),
-      );
-      console.log(`[DEBUG] After Search Filter count: ${result.length}`);
-    }
-
-    // 2. Category Filter (which is the tool type derived from the first word of the name)
-    if (selectedCategory !== 'all') {
-      result = result.filter((p) =>
-        p.name.toUpperCase().startsWith(selectedCategory.toUpperCase()),
-      );
-    }
-
-    // 3. Brand Filter (which is the p.category field in the DB)
-    if (selectedBrand !== 'all') {
-      result = result.filter((p) => p.category === selectedBrand);
-    }
-
-    // 4. Sort
-    result.sort((a, b) => {
-      if (sortBy === 'price_asc') return a.price - b.price;
-      if (sortBy === 'price_desc') return b.price - a.price;
-      return (b.rating || 0) - (a.rating || 0);
-    });
-
-    console.log(`[DEBUG] Final products count: ${result.length}`);
-    return result;
-  }, [products, searchQuery, selectedCategory, selectedBrand, sortBy]);
+  const {
+    viewMode,
+    setViewMode,
+    visibleCount,
+    setVisibleCount,
+    filtersOpen,
+    setFiltersOpen,
+    searchQuery,
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory,
+    selectedBrand,
+    setSelectedBrand,
+    sortBy,
+    setSortBy,
+    categories,
+    brands,
+    filteredProducts,
+  } = useStoreFilters(products);
 
   useLayoutEffect(() => {
     if (!loading) {
@@ -149,12 +52,6 @@ export default function Store() {
       window.dispatchEvent(new Event('force-lenis-reset'));
     }
   }, [loading]);
-
-  const hasActiveFilters =
-    searchQuery.trim().length > 0 ||
-    selectedCategory !== 'all' ||
-    selectedBrand !== 'all' ||
-    sortBy !== 'relevance';
 
   return (
     <>

@@ -268,6 +268,8 @@ export default function ProductDetail() {
                 alt={product.name}
                 width={800}
                 height={800}
+                priority={true}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="w-full h-full object-contain filter drop-shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =

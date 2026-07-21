@@ -12,7 +12,7 @@ const CustomCursor = dynamic(() => import('@/components/ui/CustomCursor').then((
 const FlashlightEffect = dynamic(() => import('@/components/ui/FlashlightEffect').then((mod) => mod.FlashlightEffect), { ssr: false });
 const CartDrawer = dynamic(() => import('@/components/ui/CartDrawer').then((mod) => mod.CartDrawer), { ssr: false });
 const SmoothScroll = dynamic(() => import('@/components/SmoothScroll').then((mod) => mod.SmoothScroll), { ssr: false });
-const PageTransitionWrapper = dynamic(() => import('@/components/ui/PageTransitionWrapper').then((mod) => mod.PageTransitionWrapper), { ssr: false });
+const PageTransitionWrapper = dynamic(() => import('@/components/ui/PageTransitionWrapper').then((mod) => mod.PageTransitionWrapper));
 const Toaster = dynamic(() => import('@/components/ui/sonner').then((mod) => mod.Toaster), { ssr: false });
 
 const queryClient = new QueryClient({

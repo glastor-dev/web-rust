@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight01Icon, PlusSignIcon, MinusSignIcon, Loading02Icon, Tick01Icon, ShoppingCart01Icon } from 'hugeicons-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { toast } from 'sonner';
 import { useCartStore } from '../../store/cartStore';
 import { useState } from 'react';
@@ -86,16 +87,12 @@ export function ProductCard({
           href={`/tienda/${product.id}`}
           className="relative w-24 h-24 shrink-0 bg-[#030303] flex items-center justify-center p-2 rounded-md overflow-hidden group"
         >
-          <img
+          <Image
             src={product.image || '/images/default-tool.png'}
             alt={product.name}
-            className="object-contain w-full h-full max-h-20 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-            loading="lazy"
-            decoding="async"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                'https://placehold.co/400x400/111/444?text=Herramienta';
-            }}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            className="object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 p-2"
           />
         </Link>
 
@@ -179,14 +176,12 @@ export function ProductCard({
         href={`/tienda/${product.id}`}
         className="relative aspect-square overflow-hidden bg-[#030303] flex items-center justify-center p-4 sm:p-8"
       >
-        <motion.img
-          src={product.image || '/images/default-tool.png'} // Fallback if no image
+        <Image
+          src={product.image || '/images/default-tool.png'}
           alt={product.name}
-          className="object-contain w-full h-full max-h-48 group-hover:scale-110 transition-transform duration-700 ease-out grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src =
-              'https://placehold.co/400x400/111/444?text=Herramienta'; // Placeholder if missing
-          }}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          className="object-contain p-4 sm:p-8 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-700 ease-out"
         />
 
         {product.stock <= 0 && (

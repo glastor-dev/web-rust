@@ -1,3 +1,0 @@
-module.exports=[647565,a=>{"use strict";var b=a.i(885322);a.s(["default",0,function({children:a}){return(0,b.jsx)(b.Fragment,{children:a})},"metadata",0,{title:"Casos de Éxito y Proyectos | Glastor",description:"Descubre cómo Glastor ha optimizado infraestructuras industriales pesadas en distintos sectores con resultados medibles."}])},646234,a=>{a.n(a.i(647565))}];
-
-//# sourceMappingURL=src_app_proyectos_layout_tsx_0fp4gen._.js.map

@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import { ArrowRight01Icon } from 'hugeicons-react';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 
 export function DealerBanner() {
   const containerRef = useRef<HTMLElement>(null);
@@ -68,26 +69,21 @@ export function DealerBanner() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative group"
+          <MagneticButton
+            href="/tienda"
+            as="a"
+            className="relative inline-block bg-brand text-black font-black uppercase tracking-widest px-8 py-4 text-xs transition-colors border-2 border-brand hover:border-white hover:bg-white shadow-[0_0_20px_rgba(0,255,102,0.15)]"
           >
-            <div className="absolute inset-0 bg-brand blur-md opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
-            <Link
-              href="/tienda"
-              className="relative inline-block bg-brand text-black font-black uppercase tracking-widest px-8 py-4 text-xs transition-colors border-2 border-brand hover:border-white hover:bg-white shadow-[0_0_20px_rgba(0,255,102,0.15)]"
-            >
-              COMPRAR AHORA
-            </Link>
-          </motion.div>
-          <a
+            COMPRAR AHORA
+          </MagneticButton>
+          <MagneticButton
             href="mailto:ventas@glastor.es?subject=Cotización%20de%20proyecto"
+            as="a"
             className="inline-flex items-center gap-2 border-2 border-white/10 bg-white/5 backdrop-blur-sm text-white font-bold uppercase tracking-widest px-8 py-4 text-xs hover:border-white hover:bg-white hover:text-black transition-all duration-300 group"
           >
             Cotizar proyecto
             <ArrowRight01Icon className="w-4 h-4 text-brand group-hover:text-black opacity-70 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </MagneticButton>
         </div>
 
         <div className="mt-8 flex items-center gap-4 text-[11px] font-mono text-zinc-400">

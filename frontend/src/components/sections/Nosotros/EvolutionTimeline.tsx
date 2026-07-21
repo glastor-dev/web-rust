@@ -1,33 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-
-const timelineEvents = [
-  {
-    year: '2010',
-    title: 'Fundación',
-    description:
-      'Glastor nace con la misión de democratizar herramientas digitales avanzadas y ponerlas al alcance de la comunidad técnica y corporativa.',
-  },
-  {
-    year: '2015',
-    title: 'Estructura Híbrida',
-    description:
-      'Transformación en entidad para escalar operaciones, atrayendo talento e infraestructura sin perder los valores fundacionales.',
-  },
-  {
-    year: '2019',
-    title: 'Plataforma Cloud',
-    description:
-      'Desarrollo de infraestructura robusta de alta computación y rendimiento (HPC). Lanzamiento de servicios B2B.',
-  },
-  {
-    year: '2023',
-    title: 'Girona, España',
-    description:
-      'Traslado de operaciones HQ a Girona, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
-  },
-];
+import { TIMELINE_EVENTS as timelineEvents } from '@/lib/constants/aboutData';
 
 export function EvolutionTimeline() {
   return (

@@ -1,13 +1,16 @@
 import { HeroMilwaukee } from '@/components/sections/milwaukee/HeroMilwaukee';
-import { PipelineCarousel } from '@/components/sections/milwaukee/PipelineCarousel';
-import { SystemsExplorer } from '@/components/sections/milwaukee/SystemsExplorer';
 import { PackoutBanner } from '@/components/sections/milwaukee/PackoutBanner';
 import { AccessoriesGrid } from '@/components/sections/milwaukee/AccessoriesGrid';
-import { OneKeySection } from '@/components/sections/milwaukee/OneKeySection';
-import { DealerBanner } from '@/components/sections/milwaukee/DealerBanner';
 import { TrustBar } from '@/components/ui/TrustBar';
 import { FloatingContact } from '@/components/ui/FloatingContact';
 import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const PipelineCarousel = dynamic(() => import('@/components/sections/milwaukee/PipelineCarousel').then(mod => mod.PipelineCarousel));
+const SystemsExplorer = dynamic(() => import('@/components/sections/milwaukee/SystemsExplorer').then(mod => mod.SystemsExplorer));
+const OneKeySection = dynamic(() => import('@/components/sections/milwaukee/OneKeySection').then(mod => mod.OneKeySection));
+const DealerBanner = dynamic(() => import('@/components/sections/milwaukee/DealerBanner').then(mod => mod.DealerBanner));
+const PinSection = dynamic(() => import('@/components/animations/PinSection').then(mod => mod.PinSection));
 
 function SkeletonGrid() {
   return (
@@ -51,7 +54,9 @@ export default async function Home2Page({ searchParams }: Props) {
       <Suspense fallback={<SkeletonGrid />}>
         <AccessoriesGrid category={tab} />
       </Suspense>
-      <OneKeySection />
+      <PinSection>
+        <OneKeySection />
+      </PinSection>
       <DealerBanner />
       <FloatingContact />
     </main>
