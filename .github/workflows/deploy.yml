@@ -25,13 +25,23 @@ jobs:
           npx pnpm run build
           tar -czf frontend-build.tar.gz .next/standalone .next/static public package.json
 
+      - name: Build Backend (Rust)
+        working-directory: ./backend
+        run: |
+          # Usamos docker para compilar el backend usando la etapa builder del Dockerfile existente
+          docker build --target builder -t backend-builder .
+          docker create --name temp-container backend-builder
+          docker cp temp-container:/app/target/release/backend ./backend-binary
+          docker rm temp-container
+          tar -czf backend-build.tar.gz backend-binary migrations
+
       - name: Copy Build to Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
-          password: ${{ secrets.DO_PASSWORD }}
-          source: "frontend/frontend-build.tar.gz,docker-compose.yml"
+          key: ${{ secrets.DO_SSH_KEY }}
+          source: "frontend/frontend-build.tar.gz,backend/backend-build.tar.gz,docker-compose.yml"
           target: "/root/web-rust"
 
       - name: Deploy on Server
@@ -39,16 +49,15 @@ jobs:
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
-          password: ${{ secrets.DO_PASSWORD }}
+          key: ${{ secrets.DO_SSH_KEY }}
           script: |
             cd ~/web-rust
             
-            # Extraer la app compilada
+            # Extraer y preparar frontend
             cd frontend
             tar -xzf frontend-build.tar.gz
             rm frontend-build.tar.gz
             
-            # Crear un Dockerfile ultra-ligero que NO compila, solo copia los archivos
             cat << 'EOF' > Dockerfile
             FROM node:20-alpine
             WORKDIR /app
@@ -62,6 +71,23 @@ jobs:
             EOF
             cd ..
             
-            # Reiniciar solo el frontend (toma 1 segundo, 0 de RAM)
-            docker compose build frontend
-            docker compose up -d frontend
+            # Extraer y preparar backend
+            mkdir -p backend
+            cd backend
+            tar -xzf backend-build.tar.gz
+            rm backend-build.tar.gz
+            
+            cat << 'EOF' > Dockerfile
+            FROM debian:bookworm-slim
+            RUN apt-get update && apt-get install -y libssl3 ca-certificates sqlite3 && rm -rf /var/lib/apt/lists/*
+            WORKDIR /app
+            COPY backend-binary /usr/local/bin/backend
+            COPY migrations ./migrations
+            EXPOSE 3001
+            CMD ["backend"]
+            EOF
+            cd ..
+            
+            # Reiniciar los servicios
+            docker compose build frontend backend
+            docker compose up -d frontend backend
