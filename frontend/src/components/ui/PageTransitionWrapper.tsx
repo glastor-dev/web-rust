@@ -42,6 +42,7 @@ export function PageTransitionWrapper({ children }: PageTransitionWrapperProps) 
   return (
     <AnimatePresence
       initial={false}
+      mode="wait"
       onExitComplete={() => {
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;

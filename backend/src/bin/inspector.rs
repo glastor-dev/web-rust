@@ -14,6 +14,12 @@ async fn main() -> Result<(), sqlx::Error> {
 
     println!("Conectado!");
 
+    // FIX ADVISORY LOCKS BY KILLING OTHER CONNECTIONS
+    sqlx::query("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid()")
+        .execute(&pool)
+        .await?;
+    println!("Todas las otras conexiones fueron terminadas. Locks liberados.");
+
     // Consultar las tablas públicas
     let tables: Vec<(String,)> = sqlx::query_as(
         "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'",

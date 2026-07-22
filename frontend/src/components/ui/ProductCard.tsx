@@ -37,7 +37,6 @@ export function ProductCard({
   viewMode?: 'grid' | 'list';
 }) {
   const addItem = useCartStore((state) => state.addItem);
-  const openDrawer = useCartStore((state) => state.openDrawer);
   const [quantity, setQuantity] = useState(1);
   const [_isHovered, setIsHovered] = useState(false);
   const [addState, setAddState] = useState<'idle' | 'loading' | 'success'>('idle');
@@ -125,14 +124,14 @@ export function ProductCard({
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="p-1 hover:text-brand transition-colors text-zinc-400"
               >
-                <Minus size={14} />
+                <MinusSignIcon size={14} />
               </button>
               <span className="font-mono text-sm w-6 text-center">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                 className="p-1 hover:text-brand transition-colors text-zinc-400"
               >
-                <Plus size={14} />
+                <PlusSignIcon size={14} />
               </button>
             </div>
           ) : (
@@ -147,10 +146,10 @@ export function ProductCard({
             }`}
           >
             {addState === 'loading' ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loading02Icon className="w-4 h-4 animate-spin" />
             ) : addState === 'success' ? (
               <span className="flex items-center gap-2">
-                <Check className="w-4 h-4" /> AÑADIDO
+                <Tick01Icon className="w-4 h-4" /> AÑADIDO
               </span>
             ) : (
               'AÑADIR'
