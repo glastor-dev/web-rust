@@ -3,12 +3,13 @@ use std::env;
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
-    let db_url = "postgresql://neondb_owner:npg_sdOv2ulAn1zo@ep-super-glitter-ahdn7lxs-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
-    println!("Conectando a {}...", db_url);
+    dotenvy::dotenv().ok();
+    let db_url = env::var("NEON_DB_URL").expect("NEON_DB_URL must be set");
+    println!("Conectando a la base de datos...");
 
     let pool = PgPoolOptions::new()
         .max_connections(5)
-        .connect(db_url)
+        .connect(&db_url)
         .await?;
 
     println!("Conectado!");
