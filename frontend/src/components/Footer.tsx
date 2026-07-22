@@ -50,7 +50,7 @@ export default function Footer() {
       id="contacto"
     >
       {/* Efecto Ascendente (Suelo Luminoso) */}
-      <div className="absolute bottom-0 left-0 w-full h-[500px] bg-linear-to-t from-brand/5 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-125 bg-linear-to-t from-brand/5 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-8 relative z-10">
         {/* Top Section: Formulario Express & Copy Emocional */}

@@ -23,7 +23,7 @@ export function HeroMilwaukee() {
 
   return (
     <section className="relative w-full bg-[#0a0a0a]">
-      <div className="relative w-full h-[500px] md:h-[640px] overflow-hidden flex items-center">
+      <div className="relative w-full h-125 md:h-160 overflow-hidden flex items-center">
         <AnimatePresence initial={false}>
           <motion.div
             key={currentSlide}

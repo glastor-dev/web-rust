@@ -10,7 +10,7 @@ const PipelineCarousel = dynamic(() => import('@/components/sections/milwaukee/P
 const SystemsExplorer = dynamic(() => import('@/components/sections/milwaukee/SystemsExplorer').then(mod => mod.SystemsExplorer));
 const OneKeySection = dynamic(() => import('@/components/sections/milwaukee/OneKeySection').then(mod => mod.OneKeySection));
 const DealerBanner = dynamic(() => import('@/components/sections/milwaukee/DealerBanner').then(mod => mod.DealerBanner));
-const PinSection = dynamic(() => import('@/components/animations/PinSection').then(mod => mod.PinSection));
+
 
 function SkeletonGrid() {
   return (
@@ -24,7 +24,7 @@ function SkeletonGrid() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="aspect-[3/4] bg-white/5 animate-pulse border border-white/10" />
+            <div key={i} className="aspect-3/4 bg-white/5 animate-pulse border border-white/10" />
           ))}
         </div>
       </div>
@@ -54,9 +54,7 @@ export default async function Home2Page({ searchParams }: Props) {
       <Suspense fallback={<SkeletonGrid />}>
         <AccessoriesGrid category={tab} />
       </Suspense>
-      <PinSection>
-        <OneKeySection />
-      </PinSection>
+      <OneKeySection />
       <DealerBanner />
       <FloatingContact />
     </main>

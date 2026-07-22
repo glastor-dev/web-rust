@@ -192,7 +192,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1 }}
-              className="relative z-10 w-[45vw] min-w-[120px] max-w-[200px] aspect-square flex items-center justify-center"
+              className="relative z-10 w-[45vw] min-w-30 max-w-50 aspect-square flex items-center justify-center"
             >
               <motion.div
                 animate={{

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
 import { ChevronLeft, Star, StarHalf, Truck, Heart, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
@@ -18,6 +18,9 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const addItem = useCartStore((state) => state.addItem);
   const toggleDrawer = useCartStore((state) => state.toggleDrawer);
+
+  const { scrollY } = useScroll();
+  const parallaxY = useTransform(scrollY, [0, 800], [0, 150]);
 
   const {
     data: product,
@@ -263,19 +266,20 @@ export default function ProductDetail() {
           <div className="flex flex-col gap-4">
             {/* Imagen Principal */}
             <div className="relative aspect-square sm:aspect-4/3 lg:aspect-square bg-[#080808] border border-white/5 rounded-xl flex items-center justify-center p-8 overflow-hidden group">
-              <Image
-                src={gallery[activeImage] as string}
-                alt={product.name}
-                width={800}
-                height={800}
-                priority={true}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="w-full h-full object-contain filter drop-shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'https://placehold.co/800x800/111/444?text=Herramienta';
-                }}
-              />
+              <motion.div style={{ y: parallaxY }} className="w-full h-full relative">
+                <Image
+                  src={gallery[activeImage] as string}
+                  alt={product.name}
+                  fill
+                  priority={true}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain filter drop-shadow-2xl transition-transform duration-700 ease-out group-hover:scale-105"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      'https://placehold.co/800x800/111/444?text=Herramienta';
+                  }}
+                />
+              </motion.div>
               <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur border border-white/10 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm">
                 VISTA GENERAL
               </div>
@@ -667,7 +671,7 @@ export default function ProductDetail() {
                         <strong className="text-white">Detalles:</strong>{' '}
                         <span
                           className="block mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-3 [&_li]:marker:text-brand"
-                          dangerouslySetInnerHTML={{ __html: product.specifications }}
+                          dangerouslySetInnerHTML={{ __html: product.specifications || '' }}
                         />
                       </li>
                     );

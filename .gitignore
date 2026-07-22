@@ -1,0 +1,7 @@
+# Securing all environment variables globally
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert

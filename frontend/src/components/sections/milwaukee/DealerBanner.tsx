@@ -21,7 +21,7 @@ export function DealerBanner() {
       className="w-full relative h-auto bg-black overflow-hidden flex flex-col items-center justify-center py-16 md:py-20 px-6 border-y border-white/5"
     >
       <motion.div
-        className="absolute inset-0 w-full h-[130%] -top-[15%] opacity-20 z-0 mix-blend-overlay grayscale"
+        className="absolute inset-0 w-full h-[130%] top-[-15%] opacity-20 z-0 mix-blend-overlay grayscale"
         style={{
           y: backgroundY,
         }}
@@ -41,7 +41,7 @@ export function DealerBanner() {
           scale: [1, 1.2, 0.8, 1],
         }}
         transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-        className="absolute w-[400px] h-[400px] bg-brand/10 blur-[120px] rounded-full pointer-events-none z-0"
+        className="absolute w-100 h-100 bg-brand/10 blur-[120px] rounded-full pointer-events-none z-0"
       />
 
       <div className="relative z-10 text-center flex flex-col items-center">

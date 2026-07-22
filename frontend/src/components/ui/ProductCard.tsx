@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 import { useCartStore } from '../../store/cartStore';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { MagneticButton } from './MagneticButton';
 
 export interface Product {
   id: string;
@@ -37,6 +39,12 @@ export function ProductCard({
   viewMode?: 'grid' | 'list';
 }) {
   const addItem = useCartStore((state) => state.addItem);
+  const router = useRouter();
+
+  const handlePrefetch = () => {
+    router.prefetch(`/tienda/${product.id}`);
+  };
+
   const [quantity, setQuantity] = useState(1);
   const [_isHovered, setIsHovered] = useState(false);
   const [addState, setAddState] = useState<'idle' | 'loading' | 'success'>('idle');
@@ -45,6 +53,10 @@ export function ProductCard({
     e.preventDefault();
     if (product.stock > 0 && addState === 'idle') {
       setAddState('loading');
+
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(50);
+      }
 
       // Simulate network request for premium tactile feedback
       await new Promise((resolve) => setTimeout(resolve, 400));
@@ -84,6 +96,7 @@ export function ProductCard({
       >
         <Link
           href={`/tienda/${product.id}`}
+          onMouseEnter={handlePrefetch}
           className="relative w-24 h-24 shrink-0 bg-[#030303] flex items-center justify-center p-2 rounded-md overflow-hidden group"
         >
           <Image
@@ -102,7 +115,7 @@ export function ProductCard({
           >
             {product.category}
           </Link>
-          <Link href={`/tienda/${product.id}`} className="hover:text-brand transition-colors">
+          <Link href={`/tienda/${product.id}`} onMouseEnter={handlePrefetch} className="hover:text-brand transition-colors">
             <h3 className="text-lg font-bold text-white tracking-tight truncate">{product.name}</h3>
           </Link>
           <p className="text-sm text-zinc-400 font-mono mt-1">
@@ -110,7 +123,7 @@ export function ProductCard({
           </p>
         </div>
 
-        <div className="flex flex-col shrink-0 items-end min-w-[120px]">
+        <div className="flex flex-col shrink-0 items-end min-w-30">
           <span className="text-[10px] font-mono text-zinc-400">PRECIO</span>
           <span className="text-xl font-bold text-brand font-mono">
             ${product.price?.toLocaleString()}
@@ -138,23 +151,23 @@ export function ProductCard({
             <span className="text-red-500 text-xs font-mono tracking-widest px-4">AGOTADO</span>
           )}
 
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock <= 0 || addState !== 'idle'}
-            className={`h-10 px-6 font-bold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px] ${
-              addState === 'success' ? 'bg-white text-black' : 'bg-brand text-black hover:bg-white'
-            }`}
-          >
-            {addState === 'loading' ? (
-              <Loading02Icon className="w-4 h-4 animate-spin" />
-            ) : addState === 'success' ? (
-              <span className="flex items-center gap-2">
-                <Tick01Icon className="w-4 h-4" /> AÑADIDO
-              </span>
-            ) : (
-              'AÑADIR'
-            )}
-          </button>
+          <MagneticButton>
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock <= 0 || addState !== 'idle'}
+              className={`h-10 px-6 font-bold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-30 ${
+                addState === 'success' ? 'bg-white text-black' : 'bg-brand text-black hover:bg-white'
+              }`}
+            >
+              {addState === 'loading' ? (
+                <Loading02Icon className="w-4 h-4 animate-spin" />
+              ) : addState === 'success' ? (
+                <Tick01Icon className="w-4 h-4" />
+              ) : (
+                <span className="uppercase tracking-widest text-[10px]">Añadir al carrito</span>
+              )}
+            </button>
+          </MagneticButton>
         </div>
       </motion.div>
     );
@@ -173,6 +186,7 @@ export function ProductCard({
     >
       <Link
         href={`/tienda/${product.id}`}
+        onMouseEnter={handlePrefetch}
         className="relative aspect-square overflow-hidden bg-[#030303] flex items-center justify-center p-4 sm:p-8"
       >
         <Image
@@ -199,7 +213,7 @@ export function ProductCard({
             >
               {product.category}
             </Link>
-            <Link href={`/tienda/${product.id}`}>
+            <Link href={`/tienda/${product.id}`} onMouseEnter={handlePrefetch}>
               <h3 className="text-sm sm:text-lg font-bold text-white tracking-tight leading-tight line-clamp-3 hover:text-brand transition-colors">
                 {product.name}
               </h3>

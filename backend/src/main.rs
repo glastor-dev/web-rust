@@ -36,7 +36,7 @@ use crate::state::AppState;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let dotenv_result = dotenvy::dotenv();
+    let dotenv_result = dotenvy::dotenv_override();
     if let Err(e) = dotenv_result {
         println!("Failed to load .env file: {:?}", e);
     }
@@ -79,10 +79,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         turnstile_secret_key,
     });
 
+    let frontend_url = env::var("FRONTEND_URL").unwrap_or_else(|_| "http://localhost:3000".to_string());
+    
     let cors = CorsLayer::new()
         .allow_origin(vec![
-            "http://localhost:5173".parse::<HeaderValue>().unwrap(),
-            "http://localhost:3000".parse::<HeaderValue>().unwrap(),
+            frontend_url.parse::<HeaderValue>().unwrap(),
+            "http://localhost:5173".parse::<HeaderValue>().unwrap(), // Mantenemos Vite en local por si acaso
+            "http://localhost:3000".parse::<HeaderValue>().unwrap(), // Next.js en local
         ])
         .allow_methods([Method::POST, Method::GET, Method::PUT, Method::OPTIONS])
         .allow_headers(tower_http::cors::Any);

@@ -340,7 +340,7 @@ export default function Checkout() {
                     </div>
 
                     {/* Captcha Turnstile */}
-                    <div className="border border-white/10 rounded-md bg-[#050505] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 min-h-[90px]">
+                    <div className="border border-white/10 rounded-md bg-[#050505] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 min-h-22.5">
                       <div className="flex items-center gap-4">
                         <ShieldCheck className={`w-6 h-6 ${humanityVerified ? 'text-brand' : 'text-zinc-500'}`} />
                         <div className="flex flex-col">

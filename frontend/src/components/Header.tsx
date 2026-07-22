@@ -62,20 +62,20 @@ export default function Header() {
         }}
         animate={hidden && !mobileMenuOpen ? 'hidden' : 'visible'}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#050505]/80 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
-            : 'bg-transparent border-b border-transparent'
+            ? 'bg-[#050505]/80 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)] py-2'
+            : 'bg-transparent border-b border-transparent py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+        <div className={`max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between transition-all duration-300 ${isScrolled ? 'h-14' : 'h-20'}`}>
           {/* Logo & Tagline */}
           <Link
             href="/"
             className="flex items-center gap-3 group"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="w-10 h-10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 relative">
+            <div className={`flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}>
               <Image
                 src="/images/isologo-copm.webp"
                 alt="Glastor"
@@ -86,7 +86,7 @@ export default function Header() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-black text-xl tracking-tight text-white leading-none">
+              <span className={`font-display font-black tracking-tight text-white leading-none transition-all duration-300 ${isScrolled ? 'text-lg' : 'text-xl'}`}>
                 GLASTOR
               </span>
             </div>

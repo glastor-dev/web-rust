@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   try {
+    const resolvedParams = await params;
     const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-    const response = await fetch(`${url}/api/products/${params.id}`, { cache: 'no-store' });
+    const response = await fetch(`${url}/api/products/${resolvedParams.id}`, { cache: 'no-store' });
     if (!response.ok) {
       return { title: 'Producto no encontrado | Glastor' };
     }

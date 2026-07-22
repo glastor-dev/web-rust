@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
+import { PostHogProvider } from '@/providers/PostHogProvider';
 
 const NoiseOverlay = dynamic(() => import('@/components/ui/NoiseOverlay').then((mod) => mod.NoiseOverlay), { ssr: false });
 const CustomCursor = dynamic(() => import('@/components/ui/CustomCursor').then((mod) => mod.CustomCursor), { ssr: false });
@@ -14,6 +15,7 @@ const CartDrawer = dynamic(() => import('@/components/ui/CartDrawer').then((mod)
 const SmoothScroll = dynamic(() => import('@/components/SmoothScroll').then((mod) => mod.SmoothScroll), { ssr: false });
 const PageTransitionWrapper = dynamic(() => import('@/components/ui/PageTransitionWrapper').then((mod) => mod.PageTransitionWrapper));
 const Toaster = dynamic(() => import('@/components/ui/sonner').then((mod) => mod.Toaster), { ssr: false });
+const SplashScreen = dynamic(() => import('@/components/ui/SplashScreen').then((mod) => mod.SplashScreen), { ssr: false });
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,21 +74,24 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SmoothScroll>
-        <FlashlightEffect />
-        <NoiseOverlay />
-        <CustomCursor />
-        <CartDrawer />
+      <PostHogProvider>
+        <SmoothScroll>
+          <SplashScreen />
+          <FlashlightEffect />
+          <NoiseOverlay />
+          <CustomCursor />
+          <CartDrawer />
 
-        <Header />
+          <Header />
 
-        <main className="relative z-10">
-          <PageTransitionWrapper>{children}</PageTransitionWrapper>
-        </main>
+          <main className="relative z-10">
+            <PageTransitionWrapper>{children}</PageTransitionWrapper>
+          </main>
 
-        <Footer />
-        <Toaster position="bottom-right" />
-      </SmoothScroll>
+          <Footer />
+          <Toaster position="bottom-right" />
+        </SmoothScroll>
+      </PostHogProvider>
     </QueryClientProvider>
   );
 }
