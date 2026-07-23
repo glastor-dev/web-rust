@@ -25,7 +25,7 @@ export function PackoutBanner() {
           className="absolute inset-0 w-full h-[130%] -top-[15%] bg-cover bg-center opacity-80"
           style={{
             backgroundImage:
-              "url('https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_1200/v1784383590/separador_b0cg6z.webp')",
+              "url('https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/separador2_mfqk7f.webp')",
             y: backgroundY,
           }}
         />

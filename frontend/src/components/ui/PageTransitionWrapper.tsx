@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -8,100 +8,75 @@ interface PageTransitionWrapperProps {
   children: React.ReactNode;
 }
 
-const PAGE_VARIANTS = {
-  initial: {
-    opacity: 0,
-    y: 20,
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
-      delay: 0.4, // Wait for curtain to go up
-    } as any,
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: {
-      duration: 0.4,
-      ease: [0.22, 1, 0.36, 1],
-    } as any,
-  },
-};
+const COLUMNS = 5;
 
-const CURTAIN_VARIANTS = {
-  initial: {
-    top: '100%',
-  },
-  animate: {
-    top: '100%',
+const columnVariants = {
+  initial: { scaleY: 1, originY: 0 }, // Anclado arriba, empieza en 100% de altura
+  animate: (i: number) => ({
+    scaleY: 0, // Se encoge hacia arriba
     transition: {
-      duration: 0.8,
+      duration: 0.7,
       ease: [0.76, 0, 0.24, 1],
+      delay: i * 0.05,
     },
-  },
-  exit: {
-    top: '0%',
+  }),
+  exit: (i: number) => ({
+    scaleY: [0, 1], // Arranca invisible, crece hasta 100%
+    originY: 1, // Anclado abajo, crece hacia arriba
     transition: {
-      duration: 0.8,
+      duration: 0.7,
       ease: [0.76, 0, 0.24, 1],
+      delay: i * 0.05,
     },
-  },
+  }),
 };
 
 export function PageTransitionWrapper({ children }: PageTransitionWrapperProps) {
   const pathname = usePathname();
-  const prevPathRef = useRef(pathname);
-
-  const isFirstRender = prevPathRef.current === pathname;
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    prevPathRef.current = pathname;
-  }, [pathname]);
+    setIsMounted(true);
+  }, []);
 
   return (
-    <>
-      <AnimatePresence
-        initial={false}
-        mode="wait"
-        onExitComplete={() => {
-          window.scrollTo(0, 0);
-          document.documentElement.scrollTop = 0;
-          window.dispatchEvent(new Event('force-lenis-reset'));
-        }}
-      >
+    <AnimatePresence
+      mode="wait"
+      onExitComplete={() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        window.dispatchEvent(new Event('force-lenis-reset'));
+      }}
+    >
+      <motion.div key={pathname} className="relative z-0">
+        
+        {/* Columnas Escalonadas (Brutalist Tech Style) */}
+        <div className="fixed inset-0 pointer-events-none z-100 flex w-full h-screen">
+          {[...Array(COLUMNS)].map((_, i) => (
+            <motion.div
+              key={`col-${i}`}
+              custom={i}
+              variants={columnVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="relative flex-1 bg-brand/80 backdrop-blur-sm border-r border-black/10 last:border-r-0"
+            />
+          ))}
+        </div>
+
+        {/* Page Content - Efecto Glitch/Desenfoque al entrar */}
         <motion.div
-          key={pathname}
-          variants={PAGE_VARIANTS}
-          initial={isFirstRender ? false : 'initial'}
-          animate="animate"
-          exit="exit"
-          className="will-change-[opacity,transform]"
+          initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, filter: 'blur(10px)' }}
+          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
+          className="will-change-[opacity,transform,filter] bg-[#050505] min-h-screen origin-top"
         >
           {children}
         </motion.div>
-      </AnimatePresence>
-
-      {/* Curtains - These run outside AnimatePresence so they don't get unmounted with the page */}
-      <motion.div
-        key={`curtain-brand-${pathname}`}
-        initial={{ top: '100%' }}
-        animate={{ top: '-100%' }}
-        exit={{ top: '0%' }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.1 }}
-        className="fixed left-0 w-full h-screen bg-brand z-50 pointer-events-none"
-      />
-      <motion.div
-        key={`curtain-black-${pathname}`}
-        initial={{ top: '100%' }}
-        animate={{ top: '-100%' }}
-        exit={{ top: '0%' }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.2 }}
-        className="fixed left-0 w-full h-screen bg-[#050505] z-50 pointer-events-none shadow-[0_0_50px_rgba(0,0,0,0.5)]"
-      />
-    </>
+        
+      </motion.div>
+    </AnimatePresence>
   );
 }

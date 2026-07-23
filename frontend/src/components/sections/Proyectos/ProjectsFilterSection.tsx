@@ -1,4 +1,7 @@
-import { useMemo } from 'react';
+'use client';
+
+import { useMemo, useState } from 'react';
+import { useScroll, useMotionValueEvent } from 'motion/react';
 import type { ProjectCategory } from '../../../lib/data/caseStudies';
 import { caseStudies } from '../../../lib/data/caseStudies';
 
@@ -20,6 +23,18 @@ export function ProjectsFilterSection({
   activeCategory,
   onSelectCategory,
 }: ProjectsFilterSectionProps) {
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true); // Header se oculta, el filtro sube a top-0
+    } else {
+      setHidden(false); // Header visible, el filtro baja a top-14
+    }
+  });
+
   const counts = useMemo(() => {
     const map: Record<string, number> = { Todos: caseStudies.length };
     for (const study of caseStudies) {
@@ -29,8 +44,13 @@ export function ProjectsFilterSection({
     }
     return map;
   }, []);
+
   return (
-    <section className="py-12 border-b border-white/10 bg-[#050505] sticky top-[72px] z-40 backdrop-blur-xl bg-opacity-90">
+    <section 
+      className={`py-6 border-b border-white/10 bg-[#050505] sticky z-40 transition-all duration-300 ${
+        hidden ? 'top-0' : 'top-14'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
           {/* Filters */}

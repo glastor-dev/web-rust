@@ -1,6 +1,6 @@
 export const TEAM_MEMBERS = [
   {
-    name: 'Marcus Vance',
+    name: 'Andres A. Cardoso',
     role: 'CEO & Arquitecto Jefe',
     image: '/images/team_ceo.png',
     specialty: 'Rust y sistemas distribuidos',

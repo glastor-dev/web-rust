@@ -68,31 +68,6 @@ export default function Proyectos() {
         {filteredStudies.length > 0 ? (
           filteredStudies.map((study, index) => (
             <Fragment key={`study-wrapper-${study.id}`}>
-              {index > 0 && INLINE_CTA_BEFORE_INDEXES.includes(index) ? (
-                <div key={`inline-cta-${index}`} className="py-8">
-                  <div className="max-w-7xl mx-auto px-6 md:px-12">
-                    <div className="border border-white/10 bg-[#080808] p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                      <div>
-                        <p className="text-brand font-mono text-xs uppercase tracking-widest mb-2">
-                          Siguiente paso recomendado
-                        </p>
-                        <p className="text-white font-bold text-lg tracking-tight">
-                          ¿Quieres un proyecto similar para tu stack?
-                        </p>
-                        <p className="text-zinc-400 text-sm mt-1">
-                          Podemos estimar alcance, timeline y ROI real en una sesión técnica corta.
-                        </p>
-                      </div>
-                      <button
-                        onClick={scrollToContact}
-                        className="shrink-0 bg-brand text-black font-bold uppercase tracking-widest text-xs px-6 py-3 hover:bg-white transition-colors"
-                      >
-                        Agendar sesión técnica
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
               <DetailedCaseStudy key={study.id} study={study} index={index} />
             </Fragment>
           ))

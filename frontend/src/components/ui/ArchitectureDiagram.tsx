@@ -14,10 +14,9 @@ interface ArchitectureDiagramProps {
 export function ArchitectureDiagram({ nodes }: ArchitectureDiagramProps) {
   return (
     <div
-      className="w-full bg-black/40 border border-white/5 rounded-md p-6 md:p-8 mb-8 overflow-x-auto touch-pan-x snap-x custom-scrollbar"
-      style={{ scrollbarWidth: 'thin', scrollbarColor: '#3f3f46 transparent' }}
+      className="w-full overflow-x-auto touch-pan-x snap-x pb-8 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-brand/30 transition-colors"
     >
-      <div className="flex items-center gap-2 min-w-max">
+      <div className="flex items-center gap-2 min-w-max pr-[clamp(2rem,5vw,4rem)]">
         {nodes.map((node, index) => {
           // Obtener el icono dinámicamente de HugeIcons
           const Icon = (HugeIcons as any)[node.iconName] || HugeIcons.SquareIcon;

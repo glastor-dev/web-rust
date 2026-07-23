@@ -20,9 +20,7 @@ export default function Nosotros() {
       <MissionVision />
 
       {/* 4. Liderazgo y Núcleo Operativo */}
-      <div className="pt-24 border-t border-white/10">
-        <TeamSection />
-      </div>
+      <TeamSection />
 
       {/* CTA contextual */}
       <CtaAudit />

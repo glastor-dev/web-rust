@@ -2,7 +2,7 @@ import React from 'react';
 
 export const HERO_SLIDES = [
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578762/hero21_mjrcgh.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider1_ore1s2.webp',
     title: (
       <>
         POTENCIA EXTREMA. <br />
@@ -16,7 +16,7 @@ export const HERO_SLIDES = [
     bullets: ['Despacho en 24h', 'Garantía de 3 Años', 'Stock Inmediato'],
   },
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578776/hero22_qwczfo.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider2_wkjsiv.webp',
     title: (
       <>
         CORTES 30% MÁS RÁPIDOS. <br />
@@ -30,7 +30,7 @@ export const HERO_SLIDES = [
     bullets: ['Compra por Volumen', 'Soporte Técnico', 'Línea de Crédito'],
   },
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784578790/hero23_ri3tjh.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider3_xitjvx.webp',
     title: (
       <>
         TORQUE INSUPERABLE. <br />

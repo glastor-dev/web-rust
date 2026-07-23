@@ -110,7 +110,7 @@ export function SystemsExplorer() {
       name: 'Inalambricos',
       badge: '127 productos',
       promise: 'Envío en 24h',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784392987/sis1_lj5pol.webp',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_400/v1784814658/inalambricos500_yjxdmu.jpg',
     },
     {
       name: 'Iluminacion',

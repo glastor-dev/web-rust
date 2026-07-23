@@ -11,19 +11,22 @@ export function FooterBottom() {
 
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center gap-6 relative">
-      {/* Left: Copyright */}
-      <div className="text-zinc-400 text-[10px] md:text-xs font-mono tracking-widest text-center lg:text-left flex flex-col gap-1 order-2 lg:order-1">
-        <span>
-          {new Date().getFullYear()} GLASTOR® es una marca registrada en Argentina (INPI — Reg.
-          4559568 y 4559567, 19/08/2025).
-        </span>
-        <span>
-          © 2010-{new Date().getFullYear()} GLASTOR-DEV, propiedad de GLASTOR®. Todos los
-          derechos reservados.
-        </span>
-        <span className="text-zinc-400">
-          Glastor Core v.{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}
-        </span>
+      {/* Left: Copyright - PC Version */}
+      <div className="hidden lg:flex text-zinc-400 text-xs font-mono tracking-widest flex-col gap-1 order-2 lg:order-1">
+        <span>© 2010-{new Date().getFullYear()} GLASTOR®. Todos los derechos reservados.</span>
+        <span>GLASTOR® es una marca registrada en Argentina ante el INPI (Reg. N° 4559568 y 4559567 del 19/08/2025).</span>
+        <span>Los precios están expresados en moneda local e incluyen IVA.</span>
+        <span>Emitimos Factura Electrónica A y B según corresponda.</span>
+        <span>CUIT 23-25316566-9 | Responsable Inscripto | Ingresos Brutos: Convenio Multilateral</span>
+        <span className="text-zinc-500 mt-2">GLASTOR-DEV (División de Desarrollo) | GLASTOR® Core v.{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}</span>
+      </div>
+
+      {/* Left: Copyright - Mobile Version */}
+      <div className="flex lg:hidden text-zinc-400 text-[10px] sm:text-xs font-mono tracking-widest text-center flex-col gap-1 order-2">
+        <span>© 2010-{new Date().getFullYear()} GLASTOR®. Marca registrada ante el INPI (Reg. 4559568 y 4559567).</span>
+        <span>CUIT 23-25316566-9 | Resp. Inscripto | IB: Convenio Multilateral.</span>
+        <span>Precios en moneda local con IVA. Emitimos Factura A/B.</span>
+        <span className="text-zinc-500 mt-2">GLASTOR-DEV | Core v.{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}</span>
       </div>
 
       {/* Right: Social, Legal & Payments */}
@@ -54,10 +57,12 @@ export function FooterBottom() {
 
       <button
         onClick={scrollToTop}
-        className="absolute top-0 right-0 lg:-top-4 lg:-right-4 w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 hover:border-brand hover:text-brand flex items-center justify-center text-zinc-400 transition-all duration-300 hover:-translate-y-2 group bg-black z-20"
+        className="group absolute top-0 right-0 lg:-top-4 lg:-right-4 w-12 h-12 md:w-14 md:h-14 bg-[#050505] border border-white/10 hover:border-brand flex flex-col items-center justify-center text-zinc-500 hover:text-black transition-colors duration-300 overflow-hidden z-20 rounded-md"
         aria-label="Volver arriba"
       >
-        <ArrowUpIcon size={18} className="group-hover:animate-bounce" />
+        <span className="absolute inset-0 bg-brand w-full h-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+        <ArrowUpIcon size={16} className="relative z-10 mb-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+        <span className="relative z-10 text-[8px] md:text-[9px] font-mono font-bold tracking-widest uppercase">TOP</span>
       </button>
     </div>
   );
