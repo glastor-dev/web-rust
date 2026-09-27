@@ -41,7 +41,7 @@ jobs:
           tar -czf backend-build.tar.gz backend-binary migrations
 
       - name: Copy Build to Server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USERNAME }}
