@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckmarkCircle01Icon } from 'hugeicons-react';
 
 const reasons = [
   {
@@ -78,7 +78,7 @@ const reasons = [
 
 export function WhyGlastorSection() {
   return (
-    <section className="py-24 relative bg-[#080808] border-y border-white/5">
+    <section className="py-24 relative bg-transparent border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-20 text-center">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
@@ -99,10 +99,10 @@ export function WhyGlastorSection() {
           {reasons.map((reason, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: index * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             >
               <h3 className="text-2xl font-extrabold text-white mb-4 tracking-tight">
                 {reason.title}
@@ -111,7 +111,7 @@ export function WhyGlastorSection() {
               <ul className="space-y-3">
                 {reason.points.map((point, pIdx) => (
                   <li key={pIdx} className="flex items-start text-sm text-zinc-300">
-                    <CheckCircle2 className="w-5 h-5 text-brand mr-3 flex-shrink-0 mt-0.5" />
+                    <CheckmarkCircle01Icon className="w-5 h-5 text-brand mr-3 flex-shrink-0 mt-0.5" />
                     <span>{point}</span>
                   </li>
                 ))}

@@ -1,8 +1,8 @@
 export const TEAM_MEMBERS = [
   {
     name: 'Andres A. Cardoso',
-    role: 'CEO & Arquitecto Jefe',
-    image: '/images/team_ceo.png',
+    role: 'Fundador, CEO & Arquitecto Jefe',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1783985243/andres-fundador_o9kzlf.png',
     specialty: 'Rust y sistemas distribuidos',
     bio: 'Lidera la ejecución de arquitecturas críticas y la reducción de latencia en producción.',
   },
@@ -40,8 +40,8 @@ export const TIMELINE_EVENTS = [
   },
   {
     year: '2023',
-    title: 'Girona, España',
-    description: 'Traslado de operaciones HQ a Girona, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
+    title: 'Madrid, España',
+    description: 'Traslado de operaciones HQ a Madrid, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
   },
 ];
 
@@ -79,11 +79,11 @@ export const CORPORATE_INFO = [
   },
   {
     label: 'Sede Actual',
-    value: 'Girona, España (desde 2023)',
+    value: 'Madrid, España (desde 2023)',
   },
   {
     label: 'Áreas de Actividad',
-    value: 'Rust · Python · Diseño Creativo y Contenido',
+    value: 'Rust · Python · WebGL / UI',
   },
 ];
 
@@ -98,11 +98,11 @@ export const COMPANY_STATS = [
     label: 'Año de Fundación',
   },
   {
-    value: 'ESP',
-    label: 'Girona, España - Sede Central',
+    value: 'MAD',
+    label: 'Madrid, España - Sede Central',
   },
   {
     value: '3',
-    label: 'Áreas: Rust - Python - Diseño',
+    label: 'Áreas: Rust - Python - WebGL',
   },
 ];

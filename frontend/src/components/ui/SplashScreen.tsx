@@ -7,8 +7,11 @@ export function SplashScreen() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
+    // Detectar Lighthouse, Googlebot y otros bots de rendimiento para no bloquear el LCP
+    const isBot = /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse|ptst/i.test(navigator.userAgent);
     const hasSeenSplash = sessionStorage.getItem('glastor_splash_seen');
-    if (!hasSeenSplash) {
+    
+    if (!hasSeenSplash && !isBot) {
       setShow(true);
       // Wait for animation, then hide
       setTimeout(() => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useLayoutEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Star, StarHalf, Truck, Heart, ChevronDown } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
@@ -32,6 +33,7 @@ export function ProductCheckout({
 }: ProductCheckoutProps) {
   const addItem = useCartStore((state) => state.addItem);
   const toggleDrawer = useCartStore((state) => state.toggleDrawer);
+  const router = useRouter();
   
   const { toggleItem: toggleWishlistItem, hasItem: hasWishlistItem } = useWishlistStore();
   const isWishlisted = product ? hasWishlistItem(product.id) : false;
@@ -39,6 +41,7 @@ export function ProductCheckout({
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(false);
   const [shippingDate, setShippingDate] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
 
   useLayoutEffect(() => {
     // Shipping Date (today + 3 days)
@@ -143,9 +146,23 @@ export function ProductCheckout({
             {isOutOfStock ? 'AGOTADO' : 'DISPONIBLE'}
           </div>
         </div>
-        <p className="text-brand text-[10px] font-mono font-bold uppercase tracking-widest mb-6">
+        <p className="text-brand text-[10px] font-mono font-bold uppercase tracking-widest mb-4">
           IVA DEL 21% INCLUIDO.
         </p>
+
+        {quantity >= 5 && (
+          <div className="mb-6 p-3 bg-brand/10 border border-brand/40 rounded-sm">
+            <div className="flex items-center gap-2 mb-1">
+              <Star className="w-4 h-4 text-brand" />
+              <span className="text-brand text-xs font-bold uppercase tracking-widest">
+                Nivel Mayorista Activado
+              </span>
+            </div>
+            <p className="text-brand text-sm font-mono font-bold mt-1">
+              Ahorro estimado en esta orden: $ {Math.floor((product.price * quantity) * 0.15).toLocaleString('es-AR')}
+            </p>
+          </div>
+        )}
 
         <hr className="border-zinc-800 mb-6" />
 
@@ -162,12 +179,17 @@ export function ProductCheckout({
 
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <div className="relative w-full sm:w-28">
-            <select className="w-full bg-black border border-zinc-700 text-white font-bold text-sm px-4 py-3.5 rounded-md appearance-none outline-none focus:border-brand">
-              <option>1 UND</option>
-              <option>2 UND</option>
-              <option>3 UND</option>
-              <option>4 UND</option>
-              <option>5+ UND</option>
+            <select
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              className="w-full bg-black border border-zinc-700 text-white font-bold text-sm px-4 py-3.5 rounded-md appearance-none outline-none focus:border-brand"
+            >
+              <option value={1}>1 UND</option>
+              <option value={2}>2 UND</option>
+              <option value={3}>3 UND</option>
+              <option value={4}>4 UND</option>
+              <option value={5}>5 UND (B2B)</option>
+              <option value={10}>10 UND</option>
             </select>
             <ChevronDown className="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400" />
           </div>
@@ -179,17 +201,17 @@ export function ProductCheckout({
                 name: product.name,
                 price: product.price || 0,
                 image: product.image,
-                quantity: 1,
+                quantity: quantity,
               });
               toast.success(`Añadido: ${product.name}`, {
-                description: `Se han añadido 1 unidad(es) a tu orden.`,
+                description: `Se han añadido ${quantity} unidad(es) a tu orden.`,
                 action: {
                   label: 'Ver Orden',
                   onClick: () => toggleDrawer(),
                 },
               });
             }}
-            className="group relative overflow-hidden grow bg-[#050505] border border-brand transition-colors font-extrabold text-sm tracking-widest py-3.5 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group relative overflow-hidden grow bg-transparent border border-brand transition-colors font-extrabold text-sm tracking-widest py-3.5 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="absolute inset-0 bg-brand w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
             <span className="relative z-10 text-brand group-hover:text-black transition-colors duration-300">
@@ -200,6 +222,17 @@ export function ProductCheckout({
 
         <button
           disabled={isOutOfStock}
+          onClick={() => {
+            addItem({
+              id: product.id,
+              name: product.name,
+              price: product.price || 0,
+              image: product.image,
+              quantity: quantity,
+            });
+            // 1-Click Buy: Redirect directly to checkout
+            router.push('/checkout');
+          }}
           className="w-full bg-zinc-800 hover:bg-zinc-700 text-white transition-colors font-bold uppercase text-xs tracking-widest py-4 rounded-md mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           COMPRAR AHORA (1-CLIC)

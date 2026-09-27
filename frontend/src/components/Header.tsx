@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingBag, Heart } from 'lucide-react';
+import { Menu, X, ShoppingBag, Heart, User } from 'lucide-react';
 import { Button } from './reutilizables/button';
 import { useCartStore } from '../store/cartStore';
 import { useWishlistStore } from '../store/wishlistStore';
@@ -44,13 +44,9 @@ export default function Header() {
   });
 
   const navLinks = [
-    /* 
-    { name: 'Qué hacemos', path: '/servicios' },
-    { name: 'Casos', path: '/proyectos' },
-    { name: 'Recursos', path: '/recursos' },
-    */
+    { name: 'Inicio', path: '/' },
     { name: 'Tienda', path: '/tienda' },
-    { name: 'Nosotros', path: '/nosotros' },
+    { name: 'Desarrollo en Rust', path: '/home' },
   ];
 
   return (
@@ -116,6 +112,13 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-4">
               <Link
+                href="/cuenta"
+                aria-label="Mi Cuenta"
+                className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
+              >
+                <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </Link>
+              <Link
                 href="#"
                 aria-label="Ver lista de deseos"
                 className="relative p-2 text-zinc-400 hover:text-white transition-colors group"
@@ -155,6 +158,13 @@ export default function Header() {
 
           {/* Mobile Menu Toggle & Cart */}
           <div className="md:hidden flex items-center gap-4">
+            <Link
+              href="/cuenta"
+              aria-label="Mi Cuenta"
+              className="relative p-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <User className="w-5 h-5" />
+            </Link>
             <Link
               href="#"
               aria-label="Ver lista de deseos"

@@ -2,7 +2,7 @@
 
 export function HeavyDutyFooter() {
   return (
-    <footer className="w-full bg-[#050505] pt-12 border-t-8 border-brand">
+    <footer className="w-full bg-transparent pt-12 border-t-8 border-brand">
       <div className="w-full bg-brand py-6 flex items-center justify-center">
         <h2 className="text-black font-black uppercase text-2xl md:text-4xl tracking-tight italic">
           Nothing but <span className="font-black text-black tracking-tighter">HEAVY DUTY.®</span>

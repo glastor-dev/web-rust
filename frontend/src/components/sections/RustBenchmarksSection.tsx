@@ -77,10 +77,10 @@ export function RustBenchmarksSection() {
                 {advantages.map((adv, idx) => (
                   <motion.li
                     key={idx}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
+                    initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                    whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ delay: idx * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
                     className="flex items-start"
                   >
                     <div className="mt-1 bg-brand/20 p-1 rounded-full mr-4">

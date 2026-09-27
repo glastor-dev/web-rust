@@ -63,7 +63,7 @@ export function ProofSection() {
   const displayedTestimonials = showAll ? testimonials : testimonials.slice(0, 3);
 
   return (
-    <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-y border-white/10 bg-[#050505]">
+    <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-y border-white/10 bg-transparent">
       <SectionHeader
         title="Evidencia Técnica"
         subtitle="Ingeniería que habla por sí sola. Cero fricción comercial."

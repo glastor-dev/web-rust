@@ -121,7 +121,7 @@ export function ModuleGrid() {
                     <span
                       className={`font-mono font-bold ${isSelected ? 'text-brand' : 'text-zinc-300'}`}
                     >
-                      ${module.base_price.toLocaleString()} USD
+                      €{module.base_price.toLocaleString()} EUR
                     </span>
                   </div>
                   <div className="flex flex-col text-right">

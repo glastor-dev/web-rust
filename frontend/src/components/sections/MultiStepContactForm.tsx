@@ -55,7 +55,7 @@ export const MultiStepContactForm = () => {
   return (
     <section
       id="contacto"
-      className="py-24 md:py-32 bg-[#050505] relative z-10 overflow-hidden border-t border-white/5"
+      className="py-24 md:py-32 bg-transparent relative z-10 overflow-hidden border-t border-white/5"
     >
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-brand/5 rounded-full blur-[150px] pointer-events-none z-0" />

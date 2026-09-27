@@ -1,7 +1,7 @@
 import { Product, DUMMY_PRODUCTS } from '../constants/dummyProducts';
 
 export async function getBestsellers(category?: string, limit: number = 8): Promise<{ products: Product[]; total: number }> {
-  const backendUrl = process.env.BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'http://backend:3001' : 'http://127.0.0.1:3001');
+  const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
   let fetchUrl = `${backendUrl}/api/products/bestsellers?limit=${limit}`;
   
   if (category && category.toUpperCase() !== 'TODO') {

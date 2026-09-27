@@ -65,7 +65,7 @@ export default function Legales() {
   };
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-screen bg-[#050505] pt-32 pb-24">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-screen bg-transparent pt-32 pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

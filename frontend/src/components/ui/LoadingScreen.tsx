@@ -44,20 +44,21 @@ export function LoadingScreen() {
     };
   }, []);
 
-  if (phase === 'done') return null;
-
+  // Eliminado el return null directo para que AnimatePresence pueda funcionar
   return (
     <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-99999 bg-[#050505] flex items-center justify-center overflow-hidden"
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        {/* Top panel reveal */}
+      {phase !== 'done' && (
         <motion.div
-          className="absolute top-0 left-0 right-0 bg-[#050505] z-10"
-          initial={{ height: '50%' }}
+          key="loading-screen"
+          className="fixed inset-0 z-[99999] bg-[#050505] flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          {/* Top panel reveal */}
+          <motion.div
+            className="absolute top-0 left-0 right-0 bg-[#050505] z-10"
+            initial={{ height: '50%' }}
           animate={{ height: phase === 'reveal' ? '0%' : '50%' }}
           transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
         />
@@ -141,7 +142,8 @@ export function LoadingScreen() {
             />
           </motion.div>
         </div>
-      </motion.div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }

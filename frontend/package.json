@@ -1,13 +1,16 @@
 {
-  "name": "frontend",
+  "name": "glastor-web",
+  "author": "Glastor",
+  "description": "PROPRIETARY CODE. All rights reserved. Prohibida su copia, distribución o uso sin autorización expresa.",
+  "license": "UNLICENSED",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "browserslist": [
-    "last 2 Chrome versions",
-    "last 2 Firefox versions",
-    "last 2 Safari versions",
-    "last 2 Edge versions"
+    "Chrome >= 100",
+    "Safari >= 15",
+    "Edge >= 100",
+    "Firefox >= 100"
   ],
   "scripts": {
     "dev": "next dev",

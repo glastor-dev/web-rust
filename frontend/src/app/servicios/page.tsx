@@ -4,9 +4,10 @@ import { TrustBar } from '@/components/ui/TrustBar';
 import { ROICalculator } from '@/components/ui/ROICalculator';
 
 import { RustServicesSection } from '@/components/sections/RustServicesSection';
+import { RustBenchmarksSection } from '@/components/sections/RustBenchmarksSection';
+import ServicesListSection from '@/components/sections/ServicesListSection';
 import { ProcessSection } from '@/components/sections/ProcessSection';
 import { GuaranteesSection } from '@/components/sections/GuaranteesSection';
-import { MultiStepContactForm } from '@/components/sections/MultiStepContactForm';
 
 export const metadata: Metadata = {
   title: 'Servicios Industriales B2B | Glastor',
@@ -34,15 +35,20 @@ export default function Servicios() {
         minHeight="min-h-150"
       />
 
-      <TrustBar />
+      <TrustBar variant="tech" />
 
+      {/* 2. Catálogo General de Servicios */}
+      <ServicesListSection />
+
+      {/* 3. Deep Dive en nuestra ventaja tecnológica */}
       <RustServicesSection detailed={true} />
+      <RustBenchmarksSection />
 
+      {/* 4. Metodología de Trabajo */}
       <ProcessSection />
 
+      {/* 5. Acuerdos y Garantías */}
       <GuaranteesSection />
-
-      <MultiStepContactForm />
     </div>
   );
 }

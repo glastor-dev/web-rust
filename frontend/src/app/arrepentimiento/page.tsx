@@ -66,7 +66,7 @@ export default function Arrepentimiento() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] pt-32 pb-24 px-6 md:px-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="min-h-screen bg-transparent pt-32 pb-24 px-6 md:px-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="max-w-3xl mx-auto">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 leading-[0.9]">

@@ -9,6 +9,8 @@ import { useCartStore } from '../../store/cartStore';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MagneticButton } from './MagneticButton';
+import { Bookmark } from 'lucide-react';
+import { useWishlistStore } from '../../store/wishlistStore';
 
 export interface Product {
   id: string;
@@ -40,6 +42,8 @@ export function ProductCard({
 }) {
   const addItem = useCartStore((state) => state.addItem);
   const router = useRouter();
+  const { toggleItem, hasItem } = useWishlistStore();
+  const isSaved = hasItem(product.id);
 
   const handlePrefetch = () => {
     router.prefetch(`/tienda/${product.id}`);
@@ -94,19 +98,30 @@ export function ProductCard({
         whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
         className="group relative flex items-center bg-[#080808] border border-white/5 hover:border-brand/30 transition-colors p-4 gap-6"
       >
-        <Link
-          href={`/tienda/${product.id}`}
-          onMouseEnter={handlePrefetch}
+        <div
           className="relative w-24 h-24 shrink-0 bg-[#030303] flex items-center justify-center p-2 rounded-md overflow-hidden group"
         >
-          <Image
-            src={product.image || '/images/default-tool.png'}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            className="object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 p-2"
-          />
-        </Link>
+          <Link href={`/tienda/${product.id}`} onMouseEnter={handlePrefetch} className="absolute inset-0 z-10">
+            <Image
+              src={product.image || '/images/glastor-logo.webp'}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              className="object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 p-2"
+            />
+          </Link>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleItem(product.id);
+              toast.success(isSaved ? 'Removido de tus listas' : 'Guardado en tus proyectos', { description: product.name });
+            }}
+            className="absolute top-1 right-1 z-20 w-6 h-6 flex items-center justify-center bg-black/60 backdrop-blur-md border border-white/10 rounded-sm hover:border-brand/50 transition-colors"
+          >
+            <Bookmark className={`w-3 h-3 ${isSaved ? 'fill-brand text-brand' : 'text-zinc-400'}`} />
+          </button>
+        </div>
 
         <div className="grow min-w-0">
           <Link
@@ -155,7 +170,7 @@ export function ProductCard({
             <button
               onClick={handleAddToCart}
               disabled={product.stock <= 0 || addState !== 'idle'}
-              className={`h-10 px-6 font-bold text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-30 ${
+              className={`h-10 px-6 font-bold text-sm transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-30 ${
                 addState === 'success' ? 'bg-white text-black' : 'bg-brand text-black hover:bg-white'
               }`}
             >
@@ -180,29 +195,43 @@ export function ProductCard({
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       viewport={{ once: true }}
+      whileHover={{ y: -5, boxShadow: '0 20px 40px -20px rgba(0,255,102,0.15)' }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className="group relative flex flex-col bg-[#080808] border border-white/5 hover:border-brand/30 transition-colors"
     >
-      <Link
-        href={`/tienda/${product.id}`}
-        onMouseEnter={handlePrefetch}
+      <div
         className="relative aspect-square overflow-hidden bg-[#030303] flex items-center justify-center p-4 sm:p-8"
       >
-        <Image
-          src={product.image || '/images/default-tool.png'}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-          className="object-contain p-4 sm:p-8 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-700 ease-out"
-        />
+        <Link href={`/tienda/${product.id}`} onMouseEnter={handlePrefetch} className="absolute inset-0 z-10">
+          <Image
+            src={product.image || '/images/glastor-logo.webp'}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            className="object-contain p-4 sm:p-8 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-700 ease-out"
+          />
+        </Link>
 
         {product.stock <= 0 && (
-          <div className="absolute top-4 right-4 bg-red-500/20 text-red-500 text-[10px] font-mono px-2 py-1 uppercase tracking-widest backdrop-blur-md">
+          <div className="absolute top-4 right-4 z-20 bg-red-500/20 text-red-500 text-[10px] font-mono px-2 py-1 uppercase tracking-widest backdrop-blur-md">
             Agotado
           </div>
         )}
-      </Link>
+        
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleItem(product.id);
+            toast.success(isSaved ? 'Removido de tus listas' : 'Guardado en tus proyectos', { description: product.name });
+          }}
+          className="absolute top-4 left-4 z-20 w-8 h-8 flex items-center justify-center bg-black/40 backdrop-blur-md border border-white/10 rounded-sm hover:border-brand/50 transition-colors group-hover:scale-110"
+        >
+          <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-brand text-brand' : 'text-zinc-400'}`} />
+        </button>
+      </div>
 
       <div className="p-4 sm:p-6 flex flex-col grow">
         <div className="flex justify-between items-start mb-4 grow">
@@ -266,7 +295,7 @@ export function ProductCard({
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0 || addState !== 'idle'}
-                  className={`h-10 px-2 sm:px-4 font-bold text-[10px] sm:text-xs transition-colors flex items-center justify-center rounded-sm shrink-0 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`h-10 px-2 sm:px-4 font-bold text-[10px] sm:text-xs transition-all duration-300 active:scale-95 flex items-center justify-center rounded-sm shrink-0 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
                     addState === 'success'
                       ? 'bg-white text-black'
                       : 'bg-brand text-black hover:bg-white'

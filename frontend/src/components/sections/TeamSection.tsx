@@ -21,11 +21,11 @@ export const TeamSection = () => {
           {teamMembers.map((member, i) => (
             <motion.div
               key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="group relative bg-[#050505] border border-white/10 rounded-md overflow-hidden hover:border-brand/40 hover:shadow-[0_0_30px_rgba(0,255,102,0.05)] transition-all duration-500"
+              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: i * 0.15 }}
+              className="group relative bg-transparent border border-white/10 rounded-md overflow-hidden hover:border-brand/40 hover:shadow-[0_0_30px_rgba(0,255,102,0.05)] transition-all duration-500"
             >
               <div className="aspect-4/5 relative overflow-hidden bg-[#111]">
                 <div className="absolute inset-0 bg-brand/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>

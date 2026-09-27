@@ -59,7 +59,7 @@ export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; n
                     </div>
                     <div className="text-right shrink-0">
                       <p className="text-black font-mono font-bold">
-                        ${module.base_price?.toLocaleString() || 0} USD
+                        €{module.base_price?.toLocaleString() || 0} EUR
                       </p>
                     </div>
                   </div>
@@ -75,7 +75,7 @@ export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; n
                 INVERSIÓN TOTAL ESTIMADA
               </p>
               <p className="text-4xl font-black text-[#00a843]">
-                ${totalInversion.toLocaleString()} USD
+                €{totalInversion.toLocaleString()} EUR
               </p>
               <p className="text-zinc-500 text-[10px] uppercase tracking-widest mt-4">
                 * Los costos de infraestructura Cloud (AWS/GCP) se facturan por separado según

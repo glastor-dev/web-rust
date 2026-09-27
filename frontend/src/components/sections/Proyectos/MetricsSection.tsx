@@ -5,7 +5,7 @@ export function MetricsSection() {
   return (
     <section
       id="funciona"
-      className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-y border-white/10 my-12 bg-[#050505]"
+      className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-y border-white/10 my-12 bg-transparent"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 text-center lg:text-left">
         <div className="lg:col-span-1 flex flex-col justify-center">

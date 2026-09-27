@@ -47,7 +47,7 @@ const CATEGORIES = [
 
 export function TechCategories() {
   return (
-    <section className="w-full bg-[#050505] py-24 relative border-t border-white/5">
+    <section className="w-full bg-transparent py-24 relative border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>

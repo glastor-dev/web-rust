@@ -6,7 +6,7 @@ import { ArrowRight01Icon, ZapIcon, BatteryFullIcon, Shield01Icon } from 'hugeic
 
 export function FeaturedInnovation() {
   return (
-    <section className="w-full bg-[#050505] py-24 relative overflow-hidden">
+    <section className="w-full bg-transparent py-24 relative overflow-hidden">
       {/* Background gradients */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/5 blur-[120px] pointer-events-none" />
 

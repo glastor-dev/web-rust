@@ -7,7 +7,7 @@ import { COMPANY_STATS } from '@/lib/constants/aboutData';
 
 export function CompanyStatsHero() {
   return (
-    <section className="relative w-full min-h-150 flex flex-col justify-center overflow-hidden bg-[#050505]">
+    <section className="relative w-full min-h-150 flex flex-col justify-center overflow-hidden bg-transparent">
       {/* Subtle Background Layer / Filter */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
@@ -25,27 +25,42 @@ export function CompanyStatsHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start lg:items-center">
           {/* Columna Izquierda: Texto y CTA */}
           <div className="flex flex-col items-start">
-            <div className="bg-brand text-black font-mono text-[10px] font-bold tracking-widest px-3 py-1 mb-8 rounded-sm inline-block">
+            <motion.div 
+              initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)' }}
+              animate={{ opacity: 1, clipPath: 'inset(0% 0 0 0)' }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              className="bg-brand text-black font-mono text-[10px] font-bold tracking-widest px-3 py-1 mb-8 rounded-sm inline-block"
+            >
               Sobre Nosotros
-            </div>
+            </motion.div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-8 text-white">
+            <motion.h1 
+              initial={{ y: '100%', clipPath: 'inset(100% 0 -100% 0)' }}
+              animate={{ y: 0, clipPath: 'inset(0% 0 -100% 0)' }}
+              transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
+              className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-8 text-white overflow-visible"
+            >
               Somos <br />
               <span className="text-brand">Glastor®</span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-6 font-medium max-w-xl">
-              Desarrollador apasionado por <strong>Rust, Python y el diseño creativo</strong>. Desde
-              2010 construyendo tecnología avanzada y contenido con un enfoque en la excelencia
-              visual y técnica.
-            </p>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+              className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-6 font-medium max-w-xl"
+            >
+              Ingeniería de software en estado puro. Desde 2010, arquitecto sistemas escalables en <strong>Rust y Python</strong> con un enfoque obsesivo en la precisión visual y el rendimiento técnico. Base: Madrid / Remoto Global.
+            </motion.p>
 
-            <p className="text-zinc-500 text-sm md:text-base leading-relaxed mb-10 max-w-xl">
-              Operamos con una base centralizada desde España, ofreciendo capacidades técnicas
-              excepcionales respaldadas por los mejores estándares de la industria.
-            </p>
 
-            <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+
+            <motion.div 
+              initial={{ opacity: 0, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.4 }}
+              className="flex flex-wrap items-center gap-4 w-full sm:w-auto"
+            >
               <Button
                 size="lg"
                 className="bg-brand hover:bg-brand/90 text-black font-bold tracking-widest text-xs h-12 px-8 rounded-sm"
@@ -60,16 +75,16 @@ export function CompanyStatsHero() {
               >
                 ventas@glastor.es <ArrowRightIcon size={14} />
               </a>
-            </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:mt-16">
             {COMPANY_STATS.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * (i + 1) }}
+                initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+                animate={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+                transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.3 + 0.1 * i }}
                 className={`border p-8 rounded-xl flex flex-col justify-center min-h-40 transition-colors ${
                   stat.highlight
                     ? 'border-brand/20 bg-brand/5'

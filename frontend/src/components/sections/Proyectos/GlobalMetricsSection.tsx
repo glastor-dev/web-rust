@@ -30,7 +30,7 @@ const metrics = [
 
 export function GlobalMetricsSection() {
   return (
-    <section className="py-24 relative bg-[#050505] border-t border-white/10">
+    <section className="py-24 relative bg-transparent border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-20 text-center">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
@@ -45,10 +45,10 @@ export function GlobalMetricsSection() {
           {metrics.map((metric, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: index * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
               className="flex flex-col items-center group cursor-default"
             >
               <div className="text-6xl md:text-7xl font-black text-white group-hover:text-brand transition-colors duration-500 mb-4 font-mono tracking-tighter">

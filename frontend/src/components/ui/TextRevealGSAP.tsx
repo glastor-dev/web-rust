@@ -77,17 +77,17 @@ export function TextRevealGSAP({
     content = words.map((word, i) => (
       <span
         key={i}
-        className="inline-block overflow-hidden mr-[0.25em] align-bottom pb-[0.1em] pt-[0.1em]"
+        className="inline-block overflow-hidden mr-[0.25em] align-bottom pb-[0.1em] pt-[0.1em] pr-[0.1em]"
       >
-        <span className="reveal-inner inline-block origin-bottom-left will-change-transform">
+        <span className="reveal-inner inline-block origin-bottom-left will-change-transform pr-[0.05em]">
           {word}
         </span>
       </span>
     ));
   } else if (lines) {
     content = lines.map((line, i) => (
-      <span key={i} className="block overflow-hidden pb-[0.1em] pt-[0.1em]">
-        <span className="reveal-inner block origin-bottom-left will-change-transform">{line}</span>
+      <span key={i} className="block overflow-hidden pb-[0.1em] pt-[0.1em] pr-[0.2em] -mr-[0.2em]">
+        <span className="reveal-inner block origin-bottom-left will-change-transform pr-[0.1em]">{line}</span>
       </span>
     ));
   }

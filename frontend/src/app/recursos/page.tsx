@@ -8,7 +8,7 @@ import { Clock, ArrowUpRight, BookOpen, Terminal, Mail, ChevronDown } from 'luci
 import Link from 'next/link';
 
 // Tipos
-type TechFilter = 'todos' | 'rust' | 'docker' | 'oxc' | 'mongodb';
+type TechFilter = 'todos' | 'rust' | 'docker' | 'kubernetes' | 'postgresql';
 
 interface Article {
   id: string;
@@ -58,22 +58,22 @@ const MOCK_DATA: EditorialItem[] = [
     pillar: 'optimizar',
   },
   {
-    id: 'oxc-ast',
-    title: 'Parseo de AST ultrarrápido con Oxc en proyectos monolíticos JS',
+    id: 'k8s-rust',
+    title: 'Orquestación Zero-Downtime de microservicios Rust en Kubernetes',
     excerpt:
-      'Sustituyendo Babel y ESLint por Oxc para reducir los tiempos de CI/CD de 20 minutos a 4 segundos.',
-    tech: 'oxc',
+      'Patrones avanzados de probes (Liveness/Readiness), HPA y Graceful Shutdown en arquitecturas distribuidas.',
+    tech: 'kubernetes',
     readTime: '10 min',
     date: '02 Jun, 2026',
     tags: ['#Tooling', '#CI/CD'],
     pillar: 'evaluar',
   },
   {
-    id: 'mongodb-rust-driver',
-    title: 'Optimizando el Rust Driver de MongoDB para 100k RPS',
+    id: 'postgresql-rust-sqlx',
+    title: 'Optimizando SQLx y PostgreSQL para 100k RPS',
     excerpt:
-      'Configuración avanzada de Connection Pools y serialización BSON paralela para sistemas de alta concurrencia.',
-    tech: 'mongodb',
+      'Configuración avanzada de Connection Pools y prepared statements concurrentes para alta disponibilidad.',
+    tech: 'postgresql',
     readTime: '15 min',
     date: '18 May, 2026',
     tags: ['#Database', '#Scaling'],
@@ -129,8 +129,8 @@ const TECH_FILTERS: { id: TechFilter; label: string }[] = [
   { id: 'todos', label: 'Todos' },
   { id: 'rust', label: 'Rust' },
   { id: 'docker', label: 'Docker' },
-  { id: 'oxc', label: 'Oxc' },
-  { id: 'mongodb', label: 'MongoDB' },
+  { id: 'kubernetes', label: 'Kubernetes' },
+  { id: 'postgresql', label: 'PostgreSQL' },
 ];
 
 export default function Recursos() {
@@ -168,7 +168,7 @@ export default function Recursos() {
   }, {});
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 bg-[#050505] min-h-screen pb-32">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 bg-transparent min-h-screen pb-32">
       <PageHero
         title={
           <div>
@@ -264,8 +264,8 @@ export default function Recursos() {
                 { id: 'todos', label: 'Todos' },
                 { id: 'rust', label: 'Rust' },
                 { id: 'docker', label: 'Docker' },
-                { id: 'oxc', label: 'Oxc' },
-                { id: 'mongodb', label: 'MongoDB' },
+                { id: 'kubernetes', label: 'Kubernetes' },
+                { id: 'postgresql', label: 'PostgreSQL' },
               ].map((f) => (
                 <button
                   key={f.id}

@@ -16,13 +16,15 @@ const SmoothScroll = dynamic(() => import('@/components/SmoothScroll').then((mod
 const PageTransitionWrapper = dynamic(() => import('@/components/ui/PageTransitionWrapper').then((mod) => mod.PageTransitionWrapper));
 const Toaster = dynamic(() => import('@/components/ui/sonner').then((mod) => mod.Toaster), { ssr: false });
 const SplashScreen = dynamic(() => import('@/components/ui/SplashScreen').then((mod) => mod.SplashScreen), { ssr: false });
+const SocialProof = dynamic(() => import('@/components/ui/SocialProof').then((mod) => mod.SocialProof), { ssr: false });
+const CommandPalette = dynamic(() => import('@/components/ui/CommandPalette').then((mod) => mod.CommandPalette), { ssr: false });
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 5,
-      refetchInterval: 1000 * 10,
-      refetchOnWindowFocus: true,
+      staleTime: 1000 * 30, // 30 segundos
+      refetchOnWindowFocus: false,
+      retry: 1, // Reducir reintentos para no saturar si hay error
     },
   },
 });
@@ -81,6 +83,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <NoiseOverlay />
           <CustomCursor />
           <CartDrawer />
+          <CommandPalette />
 
           <Header />
 
@@ -90,6 +93,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
           <Footer />
           <Toaster position="bottom-right" />
+          <SocialProof />
         </SmoothScroll>
       </PostHogProvider>
     </QueryClientProvider>

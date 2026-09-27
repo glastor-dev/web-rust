@@ -57,7 +57,7 @@ const categories = [
 
 export function TechStackSection() {
   return (
-    <section className="py-24 relative bg-[#050505]">
+    <section className="py-24 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-20 text-center">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">

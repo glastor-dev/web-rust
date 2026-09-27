@@ -18,7 +18,7 @@ export function LeadMagnet() {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10 relative overflow-hidden bg-[#050505]">
+    <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto border-t border-white/10 relative overflow-hidden bg-transparent">
       {/* Background Decor */}
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand/5 via-[#050505] to-[#050505] pointer-events-none" />
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand/10 rounded-full blur-[120px] pointer-events-none" />
@@ -110,7 +110,7 @@ export function LeadMagnet() {
                       placeholder="tu@empresa.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-[#050505] border border-white/20 text-white px-4 py-4 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all placeholder:text-zinc-600 font-mono text-sm"
+                      className="w-full bg-transparent border border-white/20 text-white px-4 py-4 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all placeholder:text-zinc-600 font-mono text-sm"
                     />
                   </div>
                   <Button

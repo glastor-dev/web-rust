@@ -21,11 +21,33 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/images/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/favicon/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.BACKEND_URL || (process.env.NODE_ENV === 'production' ? 'http://backend:3001' : 'http://127.0.0.1:3001')}/api/:path*`,
+        destination: `${process.env.BACKEND_URL || 'http://127.0.0.1:3001'}/api/:path*`,
       },
     ];
   },

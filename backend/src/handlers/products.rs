@@ -13,7 +13,7 @@ use std::sync::Arc;
 use crate::{
     models::{
         BestsellersParams, BestsellersResponse, CreateProductRequest, Product, ProductOption,
-        ProductVariant, SyncVariantsRequest, UpdateProductRequest,
+        ProductVariant, SyncVariantsRequest, UpdateProductRequest, SearchParams,
     },
     services::auth::AdminClaims,
     state::{AppError, AppState},
@@ -23,6 +23,38 @@ pub async fn get_products(State(state): State<Arc<AppState>>) -> Result<Json<Vec
     let products = sqlx::query_as::<_, Product>("SELECT * FROM products")
         .fetch_all(&state.db_pool)
         .await?;
+
+    Ok(Json(products))
+}
+
+pub async fn search_products(
+    State(state): State<Arc<AppState>>,
+    Query(params): Query<SearchParams>,
+) -> Result<Json<Vec<Product>>, AppError> {
+    let query = format!("%{}%", params.q);
+
+    // Búsqueda Full-Text usando pg_trgm (fuzzy match) o tsvector
+    // Hacemos un JOIN con variantes (opcional, pero con un EXISTS para buscar SKU es muy potente)
+    let products = sqlx::query_as::<_, Product>(
+        r#"
+        SELECT p.* 
+        FROM products p
+        WHERE 
+            p.search_vector @@ plainto_tsquery('spanish', unaccent($1))
+            OR unaccent(p.name) ILIKE unaccent($2)
+            OR EXISTS (
+                SELECT 1 FROM product_variants pv 
+                WHERE pv.product_id = p.id AND pv.sku ILIKE $2
+            )
+        ORDER BY 
+            ts_rank(p.search_vector, plainto_tsquery('spanish', unaccent($1))) DESC
+        LIMIT 20
+        "#,
+    )
+    .bind(&params.q)
+    .bind(&query)
+    .fetch_all(&state.db_pool)
+    .await?;
 
     Ok(Json(products))
 }

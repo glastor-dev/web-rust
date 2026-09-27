@@ -39,44 +39,12 @@ export function PageTransitionWrapper({ children }: PageTransitionWrapperProps) 
     setIsMounted(true);
   }, []);
 
-  return (
-    <AnimatePresence
-      mode="wait"
-      onExitComplete={() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        window.dispatchEvent(new Event('force-lenis-reset'));
-      }}
-    >
-      <motion.div key={pathname} className="relative z-0">
-        
-        {/* Columnas Escalonadas (Brutalist Tech Style) */}
-        <div className="fixed inset-0 pointer-events-none z-100 flex w-full h-screen">
-          {[...Array(COLUMNS)].map((_, i) => (
-            <motion.div
-              key={`col-${i}`}
-              custom={i}
-              variants={columnVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="relative flex-1 bg-brand/80 backdrop-blur-sm border-r border-black/10 last:border-r-0"
-            />
-          ))}
-        </div>
+  useEffect(() => {
+    // Reset scroll and lenis on navigation
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    window.dispatchEvent(new Event('force-lenis-reset'));
+  }, [pathname]);
 
-        {/* Page Content - Efecto Glitch/Desenfoque al entrar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, filter: 'blur(10px)' }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
-          className="will-change-[opacity,transform,filter] bg-[#050505] min-h-screen origin-top"
-        >
-          {children}
-        </motion.div>
-        
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <div className="relative z-0 min-h-screen bg-[#050505]">{children}</div>;
 }

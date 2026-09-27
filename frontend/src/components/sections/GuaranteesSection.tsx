@@ -44,7 +44,7 @@ const guarantees = [
 
 export function GuaranteesSection() {
   return (
-    <section className="py-24 relative bg-[#050505] border-t border-white/5">
+    <section className="py-24 relative bg-transparent border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-20 text-center">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
@@ -59,10 +59,10 @@ export function GuaranteesSection() {
           {guarantees.map((guarantee, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: index * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
               className="glass-panel p-8 md:p-10 border-editorial group hover:border-brand/30 transition-colors"
             >
               <h3 className="text-2xl font-extrabold tracking-tight text-white mb-6 border-b border-white/10 pb-4">

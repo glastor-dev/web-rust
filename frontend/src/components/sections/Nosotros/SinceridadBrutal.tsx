@@ -21,7 +21,7 @@ const noHacemos = [
 
 export function SinceridadBrutal() {
   return (
-    <section className="py-24 border-y border-white/10 bg-[#050505]">
+    <section className="py-24 border-y border-white/10 bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <SectionHeader title="Sinceridad Brutal" subtitle="Lo que JAMÁS Haremos" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">

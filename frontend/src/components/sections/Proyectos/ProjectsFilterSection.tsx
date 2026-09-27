@@ -47,7 +47,7 @@ export function ProjectsFilterSection({
 
   return (
     <section 
-      className={`py-6 border-b border-white/10 bg-[#050505] sticky z-40 transition-all duration-300 ${
+      className={`py-6 border-b border-white/10 bg-[#050505]/95 backdrop-blur-sm sticky z-40 transition-all duration-300 ${
         hidden ? 'top-0' : 'top-14'
       }`}
     >
@@ -73,25 +73,7 @@ export function ProjectsFilterSection({
             ))}
           </div>
 
-          {/* Quick Stats */}
-          <div className="flex flex-wrap gap-6 text-sm font-mono text-zinc-400 border-l border-white/10 pl-6">
-            <div>
-              <div className="text-white font-bold text-lg">150+</div>
-              <div className="text-xs">proyectos</div>
-            </div>
-            <div>
-              <div className="text-brand font-bold text-lg">99.97%</div>
-              <div className="text-xs">uptime</div>
-            </div>
-            <div>
-              <div className="text-brand font-bold text-lg">85%</div>
-              <div className="text-xs">- latencia</div>
-            </div>
-            <div>
-              <div className="text-brand font-bold text-lg">60%</div>
-              <div className="text-xs">ahorro infra</div>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>

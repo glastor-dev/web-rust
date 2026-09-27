@@ -10,7 +10,7 @@ export function EvolutionTimeline() {
         Línea de Tiempo
       </div>
 
-      <h2 className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-16 text-white max-w-4xl">
+      <h2 className="text-fluid-h2 font-extrabold tracking-tight leading-[0.85] mb-16 text-white max-w-4xl">
         Una Historia <br />
         <span className="text-zinc-500">de Evolución</span>
       </h2>
@@ -19,10 +19,10 @@ export function EvolutionTimeline() {
         {timelineEvents.map((item, index) => (
           <motion.div
             key={item.year}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)' }}
+            whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0 0)' }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ delay: index * 0.1, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             className="border border-white/10 hover:border-brand/50 transition-colors p-8 rounded-xl flex flex-col bg-[#080808]"
           >
             <span className="text-brand font-mono text-sm font-bold uppercase tracking-widest mb-6">

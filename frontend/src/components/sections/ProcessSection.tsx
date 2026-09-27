@@ -93,15 +93,14 @@ export function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start center', 'end center'],
+    offset: ['start start', 'end end'],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-
   return (
-    <section className="py-24 relative bg-[#050505] overflow-hidden">
+    <section ref={containerRef} className="py-24 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="mb-24 text-center">
+        {/* Header estático normal */}
+        <div className="mb-16 md:mb-24 text-center">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
             Cómo trabajamos
           </div>
@@ -116,69 +115,119 @@ export function ProcessSection() {
           </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto" ref={containerRef}>
-          {/* Animated vertical line */}
-          <div className="absolute left-[27px] md:left-1/2 md:-ml-[1px] top-0 bottom-0 w-[2px] bg-white/5">
-            <motion.div className="w-full bg-brand origin-top" style={{ height: lineHeight }} />
-          </div>
-
-          <div className="space-y-12 md:space-y-24 relative z-10">
-            {steps.map((step, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <div
-                  key={index}
-                  className={`flex flex-col md:flex-row relative ${isEven ? 'md:flex-row-reverse' : ''}`}
-                >
-                  {/* Timeline Node */}
-                  <div className="absolute left-0 md:left-1/2 w-14 h-14 rounded-full bg-[#050505] border-2 border-zinc-800 flex items-center justify-center -ml-[0px] md:-ml-[28px] mt-2 md:mt-0 z-20 group transition-colors duration-300 hover:border-brand">
-                    <span className="font-mono text-lg font-bold text-zinc-500 group-hover:text-brand transition-colors">
-                      {step.num}
-                    </span>
-                  </div>
-
-                  {/* Content Box */}
-                  <motion.div
-                    initial={{ opacity: 0, x: isEven ? 50 : -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: '-100px' }}
-                    transition={{ duration: 0.6, type: 'spring' }}
-                    className={`ml-20 md:ml-0 md:w-1/2 ${isEven ? 'md:pl-16' : 'md:pr-16'} pt-2`}
-                  >
-                    <div className="glass-panel p-8 border-editorial group hover:border-brand/30 transition-colors">
-                      <div className="text-brand font-mono text-sm mb-4 uppercase tracking-widest border-b border-white/5 pb-2 inline-block">
-                        Duración: {step.duration}
-                      </div>
-                      <h3 className="text-2xl font-extrabold text-white mb-4">{step.title}</h3>
-                      <p className="text-zinc-400 mb-6">{step.description}</p>
-
-                      <div className="mb-6">
-                        <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-3">
-                          Qué hacemos:
-                        </h4>
-                        <ul className="space-y-2">
-                          {step.points.map((pt, i) => (
-                            <li key={i} className="text-sm text-zinc-300 flex items-start">
-                              <span className="text-brand mr-2 mt-0.5">-</span> {pt}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="bg-brand/5 p-4 border-l-2 border-brand">
-                        <h4 className="text-xs font-mono text-brand uppercase tracking-widest mb-1">
-                          Entregable:
-                        </h4>
-                        <p className="text-sm text-zinc-300">{step.deliverable}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
+        {/* Añadimos un padding-bottom alto para que el usuario tenga espacio para scrollear la última carta y verla apilada */}
+        <div className="relative w-full max-w-4xl mx-auto pb-[20vh]">
+          {steps.map((step, index) => {
+            // El objetivo de escala: las primeras cartas se encogen un poco más que las últimas.
+            const targetScale = 1 - (steps.length - index) * 0.05;
+            
+            // Calculamos en qué rango del scrollYProgress debería empezar a encogerse esta carta
+            // Usamos una interpolación aproximada basada en el índice.
+            const rangeStart = index / steps.length;
+            const rangeEnd = rangeStart + 1 / steps.length;
+            const isLast = index === steps.length - 1;
+            
+            return (
+              <Card
+                key={index}
+                index={index}
+                step={step}
+                progress={scrollYProgress}
+                range={[rangeStart, 1]}
+                targetScale={targetScale}
+                isLast={isLast}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
+  );
+}
+
+interface CardProps {
+  index: number;
+  step: typeof steps[0];
+  progress: any;
+  range: number[];
+  targetScale: number;
+  isLast: boolean;
+}
+
+function Card({ index, step, progress, range, targetScale, isLast }: CardProps) {
+  // Animamos la escala a medida que el usuario sigue bajando
+  // La última carta no debe encogerse
+  const scale = useTransform(progress, range, [1, isLast ? 1 : targetScale]);
+  
+  // En lugar de hacer toda la carta transparente (lo que revela las cartas de atrás),
+  // animamos un overlay negro para dar el efecto de profundidad/sombra sin perder opacidad.
+  // La última carta no debe oscurecerse
+  const overlayOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.7]);
+
+  return (
+    <div
+      className="sticky flex items-start justify-center w-full"
+      style={{
+        // Aquí está la magia principal: Cada carta se frena en un top diferente 
+        // para dejar ver el borde de la carta anterior.
+        top: `calc(15vh + ${index * 35}px)`,
+        // Solo añadimos margen a las cartas que no son la última, para no generar un padding gigante al final.
+        marginBottom: isLast ? '0' : '50vh',
+      }}
+    >
+      <motion.div
+        style={{ scale }}
+        className="relative w-full border border-white/10 hover:border-brand/30 bg-[#0a0a0a] p-8 md:p-12 shadow-2xl origin-top"
+      >
+        {/* Overlay para oscurecer la carta sin hacerla transparente */}
+        <motion.div 
+          className="absolute inset-0 bg-black pointer-events-none z-0"
+          style={{ opacity: overlayOpacity }}
+        />
+        <div className="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12">
+          {/* Columna Izquierda (Número y Título) */}
+          <div className="md:w-1/3 shrink-0">
+            <div className="text-brand font-mono text-sm mb-4 uppercase tracking-widest border-b border-white/5 pb-2 inline-block">
+              Fase {step.num}
+            </div>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
+              {step.title}
+            </h3>
+            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
+              Duración estimada:
+              <br />
+              <span className="text-zinc-300">{step.duration}</span>
+            </p>
+          </div>
+
+          {/* Columna Derecha (Contenido) */}
+          <div className="md:w-2/3 flex flex-col justify-center">
+            <p className="text-zinc-400 mb-8 text-lg font-light leading-relaxed">
+              {step.description}
+            </p>
+
+            <div className="mb-8">
+              <h4 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
+                Puntos Clave:
+              </h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {step.points.map((pt, i) => (
+                  <li key={i} className="text-sm text-zinc-300 flex items-start">
+                    <span className="text-brand mr-2 mt-0.5">▹</span> {pt}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-brand/5 p-5 border-l-2 border-brand/50">
+              <h4 className="text-xs font-mono text-brand uppercase tracking-widest mb-2">
+                Output / Entregable:
+              </h4>
+              <p className="text-sm text-zinc-300">{step.deliverable}</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
   );
 }

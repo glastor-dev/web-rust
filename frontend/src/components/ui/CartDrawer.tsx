@@ -5,11 +5,24 @@ import { X, ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '../../store/cartStore';
 import { ScrambleText } from '@/components/ui/ScrambleText';
+import { useProductsQuery } from '@/lib/api/queries';
+import { toast } from 'sonner';
 
 export function CartDrawer() {
-  const { items, isOpen, closeDrawer, removeItem, updateQuantity } = useCartStore();
+  const { items, isOpen, closeDrawer, removeItem, updateQuantity, addItem } = useCartStore();
+
+  const { data: products = [] } = useProductsQuery();
+  // Filter cross-sell accessories (e.g., cheap items not already in cart)
+  const accessories = products
+    .filter((p) => p.price < 50000 && !items.find((i) => i.id === p.id))
+    .slice(0, 3);
 
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const GOAL = 1000000; // 1.000.000 ARS para ser mayorista
+  const progress = Math.min((subtotal / GOAL) * 100, 100);
+  const remaining = Math.max(GOAL - subtotal, 0);
+  const isGoalReached = subtotal >= GOAL;
 
   return (
     <AnimatePresence>
@@ -33,20 +46,44 @@ export function CartDrawer() {
             className="fixed top-0 right-0 w-full md:w-120 h-full bg-[#050505] border-l border-white/10 z-100 flex flex-col shadow-2xl"
           >
             {/* Header del Cart */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10 bg-[#0a0a0a]">
-              <div className="flex items-center gap-3">
-                <ShoppingBag className="w-5 h-5 text-white" />
-                <h2 className="text-sm font-bold uppercase tracking-wider text-white mt-1">
-                  CESTA DE COMPRA
-                </h2>
+            <div className="flex flex-col p-6 border-b border-white/10 bg-[#0a0a0a]">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <ShoppingBag className="w-5 h-5 text-white" />
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-white mt-1">
+                    CESTA DE COMPRA
+                  </h2>
+                </div>
+                <button
+                  onClick={closeDrawer}
+                  aria-label="Cerrar carrito"
+                  className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/5 rounded-md transition-colors"
+                >
+                  <X className="w-4 h-4 text-zinc-400" />
+                </button>
               </div>
-              <button
-                onClick={closeDrawer}
-                aria-label="Cerrar carrito"
-                className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/5 rounded-md transition-colors"
-              >
-                <X className="w-4 h-4 text-zinc-400" />
-              </button>
+
+              {/* Progress Bar B2B */}
+              <div className="w-full">
+                <div className="flex justify-between items-end mb-2">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+                    Nivel Mayorista (15% OFF)
+                  </span>
+                  <span className="text-xs font-bold text-brand font-mono">
+                    {isGoalReached 
+                      ? '¡NIVEL ALCANZADO!' 
+                      : `Faltan $ ${remaining.toLocaleString('es-AR')}`}
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className={`h-full ${isGoalReached ? 'bg-brand' : 'bg-brand/60'} shadow-[0_0_10px_rgba(0,255,102,0.3)]`}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Content / Items */}
@@ -133,6 +170,38 @@ export function CartDrawer() {
                   ))
                 )}
               </AnimatePresence>
+
+              {/* UPSELL SECTION */}
+              {accessories.length > 0 && (
+                <div className="mt-8 pt-8 border-t border-white/5">
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">
+                    Agrega accesorios frecuentes:
+                  </h4>
+                  <div className="flex flex-col gap-3">
+                    {accessories.map((product) => (
+                      <div key={product.id} className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-md p-2 hover:border-brand/30 transition-colors">
+                        <div className="w-12 h-12 bg-[#050505] p-1 rounded">
+                          <img src={product.image || '/images/default-tool.png'} alt={product.name} className="w-full h-full object-contain grayscale hover:grayscale-0" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] font-bold text-white truncate">{product.name}</p>
+                          <p className="text-[10px] font-mono text-brand">${product.price.toLocaleString('es-AR')}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            addItem({ id: product.id, name: product.name, price: product.price, image: product.image, quantity: 1 });
+                            toast.success(`Añadido al carrito`);
+                          }}
+                          className="w-8 h-8 flex items-center justify-center bg-brand text-black hover:bg-white rounded transition-colors"
+                          aria-label="Agregar accesorio"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Footer / Resumen */}
@@ -156,6 +225,15 @@ export function CartDrawer() {
                   </span>
                 </div>
 
+                {isGoalReached && (
+                  <div className="flex justify-between items-center mb-6">
+                    <span className="text-xs font-bold text-brand">Bonificación B2B (15%)</span>
+                    <span className="font-mono text-sm font-bold text-brand">
+                      -$ {(subtotal * 0.15).toLocaleString('es-AR')}
+                    </span>
+                  </div>
+                )}
+
                 <hr className="border-white/5 mb-6" />
 
                 <div className="flex justify-between items-end border-t border-white/10 pt-6 mb-8">
@@ -163,7 +241,8 @@ export function CartDrawer() {
                     TOTAL A PAGAR
                   </span>
                   <ScrambleText
-                    text={`$ ${subtotal.toLocaleString('es-AR')}`}
+                    key={isGoalReached ? 'b2b' : 'regular'}
+                    text={`$ ${isGoalReached ? (subtotal * 0.85).toLocaleString('es-AR') : subtotal.toLocaleString('es-AR')}`}
                     className="font-mono text-xl font-black text-brand"
                     duration={800}
                   />

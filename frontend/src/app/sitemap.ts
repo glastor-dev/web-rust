@@ -4,12 +4,20 @@ import { DUMMY_PRODUCTS, Product } from '@/lib/constants/dummyProducts';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://glastor.es';
 
-  // Static routes
-  const routes = ['', '/tienda', '/nosotros', '/checkout'].map((route) => ({
+  // SILO 1: Tienda B2B / Distribución
+  const storeRoutes = ['', '/tienda', '/checkout'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    priority: route === '' ? 1.0 : 0.8,
+  }));
+
+  // SILO 2: Agencia de Ingeniería B2B
+  const agencyRoutes = ['/home', '/servicios', '/proyectos', '/nosotros', '/recursos', '/arquitectura'].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString().split('T')[0],
+    changeFrequency: 'weekly' as const,
+    priority: route === '/home' ? 0.9 : 0.8,
   }));
 
   // Dynamic products
@@ -20,5 +28,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...routes, ...productRoutes];
+  return [...storeRoutes, ...agencyRoutes, ...productRoutes];
 }

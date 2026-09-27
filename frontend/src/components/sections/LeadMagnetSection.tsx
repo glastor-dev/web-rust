@@ -44,7 +44,7 @@ export const LeadMagnetSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-[#050505] text-brand font-mono text-[10px] tracking-widest mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-transparent text-brand font-mono text-[10px] tracking-widest mb-8"
             >
               <FileText className="w-3 h-3" />
               Whitepaper Técnico Gratuito
@@ -99,7 +99,7 @@ export const LeadMagnetSection = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
-            className="order-1 lg:order-2 bg-[#050505] p-8 md:p-12 border border-brand/30 shadow-[20px_20px_0px_rgba(0,0,0,0.2)]"
+            className="order-1 lg:order-2 bg-transparent p-8 md:p-12 border border-brand/30 shadow-[20px_20px_0px_rgba(0,0,0,0.2)]"
           >
             <h3 className="text-white text-2xl font-bold tracking-tight mb-2">
               Descargar Guía Técnica

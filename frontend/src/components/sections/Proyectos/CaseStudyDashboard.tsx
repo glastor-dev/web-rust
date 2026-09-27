@@ -71,7 +71,7 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(1rem,3vw,1.5rem)] relative">
           {/* Connector Line for Desktop */}
           <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-            <div className="bg-[#050505] p-3 rounded-full border border-white/10 shadow-xl">
+            <div className="bg-transparent p-3 rounded-full border border-white/10 shadow-xl">
               <ArrowRight01Icon className="w-[clamp(1.2rem,2vw,1.5rem)] h-[clamp(1.2rem,2vw,1.5rem)] text-brand" />
             </div>
           </div>
@@ -133,7 +133,7 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
           ].map((card, i) => (
             <div key={i} className="flex flex-col relative">
               <card.icon className="w-[clamp(1.2rem,2vw,1.5rem)] h-[clamp(1.2rem,2vw,1.5rem)] text-brand mb-[clamp(1rem,2vw,1.5rem)]" />
-              <div className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white tracking-tighter leading-none mb-3 truncate">
+              <div className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white tracking-tighter leading-none mb-3">
                 {card.label === 'Retorno (ROI)' ? card.value : parseValue(card.value)}
               </div>
               <div className="text-[clamp(0.6rem,1vw,0.75rem)] font-mono text-zinc-400 uppercase tracking-widest">
@@ -162,7 +162,7 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
 
               {study.solutionPhases.slice(0, 4).map((phase, i) => (
                 <div key={i} className="relative z-10 flex flex-col items-center w-1/4">
-                  <div className="w-[clamp(1.25rem,3.5vw,1.5rem)] h-[clamp(1.25rem,3.5vw,1.5rem)] bg-[#050505] border-[4px] border-brand rounded-full shadow-[0_0_20px_#00ff66] mb-[clamp(1rem,2.5vw,1.5rem)] transition-transform hover:scale-125"></div>
+                  <div className="w-[clamp(1.25rem,3.5vw,1.5rem)] h-[clamp(1.25rem,3.5vw,1.5rem)] bg-transparent border-[4px] border-brand rounded-full shadow-[0_0_20px_#00ff66] mb-[clamp(1rem,2.5vw,1.5rem)] transition-transform hover:scale-125"></div>
                   <div className="text-center px-1 md:px-4">
                     <div className="text-[clamp(0.6rem,1.2vw,0.75rem)] text-zinc-500 font-mono mb-2 uppercase tracking-widest">
                       Fase {i + 1}

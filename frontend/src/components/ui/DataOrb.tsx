@@ -57,8 +57,8 @@ const FragmentedMonolith = () => {
 
       // Target expansion radius. Minimum 1.5, expands up to a maximum limit based on cursor interaction
       // When the user moves the mouse, the monolith "fragments" outward
-      const maxRadius = 3.0; // Limit this to avoid overflow
-      const targetRadius = Math.min(maxRadius, 1.5 + mouseDist * 3.0);
+      const maxRadius = 2.2; // Límite ajustado a la referencia visual
+      const targetRadius = Math.min(maxRadius, 1.5 + mouseDist * 2.5);
 
       for (let i = 0; i < numCubes; i++) {
         const data = initialData[i];

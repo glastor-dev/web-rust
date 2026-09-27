@@ -22,16 +22,19 @@ const redHatMono = Red_Hat_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Glastor | Ingeniería de Software & Interfaces Premium',
+  title: {
+    template: '%s | Glastor',
+    default: 'Glastor | Soluciones Industriales',
+  },
   description:
-    'Desarrollo web avanzado, micro-interacciones, WebGL, Next.js y ecosistemas Rust. Creamos plataformas para el 1%.',
+    'Glastor: Distribución B2B de herramientas premium e Ingeniería de software de alto rendimiento en Rust.',
   metadataBase: new URL('https://glastor.es'),
   openGraph: {
     type: 'website',
     locale: 'es_ES',
     url: 'https://glastor.es',
-    title: 'Glastor | Ingeniería de Software & Interfaces Premium',
-    description: 'Desarrollo web avanzado, micro-interacciones, WebGL, Next.js y ecosistemas Rust. Creamos plataformas para el 1%.',
+    title: 'Glastor | Soluciones Industriales & Desarrollo Web',
+    description: 'Distribuidor oficial de herramientas premium y Agencia de desarrollo de software crítico.',
     siteName: 'Glastor',
     images: [
       {
@@ -44,8 +47,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Glastor | Ingeniería de Software & Interfaces Premium',
-    description: 'Desarrollo web avanzado, micro-interacciones, WebGL, Next.js y ecosistemas Rust. Creamos plataformas para el 1%.',
+    title: 'Glastor',
+    description: 'Distribuidor oficial de herramientas premium y Agencia de desarrollo en Rust.',
     images: ['/images/glastor-logo.webp'],
     creator: '@glastor_es',
   },
@@ -67,13 +70,26 @@ export const metadata: Metadata = {
   },
 };
 
+import { PremiumBackground } from '@/components/ui/PremiumBackground';
+import { NoiseOverlay } from '@/components/ui/NoiseOverlay';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="es"
       className={`dark ${redHatText.variable} ${redHatDisplay.variable} ${redHatMono.variable}`}
     >
-      <body className="bg-[#050505] min-h-screen text-white font-sans overflow-x-hidden selection:bg-brand selection:text-black">
+      <head>
+        <link rel="preconnect" href="https://us.i.posthog.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+      </head>
+      <body className="bg-transparent min-h-screen text-white font-sans overflow-x-hidden selection:bg-brand selection:text-black relative">
+        <PremiumBackground 
+          baseColor="#141416" 
+          textureUrl="https://www.transparenttextures.com/patterns/darth-stripe.png"
+          textureOpacity={0.4}
+        />
+        <NoiseOverlay />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

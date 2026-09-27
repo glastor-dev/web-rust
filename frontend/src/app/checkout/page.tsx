@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { useCartStore } from '@/store/cartStore';
+import { useAuthStore } from '@/store/authStore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -37,7 +38,7 @@ type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 export default function Checkout() {
   const { items, clearCart } = useCartStore();
-  const navigate = useRouter();
+  const router = useRouter();
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const {
@@ -48,34 +49,63 @@ export default function Checkout() {
     resolver: zodResolver(checkoutSchema),
   });
 
+  const { user, token } = useAuthStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [humanityVerified, setHumanityVerified] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'CARD' | 'CRYPTO' | 'BANK'>('BANK');
 
-  // Redirigir si el carrito está vacío
+  // Redirigir si el carrito está vacío o no está logueado
   useEffect(() => {
-    if (items.length === 0 && !isProcessing) {
-      navigate('/tienda');
+    if (!token) {
+      alert('Debes iniciar sesión para realizar un pedido.');
+      router.push('/cuenta');
+    } else if (items.length === 0 && !isProcessing) {
+      router.push('/tienda');
     }
-  }, [items, navigate, isProcessing]);
+  }, [items, router, isProcessing, token]);
 
-  const onSubmit = (data: CheckoutFormData) => {
-    if (!humanityVerified) return;
+  const onSubmit = async (data: CheckoutFormData) => {
+    if (!humanityVerified || !token) return;
     setIsProcessing(true);
 
-    // Mock API call
-    console.log('Datos validados enviados:', data);
+    try {
+      const orderPayload = {
+        items: items.map(item => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          price_at_purchase: item.price,
+          product_name: item.name
+        })),
+        shipping_address: data,
+        total_amount: subtotal
+      };
 
-    setTimeout(() => {
+      const res = await fetch('http://localhost:3001/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(orderPayload)
+      });
+
+      if (!res.ok) {
+        throw new Error('Error al procesar la orden');
+      }
+
       clearCart();
       alert('¡Orden generada con éxito! Nos pondremos en contacto en breve.');
-      navigate('/tienda');
-    }, 2000);
+      router.push('/cuenta/pedidos');
+    } catch (err) {
+      alert('Ocurrió un error al procesar el pedido. Intente nuevamente.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-24 bg-[#050505]">
+    <div className="min-h-screen pt-24 pb-24 bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Top bar / Regreso */}
         <div className="mb-12">
@@ -120,7 +150,7 @@ export default function Checkout() {
                     <input
                       {...register('email')}
                       type="email"
-                      className={`w-full bg-[#050505] border ${errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]`}
+                      className={`w-full bg-transparent border ${errors.email ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]`}
                       placeholder="ejemplo@empresa.com"
                     />
                     {errors.email && (
@@ -137,7 +167,7 @@ export default function Checkout() {
                       <input
                         {...register('firstName')}
                         type="text"
-                        className={`w-full bg-[#050505] border ${errors.firstName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
+                        className={`w-full bg-transparent border ${errors.firstName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
                       {errors.firstName && (
                         <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
@@ -152,7 +182,7 @@ export default function Checkout() {
                       <input
                         {...register('lastName')}
                         type="text"
-                        className={`w-full bg-[#050505] border ${errors.lastName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
+                        className={`w-full bg-transparent border ${errors.lastName ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
                       {errors.lastName && (
                         <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
@@ -168,7 +198,7 @@ export default function Checkout() {
                     <input
                       {...register('company')}
                       type="text"
-                      className="w-full bg-[#050505] border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
+                      className="w-full bg-transparent border border-zinc-800 focus:border-brand rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300 focus:shadow-[0_0_10px_rgba(0,255,102,0.1)]"
                     />
                   </div>
                 </div>
@@ -189,7 +219,7 @@ export default function Checkout() {
                     <input
                       {...register('address')}
                       type="text"
-                      className={`w-full bg-[#050505] border ${errors.address ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
+                      className={`w-full bg-transparent border ${errors.address ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                     />
                     {errors.address && (
                       <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
@@ -205,7 +235,7 @@ export default function Checkout() {
                       <input
                         {...register('city')}
                         type="text"
-                        className={`w-full bg-[#050505] border ${errors.city ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
+                        className={`w-full bg-transparent border ${errors.city ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
                       {errors.city && (
                         <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
@@ -220,7 +250,7 @@ export default function Checkout() {
                       <input
                         {...register('postalCode')}
                         type="text"
-                        className={`w-full bg-[#050505] border ${errors.postalCode ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
+                        className={`w-full bg-transparent border ${errors.postalCode ? 'border-red-500/50 focus:border-red-500' : 'border-zinc-800 focus:border-brand'} rounded-md px-4 py-2 text-zinc-300 font-mono text-xs outline-none transition-all duration-300`}
                       />
                       {errors.postalCode && (
                         <p className="text-red-500 text-[10px] uppercase font-bold mt-2 flex items-center gap-1">
@@ -280,7 +310,7 @@ export default function Checkout() {
                     className="space-y-6"
                   >
                     {/* Caja de Datos */}
-                    <div className="border border-white/20 rounded-md bg-[#050505] font-mono text-[11px] uppercase tracking-wider overflow-hidden">
+                    <div className="border border-white/20 rounded-md bg-transparent font-mono text-[11px] uppercase tracking-wider overflow-hidden">
                       <div className="grid grid-cols-[100px_1fr] border-b border-white/10 p-4">
                         <span className="text-zinc-500 font-bold">BANCO:</span>
                         <span className="text-white text-right">Banco Galicia</span>
@@ -307,7 +337,7 @@ export default function Checkout() {
                       <input
                         required
                         type="text"
-                        className="w-full bg-[#050505] border border-white/20 focus:border-brand rounded-md px-4 py-3 text-white outline-none transition-colors font-bold uppercase"
+                        className="w-full bg-transparent border border-white/20 focus:border-brand rounded-md px-4 py-3 text-white outline-none transition-colors font-bold uppercase"
                         placeholder="GLASTOR - TU NOMBRE COMPLETO"
                       />
                     </div>
@@ -340,7 +370,7 @@ export default function Checkout() {
                     </div>
 
                     {/* Captcha Turnstile */}
-                    <div className="border border-white/10 rounded-md bg-[#050505] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 min-h-22.5">
+                    <div className="border border-white/10 rounded-md bg-transparent p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mt-4 min-h-22.5">
                       <div className="flex items-center gap-4">
                         <ShieldCheck className={`w-6 h-6 ${humanityVerified ? 'text-brand' : 'text-zinc-500'}`} />
                         <div className="flex flex-col">

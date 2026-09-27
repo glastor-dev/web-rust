@@ -3,7 +3,7 @@ import Image from 'next/image';
 export function FooterSocial() {
   return (
     <div>
-      <h3 className="text-xs font-bold text-white tracking-widest mb-5">Síguenos</h3>
+      <p className="text-xs font-bold text-white tracking-widest mb-5">Síguenos</p>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-4">
           <a
@@ -73,7 +73,7 @@ export function FooterSocial() {
             alt="ISO 27001 Certified"
             width={100}
             height={100}
-            className="h-14 object-contain opacity-60 hover:opacity-100 transition-opacity rounded-sm grayscale hover:grayscale-0"
+            className="h-14 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity rounded-sm grayscale hover:grayscale-0"
           />
         </div>
       </div>

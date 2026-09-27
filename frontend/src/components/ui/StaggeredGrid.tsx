@@ -14,7 +14,7 @@ export function StaggeredGrid({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: '200px' }}
       variants={{
         hidden: {},
         visible: {

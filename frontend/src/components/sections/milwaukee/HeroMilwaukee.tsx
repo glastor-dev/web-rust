@@ -22,7 +22,7 @@ export function HeroMilwaukee() {
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className="relative w-full bg-[#0a0a0a]">
+    <section className="relative w-full bg-transparent">
       <div className="relative w-full h-125 md:h-160 overflow-hidden flex items-center">
         <AnimatePresence initial={false}>
           <motion.div
@@ -48,7 +48,9 @@ export function HeroMilwaukee() {
         </AnimatePresence>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex justify-end">
-          <div className="max-w-xl text-right">
+          <div className="max-w-xl text-right relative">
+            {/* Radial vignette for text legibility */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5)_0%,transparent_70%)] -z-10 pointer-events-none" />
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -60,8 +62,8 @@ export function HeroMilwaukee() {
                   },
                   exit: {
                     opacity: 0,
-                    x: -20,
-                    transition: { duration: 0.3 },
+                    clipPath: 'inset(0 0 0 100%)',
+                    transition: { duration: 0.4, ease: [0.76, 0, 0.24, 1] },
                   },
                 }}
                 initial="hidden"
@@ -78,20 +80,20 @@ export function HeroMilwaukee() {
                   <span className="block transform skew-x-12">{slides[currentSlide].tag}</span>
                 </motion.div>
 
-                <motion.h1
+                <motion.h2
                   variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+                    hidden: { opacity: 0, y: 40, clipPath: 'inset(100% 0 0 0)' },
+                    visible: { opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0)', transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } },
                   }}
-                  className="text-4xl md:text-6xl font-display font-black text-white uppercase tracking-tighter leading-[0.9] mb-5 drop-shadow-lg"
+                  className="text-4xl md:text-6xl font-display font-black text-white uppercase tracking-tighter leading-none mb-5 drop-shadow-lg"
                 >
                   {slides[currentSlide].title}
-                </motion.h1>
+                </motion.h2>
 
                 <motion.div
                   variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+                    hidden: { opacity: 0, clipPath: 'inset(0 0 0 100%)' },
+                    visible: { opacity: 1, clipPath: 'inset(0 0 0 0%)', transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } },
                   }}
                   className="flex flex-wrap items-center justify-end gap-3 mb-7"
                 >
@@ -106,8 +108,8 @@ export function HeroMilwaukee() {
 
                 <motion.div
                   variants={{
-                    hidden: { opacity: 0, x: 20 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
                   }}
                   className="inline-flex flex-wrap justify-end gap-3"
                 >

@@ -23,12 +23,14 @@ use crate::db::init_db;
 use crate::handlers::{
     analytics::{get_analytics_summary, track_event, track_leave, track_pageview},
     auth::admin_login,
+    customers::{login as customer_login, register as customer_register, get_profile, update_profile, get_users},
+    orders::{create_order, get_user_orders, get_admin_orders},
     forms::{send_arrepentimiento, send_sow},
     modules_api::get_modules,
     products::{
         create_product, delete_product, get_bestsellers, get_product_by_id, get_product_options,
         get_product_variants, get_products, update_product, update_product_variants,
-        product_stock_stream,
+        product_stock_stream, search_products,
     },
     sitemap::get_sitemap,
 };
@@ -92,16 +94,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let governor_conf = Arc::new(
         tower_governor::governor::GovernorConfigBuilder::default()
-            .per_second(10)
-            .burst_size(50)
+            .per_second(50)
+            .burst_size(200)
             .finish()
             .unwrap(),
     );
 
     let app = Router::new()
         .route("/api/auth/login", post(admin_login))
+        .route("/api/auth/register", post(customer_register))
+        .route("/api/auth/customer/login", post(customer_login))
+        .route("/api/auth/me", get(get_profile).put(update_profile))
+        .route("/api/orders", get(get_user_orders).post(create_order))
+        .route("/api/admin/users", get(get_users))
+        .route("/api/admin/orders", get(get_admin_orders))
         .route("/api/modules", get(get_modules))
         .route("/api/products", get(get_products).post(create_product))
+        .route("/api/products/search", get(search_products))
         .route("/api/products/stream", get(product_stock_stream))
         .route("/api/products/bestsellers", get(get_bestsellers))
         .route(

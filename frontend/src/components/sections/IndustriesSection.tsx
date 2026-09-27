@@ -41,7 +41,7 @@ const industries = [
 
 export const IndustriesSection = () => {
   return (
-    <section className="py-24 md:py-32 bg-[#050505] border-t border-white/5 relative z-10">
+    <section className="py-24 md:py-32 bg-transparent border-t border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-16 md:mb-24">
           <motion.span
@@ -81,7 +81,7 @@ export const IndustriesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-[#050505] p-8 lg:p-12 group hover:bg-[#080808] transition-colors duration-500"
+              className="bg-transparent p-8 lg:p-12 group hover:bg-[#080808] transition-colors duration-500"
             >
               <div className="mb-8 p-4 bg-white/5 inline-flex rounded-lg border border-white/10 group-hover:border-brand/30 transition-colors duration-500">
                 {industry.icon}

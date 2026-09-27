@@ -34,10 +34,10 @@ export function MissionVision() {
             {bullets.map((bullet, idx) => (
               <motion.li
                 key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: idx * 0.1, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
                 className="flex items-start gap-3"
               >
                 <CheckCircle2Icon className="text-brand w-5 h-5 shrink-0 mt-0.5" />
@@ -52,9 +52,10 @@ export function MissionVision() {
 
         {/* Derecha: Información Corporativa */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+          whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
           className="bg-[#0A0D0B] border border-brand/10 p-8 md:p-12 rounded-2xl sticky top-24 lg:mt-24"
         >
           <div className="flex items-center gap-3 mb-10">

@@ -49,7 +49,7 @@ export function QuickAddToCart({ product }: { product: QuickProduct }) {
       onClick={handleAddToCart}
       disabled={addState !== 'idle'}
       aria-label="Añadir al carrito"
-      className={`px-3 py-2 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+      className={`px-3 py-2 flex items-center justify-center transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
         addState === 'success'
           ? 'bg-white text-black'
           : 'bg-brand text-black hover:bg-white'

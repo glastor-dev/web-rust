@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { EvolutionTimeline } from '@/components/sections/Nosotros/EvolutionTimeline';
 import { MissionVision } from '@/components/sections/Nosotros/MissionVision';
 import { TeamSection } from '@/components/sections/TeamSection';
+import PhilosophySection from '@/components/sections/PhilosophySection';
 
 import { CompanyStatsHero } from '@/components/sections/Nosotros/CompanyStatsHero';
-import { CtaAudit } from '@/components/ui/CtaAudit';
 
 export const metadata: Metadata = {
   title: 'Nuestra Visión y Evolución | Glastor',
@@ -16,14 +16,12 @@ export default function Nosotros() {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
       <CompanyStatsHero />
-      <EvolutionTimeline />
       <MissionVision />
+      <EvolutionTimeline />
+      <PhilosophySection />
 
       {/* 4. Liderazgo y Núcleo Operativo */}
       <TeamSection />
-
-      {/* CTA contextual */}
-      <CtaAudit />
     </div>
   );
 }

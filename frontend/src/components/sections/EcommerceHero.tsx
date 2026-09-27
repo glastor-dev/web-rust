@@ -17,7 +17,7 @@ export function EcommerceHero() {
   };
 
   return (
-    <section className="relative w-full min-h-[90vh] flex items-center bg-[#050505] overflow-hidden">
+    <section className="relative w-full min-h-[90vh] flex items-center bg-transparent overflow-hidden">
       {/* Background elements */}
       <div
         className="absolute inset-0 z-0 opacity-20 mix-blend-overlay pointer-events-none"

@@ -9,7 +9,7 @@ export function PipelineCarousel() {
       name: 'Taladro angular M18 FUEL™ Hole Hawg™',
       series: '2808-20',
       img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_200/v1784390894/sec1_ptmnqa.webp',
-      price: '34 USD',
+      price: '$519.000',
       promise: 'Stock 48h',
     },
     {
@@ -17,7 +17,7 @@ export function PipelineCarousel() {
       name: 'Pulidora/lijadora de velocidad variable M12™',
       series: '2438-20',
       img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_200/v1784390626/sec2_xz4f3u.webp',
-      price: '229 USD',
+      price: '$343.500',
       promise: 'Garantía 1 año',
     },
     {
@@ -25,34 +25,34 @@ export function PipelineCarousel() {
       name: 'Llave de impacto subcompacta M12 FUEL™',
       series: '3048-20',
       img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_200/v1784390264/sec4_yuyjes.webp',
-      price: '42 USD',
+      price: '$599.999',
       promise: 'Envío inmediato',
     },
     {
       tag: 'OFERTA',
       name: 'Sierra de corte MX FUEL™ de 14"',
       series: 'MXF315-0',
-      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_200/v1784389365/sec3_xjrh4g.webp',
-      price: '159 USD',
+      img: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto,w_200/v1784390365/sec3_xjrh4g.webp',
+      price: '$1.799.000',
       promise: 'Kit recomendado',
     },
   ];
 
   return (
-    <section className="w-full bg-[#050505] py-14 relative overflow-hidden border-b-4 border-brand">
+    <section className="w-full bg-transparent py-14 relative overflow-hidden border-b-4 border-brand">
       <div className="absolute inset-0 opacity-80 pointer-events-none mix-blend-screen">
-        <Image src="https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/pipeline_p9upi0.jpg" alt="Background" fill quality={60} sizes="100vw" className="object-cover object-center" />
+        <Image src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784804585/pipeline_p9upi0.jpg" alt="Background" fill quality={60} sizes="100vw" className="object-cover object-center" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex flex-col md:flex-row items-start gap-10">
-        <div className="text-white shrink-0 text-center md:text-left">
+        <div className="text-white shrink-0 text-center md:text-left bg-black/40 backdrop-blur-xl p-8 rounded-xl border border-white/10 shadow-2xl">
           <div className="font-black text-2xl tracking-tighter italic">MILWAUKEE</div>
-          <div className="font-black text-4xl tracking-tighter text-brand">PIPELINE</div>
-          <div className="text-xs uppercase tracking-widest mt-1 opacity-80">
+          <div className="font-black text-4xl tracking-tighter text-brand drop-shadow-md">PIPELINE</div>
+          <div className="text-xs uppercase tracking-widest mt-1 opacity-90">
             Lanzamientos en stock
           </div>
-          <div className="mt-3 inline-flex items-center gap-2 text-[11px] font-mono text-zinc-300 border border-white/10 bg-black/40 px-3 py-2">
-            <span className="w-2 h-2 rounded-full bg-brand" />
+          <div className="mt-4 inline-flex items-center gap-2 text-[11px] font-mono text-zinc-300 border border-white/20 bg-black/60 px-4 py-2">
+            <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
             Envío en 24/48h para productos Milwaukee
           </div>
         </div>
@@ -70,7 +70,7 @@ export function PipelineCarousel() {
                 <img
                   src={prod.img}
                   alt={prod.name}
-                  className="w-full h-full object-contain drop-shadow-md p-4"
+                  className="w-full h-full object-contain drop-shadow-md p-4 product-image-blend"
                 />
               </div>
 

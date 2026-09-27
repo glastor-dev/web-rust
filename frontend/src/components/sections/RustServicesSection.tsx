@@ -11,7 +11,7 @@ import {
 } from 'hugeicons-react';
 import Link from 'next/link';
 
-type TechFilter = 'todos' | 'rust' | 'docker' | 'oxc' | 'mongodb';
+type TechFilter = 'todos' | 'rust' | 'docker' | 'kubernetes' | 'postgresql';
 
 interface ServiceItem {
   icon: React.ReactNode;
@@ -74,7 +74,7 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
         'Reducción de latencia y costos',
       ],
       results: ['Reducción latencia: 80-95%', 'Aumento capacidad: 5-50x', 'Ahorro infra: 50-80%'],
-      tech: 'mongodb',
+      tech: 'postgresql',
       linkUrl: '/proyectos',
       linkText: 'Ver casos de optimización',
     },
@@ -122,7 +122,7 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
     tech === 'todos' ? '/recursos' : `/recursos?tech=${tech}`;
 
   return (
-    <section className="py-24 relative bg-[#050505]">
+    <section className="py-24 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-20 text-center md:text-left">
           <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
@@ -143,10 +143,10 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
           {servicesData.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: index * 0.15 }}
               className={`glass-panel p-8 border-editorial flex flex-col h-full relative overflow-hidden ${
                 !detailed
                   ? 'draw-border cursor-pointer group hover:bg-[#080808] transition-colors duration-300'

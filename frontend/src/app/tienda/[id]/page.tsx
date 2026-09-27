@@ -12,6 +12,7 @@ import type { Product } from '@/components/ui/ProductCard';
 import { ProductGallery } from './components/ProductGallery';
 import { ProductCheckout } from './components/ProductCheckout';
 import { ProductTabs } from './components/ProductTabs';
+import { ProductCrossSell } from './components/ProductCrossSell';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +25,7 @@ export default function ProductDetail() {
   } = useQuery<Product>({
     queryKey: ['product', id],
     queryFn: async () => {
-      const url = process.env.NEXT_PUBLIC_API_URL || '';
+      const url = process.env.NEXT_PUBLIC_API_URL || (typeof window === 'undefined' ? 'http://127.0.0.1:3001' : '');
       const response = await fetch(`${url}/api/products/${id}`);
       if (!response.ok) {
         throw new Error('Producto no encontrado');
@@ -110,7 +111,7 @@ export default function ProductDetail() {
       <>
         <LoadingScreen />
         <div
-          className="h-[200vh] w-full bg-[#050505] opacity-0 pointer-events-none"
+          className="h-[200vh] w-full bg-transparent opacity-0 pointer-events-none"
           aria-hidden="true"
         />
       </>
@@ -119,7 +120,7 @@ export default function ProductDetail() {
 
   if (error || !product) {
     return (
-      <div className="bg-[#050505] min-h-screen text-white pt-32 pb-24 flex items-center justify-center">
+      <div className="bg-transparent min-h-screen text-white pt-32 pb-24 flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold uppercase mb-4 text-red-500">Error</h2>
           <p className="text-zinc-400 mb-8 font-mono">Error al cargar los detalles del producto.</p>
@@ -166,7 +167,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="bg-[#050505] min-h-screen text-white pt-24 pb-24 font-sans">
+    <div className="bg-transparent min-h-screen text-white pt-24 pb-24 font-sans">
       <SEO
         schemaType="Product"
         dynamicSchema={{
@@ -244,6 +245,9 @@ export default function ProductDetail() {
         <div ref={tabsRef}>
           <ProductTabs product={product} sku={sku} mockReviewsData={mockReviewsData} />
         </div>
+
+        {/* CROSS-SELL / RELATED PRODUCTS SECTION */}
+        <ProductCrossSell currentProductId={product.id} currentCategory={product.category} />
       </div>
     </div>
   );

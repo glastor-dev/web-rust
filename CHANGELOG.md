@@ -28,6 +28,21 @@ Este proyecto se adhiere a:
 
 ---
 
+## [Unreleased]
+
+### ✨ Added
+
+- **Navegación Core:** Sistema de rutas adaptado a las necesidades B2B e E-Commerce (Inicio `/`, Tienda `/tienda`, Desarrollo en Rust `/home`).
+- **Protección de Código:** Establecimiento del frontend como repositorio privado y sin licencia (`UNLICENSED`) dentro de `package.json` para prevenir forks no autorizados en DigitalOcean y GitHub.
+- **Metadata Corporativa:** Actualización de los datos del Founder ("CEO & Arquitecto Jefe") en la sección de Nosotros.
+
+### 🐛 Fixed
+
+- **Base de Datos & Panel Admin:** Resolución de _500 Database Error_ oculto (causado por colisiones de valores vacíos en el índice único de slugs de Postgres) que impedía guardar ediciones de precios en `ProductEditorModal`.
+- **Interacciones de UI:** Refactorización de inputs numéricos en el administrador para admitir decimales fluidos (`step="any"`) previniendo cuelgues locales por `NaN`.
+
+---
+
 ## [1.0.0] - 2026-07-05
 
 **Nombre del Release:** "Fundación de Arquitectura y Diseño Awwwards"
@@ -35,13 +50,13 @@ Este proyecto se adhiere a:
 
 ### 🎉 Highlights del Release
 
-Versión inicial de producción para el ecosistema completo de la agencia GLASTOR. Establece la arquitectura base del Frontend (Vite, React 19, Tailwind v4, Framer Motion) y las bases del Backend de ultra alto rendimiento en Rust.
+Versión inicial de producción para el ecosistema completo de la agencia GLASTOR. Establece la arquitectura base del Frontend (Next.js 16, React 19, Tailwind v4, Framer Motion) y las bases del Backend de ultra alto rendimiento en Rust.
 
 ### ✨ Added
 
 #### Core Frontend & Estética
 
-- **Motor de Renderizado:** Integración completa de React 19 con Vite para builds ultra-rápidos.
+- **Motor de Renderizado:** Integración completa de React 19 con Next.js (App Router) para builds ultra-rápidos y SSR/SSG.
 - **Diseño Premium (Brutalismo Tecnológico):**
   - Implementación de paleta cromática restringida (`#050505` base, `#00ff66` acento).
   - Tipografía responsiva fluida (Clamp) usando Inter y clases monoespaciadas.

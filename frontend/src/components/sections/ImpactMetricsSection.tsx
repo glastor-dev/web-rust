@@ -14,7 +14,7 @@ const metrics = [
 
 export function ImpactMetricsSection() {
   return (
-    <section className="py-24 relative bg-[#050505]">
+    <section className="py-24 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-16 text-center md:text-left">
           <TextRevealGSAP

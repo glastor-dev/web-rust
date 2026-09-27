@@ -12,7 +12,7 @@ export function FoundersSection() {
             <div className="absolute inset-0 bg-black/50 group-hover:bg-transparent transition-colors z-10 duration-500"></div>
             {/* Founder Image */}
             <img
-              src="https://res.cloudinary.com/dzualplqi/image/upload/v1783985243/andres-fundador_o9kzlf.png"
+              src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1783985243/andres-fundador_o9kzlf.png"
               alt="Andres A. Cardoso - Fundador"
               className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
             />

@@ -6,7 +6,7 @@ import { Building2, Calendar, Zap } from 'lucide-react';
 import { ArchitectureDiagram } from '../../ui/ArchitectureDiagram';
 import { CaseStudyDashboard } from './CaseStudyDashboard';
 import { CaseStudyTestimonial } from './CaseStudyTestimonial';
-import { CaseStudyCTA } from './CaseStudyCTA';
+
 
 interface DetailedCaseStudyProps {
   study: CaseStudy;
@@ -16,10 +16,10 @@ interface DetailedCaseStudyProps {
 export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
+      whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
       className="py-24 md:py-32 border-b border-white/10 relative"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -105,12 +105,7 @@ export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
           </div>
         </div>
 
-        {/* High-Converting CTA (Full width at bottom) */}
-        {index === 0 && (
-          <div className="mt-24 w-full">
-            <CaseStudyCTA />
-          </div>
-        )}
+
       </div>
     </motion.article>
   );

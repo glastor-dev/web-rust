@@ -8,7 +8,7 @@ export function BottomNavBoxes() {
   ];
 
   return (
-    <section className="w-full bg-[#050505]">
+    <section className="w-full bg-transparent">
       <div className="grid grid-cols-1 md:grid-cols-3">
         {boxes.map((box, i) => (
           <div

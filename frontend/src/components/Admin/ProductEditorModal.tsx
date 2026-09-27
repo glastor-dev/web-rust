@@ -126,7 +126,11 @@ export function ProductEditorModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    await onSave(formData, options, variants);
+    const finalData = { ...formData };
+    if (finalData.slug === '') {
+      (finalData as any).slug = null;
+    }
+    await onSave(finalData, options, variants);
     setIsSaving(false);
   };
 
@@ -273,11 +277,13 @@ export function ProductEditorModal({
                         </label>
                         <input
                           type="number"
+                          step="any"
                           required
-                          value={formData.price}
-                          onChange={(e) =>
-                            setFormData({ ...formData, price: parseFloat(e.target.value) })
-                          }
+                          value={Number.isNaN(formData.price) ? '' : formData.price}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData({ ...formData, price: val === '' ? 0 : parseFloat(val) });
+                          }}
                           className="w-full bg-[#111] border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand transition-colors text-sm"
                         />
                       </div>
@@ -288,10 +294,11 @@ export function ProductEditorModal({
                         <input
                           type="number"
                           required
-                          value={formData.stock}
-                          onChange={(e) =>
-                            setFormData({ ...formData, stock: parseInt(e.target.value) })
-                          }
+                          value={Number.isNaN(formData.stock) ? '' : formData.stock}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData({ ...formData, stock: val === '' ? 0 : parseInt(val) });
+                          }}
                           className="w-full bg-[#111] border border-white/10 rounded-md px-4 py-3 text-white focus:outline-none focus:border-brand transition-colors text-sm"
                         />
                       </div>

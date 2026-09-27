@@ -73,13 +73,13 @@ export default function Store() {
         }}
       />
 
-      <div className="bg-[#050505] min-h-screen text-white pt-24 pb-24">
+      <div className="bg-transparent min-h-screen text-white pt-24 pb-24">
         <PageHero
           badge="Portal Mayorista"
           title="ARSENAL INDUSTRIAL"
           description="El estándar definitivo para obras y manufactura. Acceso exclusivo a inventario B2B con líneas de crédito y logística de alto rendimiento."
           minHeight="min-h-150"
-          backgroundImage="https://res.cloudinary.com/dzualplqi/image/upload/v1784578811/glastor_pipeline_bg_qhic8z.jpg"
+          backgroundImage="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784578811/glastor_pipeline_bg_qhic8z.jpg"
         />
         {/* Content Wrapper */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-24">
@@ -98,50 +98,60 @@ export default function Store() {
             </ol>
           </nav>
 
-          {/* Toggle Grid/List UI */}
-          <div className="flex justify-end mb-6 gap-2">
-            <button
-              onClick={() => setViewMode('grid')}
-              aria-label="Vista de cuadrícula"
-              className={`p-2 border rounded-md transition-colors ${viewMode === 'grid' ? 'bg-brand/10 border-brand text-brand' : 'bg-transparent border-white/10 text-zinc-500 hover:text-white'}`}
-              title="Vista de Cuadrícula"
+          {/* Toggle Grid/List UI & Mis Listas */}
+          <div className="flex justify-between md:justify-end mb-6 gap-4">
+            <a 
+              href="/tienda/listas" 
+              className="flex items-center gap-2 px-4 py-2 bg-brand/10 border border-brand/30 text-brand hover:bg-brand hover:text-black transition-colors rounded-md text-xs font-bold uppercase tracking-widest"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+              Mis Proyectos
+            </a>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                aria-label="Vista de cuadrícula"
+                className={`p-2 border rounded-md transition-colors ${viewMode === 'grid' ? 'bg-brand/10 border-brand text-brand' : 'bg-transparent border-white/10 text-zinc-500 hover:text-white'}`}
+                title="Vista de Cuadrícula"
               >
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              aria-label="Vista de lista densa"
-              className={`p-2 border rounded-md transition-colors ${viewMode === 'list' ? 'bg-brand/10 border-brand text-brand' : 'bg-transparent border-white/10 text-zinc-500 hover:text-white'}`}
-              title="Vista de Lista Densa"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                aria-label="Vista de lista densa"
+                className={`p-2 border rounded-md transition-colors ${viewMode === 'list' ? 'bg-brand/10 border-brand text-brand' : 'bg-transparent border-white/10 text-zinc-500 hover:text-white'}`}
+                title="Vista de Lista Densa"
               >
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            </button>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="8" y1="6" x2="21" y2="6" />
+                  <line x1="8" y1="12" x2="21" y2="12" />
+                  <line x1="8" y1="18" x2="21" y2="18" />
+                  <line x1="3" y1="6" x2="3.01" y2="6" />
+                  <line x1="3" y1="12" x2="3.01" y2="12" />
+                  <line x1="3" y1="18" x2="3.01" y2="18" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">

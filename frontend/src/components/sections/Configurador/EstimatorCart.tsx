@@ -49,7 +49,7 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand"
               >
-                ${totalPrice.toLocaleString()} <span className="text-2xl text-zinc-600">USD</span>
+                €{totalPrice.toLocaleString()} <span className="text-2xl text-zinc-600">EUR</span>
               </motion.div>
               {(() => {
                 const bundleSize = selectedModuleIds.length;

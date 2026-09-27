@@ -55,3 +55,56 @@ pub fn create_admin_token() -> Result<String, ()> {
         &EncodingKey::from_secret(secret.as_ref())
     ).map_err(|_| ())
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UserClaims {
+    pub sub: String, // user_id
+    pub email: String,
+    pub role: String,
+    pub exp: usize,
+}
+
+impl<S> FromRequestParts<S> for UserClaims
+where
+    S: Send + Sync,
+{
+    type Rejection = (StatusCode, Json<serde_json::Value>);
+
+    async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
+        let auth_header = parts.headers.get("Authorization").and_then(|h| h.to_str().ok());
+        if let Some(auth_header) = auth_header {
+            if auth_header.starts_with("Bearer ") {
+                let token = &auth_header["Bearer ".len()..];
+                let secret = std::env::var("JWT_SECRET").unwrap_or_else(|_| "glastor_secret_2026".to_string());
+                
+                let token_data = decode::<UserClaims>(
+                    token,
+                    &DecodingKey::from_secret(secret.as_ref()),
+                    &Validation::default()
+                ).map_err(|_| {
+                    (StatusCode::UNAUTHORIZED, Json(json!({"error": "Invalid token"})))
+                })?;
+                
+                return Ok(token_data.claims);
+            }
+        }
+        Err((StatusCode::UNAUTHORIZED, Json(json!({"error": "Missing or invalid authorization header"}))))
+    }
+}
+
+pub fn create_user_token(user_id: &str, email: &str) -> Result<String, ()> {
+    let secret = std::env::var("JWT_SECRET").unwrap_or_else(|_| "glastor_secret_2026".to_string());
+    
+    let claims = UserClaims {
+        sub: user_id.to_string(),
+        email: email.to_string(),
+        role: "customer".to_string(),
+        exp: (chrono::Utc::now() + chrono::Duration::days(7)).timestamp() as usize,
+    };
+    
+    encode(
+        &Header::default(),
+        &claims,
+        &EncodingKey::from_secret(secret.as_ref())
+    ).map_err(|_| ())
+}

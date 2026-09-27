@@ -2,7 +2,7 @@ import React from 'react';
 
 export const HERO_SLIDES = [
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider1_ore1s2.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784804585/slider1_ore1s2.webp',
     title: (
       <>
         POTENCIA EXTREMA. <br />
@@ -12,35 +12,34 @@ export const HERO_SLIDES = [
     ),
     link: '/producto/martillo',
     tag: 'LANZAMIENTO M18™',
-    price: 'Desde USD 499',
+    price: 'Desde $748.500',
     bullets: ['Despacho en 24h', 'Garantía de 3 Años', 'Stock Inmediato'],
   },
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider2_wkjsiv.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784804585/slider2_wkjsiv.webp',
     title: (
       <>
-        CORTES 30% MÁS RÁPIDOS. <br />
-        SIERRA CIRCULAR <br />
-        M18 FUEL™ DE 7-1/4"
+        MÁXIMO ALCANCE. <br />
+        CARRACA EXTENDIDA <br />
+        M12 FUEL™ DE 3/8"
       </>
     ),
-    link: '/producto/sierra',
-    tag: 'INNOVACIÓN FUEL™',
+    link: '/producto/3059-21',
+    tag: 'NUEVO SISTEMA M12™',
     price: 'PRECIO B2B',
-    bullets: ['Compra por Volumen', 'Soporte Técnico', 'Línea de Crédito'],
+    bullets: ['Mayor Alcance', 'Rendimiento Neumático', 'Stock Controlado'],
   },
   {
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/slider3_xitjvx.webp',
+    image: 'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784804585/slider3_xitjvx.webp',
     title: (
       <>
-        TORQUE INSUPERABLE. <br />
-        LLAVE DE IMPACTO <br />
-        M18 FUEL™ DE 1/2"
+        MANGAS PROTECTORAS <br />
+        COOLING CUT NIVEL 1 - 16"
       </>
     ),
-    link: '/producto/impacto',
-    tag: 'BEST SELLER',
-    price: 'Desde USD 385',
-    bullets: ['Ecosistema PACKOUT™', 'Demo en Obra', 'Garantía de Retorno'],
+    link: '/producto/mangas-protectoras',
+    tag: 'EQUIPO DE PROTECCIÓN',
+    price: 'PRECIO B2B',
+    bullets: ['Protección Nivel 1', 'Tecnología Cooling', 'Stock Inmediato'],
   },
 ];

@@ -73,7 +73,7 @@ export function PageHero({
   return (
     <section
       ref={containerRef}
-      className={`relative ${minHeight} flex flex-col justify-center overflow-hidden w-full bg-[#050505]`}
+      className={`relative ${minHeight} flex flex-col justify-center overflow-hidden w-full bg-transparent`}
     >
       {/* Subtle Background Layer / Filter */}
       <div
@@ -124,8 +124,8 @@ export function PageHero({
             >
               {/* Title: GSAP reveal (preferred) or motion.h1 fallback */}
               {badge && (
-                <div className="text-brand font-mono tracking-widest text-sm uppercase mb-4">
-                  {badge}
+                <div className="inline-block bg-brand text-black font-sans font-black uppercase tracking-widest text-xs md:text-sm px-6 py-1 transform -skew-x-12 mb-5">
+                  <span className="block transform skew-x-12">{badge}</span>
                 </div>
               )}
               {titleLines ? (

@@ -17,8 +17,26 @@ import {
   Trash2Icon,
   LockIcon,
   LogOutIcon,
+  ShoppingCartIcon,
 } from 'lucide-react';
 import { ProductEditorModal } from '@/components/Admin/ProductEditorModal';
+
+interface User {
+  id: string;
+  email: string;
+  first_name: string | null;
+  last_name: string | null;
+  role: string | null;
+  created_at: string | null;
+}
+
+interface Order {
+  id: string;
+  user_id: string;
+  status: string | null;
+  total_amount: number;
+  created_at: string | null;
+}
 
 interface TopPage {
   path: string;
@@ -89,7 +107,7 @@ export default function Dashboard() {
     localStorage.removeItem('glastor_admin_token');
     router.push('/');
   };
-  const [activeTab, setActiveTab] = useState<'telemetry' | 'catalog'>('telemetry');
+  const [activeTab, setActiveTab] = useState<'telemetry' | 'catalog' | 'customers' | 'orders'>('telemetry');
 
   // Telemetry using React Query
   const {
@@ -119,11 +137,35 @@ export default function Dashboard() {
   } = useQuery<Product[]>({
     queryKey: ['adminProducts'],
     queryFn: async () => {
-      const res = await fetch('/api/products');
+      const res = await fetch('/api/products', {
+        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+      });
       if (!res.ok) throw new Error('Failed to fetch products');
       return res.json();
     },
     enabled: activeTab === 'catalog' && !!token,
+  });
+
+  // Customers Query
+  const { data: customers = [], isLoading: isCustomersLoading, refetch: refetchCustomers } = useQuery<User[]>({
+    queryKey: ['adminCustomers'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/users', { headers: { Authorization: `Bearer ${token}` } });
+      if (!res.ok) throw new Error('Failed to fetch customers');
+      return res.json();
+    },
+    enabled: activeTab === 'customers' && !!token,
+  });
+
+  // Orders Query
+  const { data: orders = [], isLoading: isOrdersLoading, refetch: refetchOrders } = useQuery<Order[]>({
+    queryKey: ['adminOrders'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/orders', { headers: { Authorization: `Bearer ${token}` } });
+      if (!res.ok) throw new Error('Failed to fetch orders');
+      return res.json();
+    },
+    enabled: activeTab === 'orders' && !!token,
   });
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -279,7 +321,7 @@ export default function Dashboard() {
 
   if (isCheckingAuth) {
     return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <ActivityIcon className="animate-pulse text-brand w-8 h-8" />
       </div>
     );
@@ -287,7 +329,7 @@ export default function Dashboard() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center font-sans relative overflow-hidden">
+      <div className="min-h-screen bg-transparent flex flex-col items-center justify-center font-sans relative overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand/5 blur-[120px] rounded-full pointer-events-none" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -330,7 +372,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-24 pb-12 px-6 md:px-12 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-transparent text-white pt-24 pb-12 px-6 md:px-12 relative overflow-hidden font-sans">
       {/* Background Orbs */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-brand/5 blur-[120px] rounded-full pointer-events-none" />
@@ -367,6 +409,26 @@ export default function Dashboard() {
               }`}
             >
               <PackageIcon size={14} /> Catálogo
+            </button>
+            <button
+              onClick={() => setActiveTab('customers')}
+              className={`flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest rounded-sm transition-all ${
+                activeTab === 'customers'
+                  ? 'bg-white/10 text-brand'
+                  : 'text-zinc-500 hover:text-white'
+              }`}
+            >
+              <UsersIcon size={14} /> Clientes
+            </button>
+            <button
+              onClick={() => setActiveTab('orders')}
+              className={`flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest rounded-sm transition-all ${
+                activeTab === 'orders'
+                  ? 'bg-white/10 text-brand'
+                  : 'text-zinc-500 hover:text-white'
+              }`}
+            >
+              <ShoppingCartIcon size={14} /> Pedidos
             </button>
             <button
               onClick={handleLogout}
@@ -668,6 +730,96 @@ export default function Dashboard() {
                           No hay productos en el catálogo.
                         </td>
                       </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* CUSTOMERS TAB */}
+        {activeTab === 'customers' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+            <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+              <h2 className="text-xl font-bold uppercase tracking-wider text-white">Directorio de Clientes</h2>
+              <button onClick={() => refetchCustomers()} className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors">
+                <RefreshCwIcon className="w-3 h-3" /> Refrescar
+              </button>
+            </div>
+            {isCustomersLoading ? (
+               <div className="flex justify-center items-center h-64"><ActivityIcon className="animate-pulse text-brand w-8 h-8" /></div>
+            ) : (
+              <div className="overflow-x-auto border border-white/10 rounded-lg bg-black">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/5 text-zinc-400 font-mono text-xs uppercase tracking-widest">
+                      <th className="p-4 font-normal">ID / Registro</th>
+                      <th className="p-4 font-normal">Nombre</th>
+                      <th className="p-4 font-normal">Email</th>
+                      <th className="p-4 font-normal text-right">Rol</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {customers.map((c) => (
+                      <tr key={c.id} className="border-b border-white/5 hover:bg-white/5">
+                        <td className="p-4 font-mono text-xs text-brand">
+                          {c.id.substring(0,8)}<br/>
+                          <span className="text-zinc-500 text-[10px]">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ''}</span>
+                        </td>
+                        <td className="p-4 font-bold text-white">{c.first_name} {c.last_name}</td>
+                        <td className="p-4 text-zinc-300">{c.email}</td>
+                        <td className="p-4 text-right uppercase text-[10px] tracking-widest text-zinc-500">{c.role}</td>
+                      </tr>
+                    ))}
+                    {customers.length === 0 && (
+                      <tr><td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">No hay clientes registrados.</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {/* ORDERS TAB */}
+        {activeTab === 'orders' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+            <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+              <h2 className="text-xl font-bold uppercase tracking-wider text-white">Registro de Pedidos</h2>
+              <button onClick={() => refetchOrders()} className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors">
+                <RefreshCwIcon className="w-3 h-3" /> Refrescar
+              </button>
+            </div>
+            {isOrdersLoading ? (
+               <div className="flex justify-center items-center h-64"><ActivityIcon className="animate-pulse text-brand w-8 h-8" /></div>
+            ) : (
+              <div className="overflow-x-auto border border-white/10 rounded-lg bg-black">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/5 text-zinc-400 font-mono text-xs uppercase tracking-widest">
+                      <th className="p-4 font-normal">ID Pedido / Fecha</th>
+                      <th className="p-4 font-normal">Cliente (ID)</th>
+                      <th className="p-4 font-normal text-center">Estado</th>
+                      <th className="p-4 font-normal text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((o) => (
+                      <tr key={o.id} className="border-b border-white/5 hover:bg-white/5">
+                        <td className="p-4 font-mono text-xs text-brand">
+                          {o.id.substring(0,8)}<br/>
+                          <span className="text-zinc-500 text-[10px]">{o.created_at ? new Date(o.created_at).toLocaleDateString() : ''}</span>
+                        </td>
+                        <td className="p-4 font-mono text-xs text-zinc-400">{o.user_id.substring(0,8)}</td>
+                        <td className="p-4 text-center">
+                          <span className="bg-white/10 px-2 py-1 rounded text-xs uppercase tracking-widest text-white">{o.status}</span>
+                        </td>
+                        <td className="p-4 text-right font-bold text-white">${o.total_amount.toLocaleString()}</td>
+                      </tr>
+                    ))}
+                    {orders.length === 0 && (
+                      <tr><td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">No hay pedidos registrados.</td></tr>
                     )}
                   </tbody>
                 </table>

@@ -48,13 +48,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
 
     lenisRef.current = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing inercial suave
+      lerp: 0.06, // Amortiguación física (fricción real)
+      wheelMultiplier: 0.8, // Más resistencia al inicio
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
     });
 
 

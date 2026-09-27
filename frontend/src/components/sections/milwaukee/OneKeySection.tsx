@@ -1,10 +1,15 @@
 'use client';
 
+import { NetworkParticles } from '@/components/ui/NetworkParticles';
+
 export function OneKeySection() {
   return (
-    <section className="w-full bg-[#050505] py-20 md:py-32 overflow-hidden relative border-y border-white/5">
+    <section className="w-full bg-transparent py-20 md:py-32 overflow-hidden relative border-y border-white/5">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[24px_24px]" />
+      <div className="absolute inset-0 z-0 opacity-40">
+        <NetworkParticles nodeCount={60} />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
         <div>
@@ -43,7 +48,7 @@ export function OneKeySection() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             <a
               href="/connect"
-              className="group relative overflow-hidden inline-flex items-center justify-center bg-[#050505] border border-brand text-brand font-extrabold uppercase tracking-widest px-8 py-4 text-sm rounded-md transition-colors text-center"
+              className="group relative overflow-hidden inline-flex items-center justify-center bg-transparent border border-brand text-brand font-extrabold uppercase tracking-widest px-8 py-4 text-sm rounded-md transition-colors text-center"
             >
               <span className="absolute inset-0 bg-brand w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 text-brand group-hover:text-black transition-colors duration-300">
@@ -64,9 +69,9 @@ export function OneKeySection() {
           <div className="absolute inset-0 bg-brand/15 blur-[120px] rounded-full scale-75 translate-x-12 translate-y-12" />
           
           <img
-            src="https://res.cloudinary.com/dzualplqi/image/upload/v1784804585/key2_scogiz.png"
+            src="https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1784804585/key2_scogiz.png"
             alt="One-Key Glastor Connect"
-            className="w-full h-full object-contain relative z-10 hover:scale-105 hover:-rotate-2 transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+            className="w-full h-full object-contain relative z-10 hover:scale-105 hover:-rotate-2 transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] product-image-blend"
           />
         </div>
       </div>

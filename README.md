@@ -19,15 +19,15 @@
 
 Este repositorio es un Monorepo que unifica dos pilares de ingeniería extrema:
 
-1. **Frontend Cinemático (`/frontend`)**: Una Single Page Application (SPA) brutalista y fluida construida en React 19 y Vite. Renderiza a 60FPS constantes utilizando aceleración por hardware, _smooth scrolling_ (Lenis) y orquestación de animaciones complejas (Framer Motion).
+1. **Frontend Cinemático (`/frontend`)**: Una aplicación SSR/SSG brutalista y fluida construida en Next.js 16 (App Router) y React 19. Renderiza a 60FPS constantes utilizando aceleración por hardware, _smooth scrolling_ (Lenis) y orquestación de animaciones complejas (Framer Motion).
 2. **Core Backend (`/backend`)**: Un demonio de sistema ultra rápido y concurrente forjado en **Rust**. Diseñado para procesar solicitudes pesadas, gestión de telemetría y lógicas empresariales del cotizador con una huella de memoria en reposo casi indetectable (~20MB).
 
 ## 🚀 Tecnologías Core
 
 ### Frontend (User Experience & Cinematics)
 
-- **Framework:** React 19 + TypeScript
-- **Bundler:** Vite (Ultra fast HMR)
+- **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
+- **Bundler:** Turbopack (Ultra fast HMR)
 - **Styling:** TailwindCSS v4 + Glassmorphism Customizado
 - **Motion & Physics:** Framer Motion + Lenis (Smooth Scroll Inercial)
 - **Linter & Formatter:** Biome + Oxlint

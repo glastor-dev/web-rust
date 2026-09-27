@@ -1,19 +1,24 @@
 import Link from 'next/link';
 import { StaggeredGrid, StaggeredItem } from '@/components/ui/StaggeredGrid';
 import { QuickAddToCart } from '@/components/ui/QuickAddToCart';
+import { CountdownClock } from '@/components/ui/CountdownClock';
 import { getBestsellers } from '@/lib/api/products';
 import type { Product } from '@/lib/constants/dummyProducts';
+import Image from 'next/image';
 
 export async function AccessoriesGrid({ category }: { category?: string }) {
   const { products, total: totalCount } = await getBestsellers(category);
 
   return (
-    <section className="w-full bg-[#0a0a0a] py-16 border-t border-brand/20" id="bestsellers">
+    <section className="w-full bg-[#0a0a0a] min-h-[600px] py-16 border-t border-brand/20" id="bestsellers">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div>
-            <div className="text-brand font-mono text-xs font-bold uppercase tracking-widest mb-2">
-              Top ventas en tiempo real
+            <div className="flex flex-wrap items-center gap-3 mb-2">
+              <div className="text-brand font-mono text-xs font-bold uppercase tracking-widest">
+                Top ventas en tiempo real
+              </div>
+              <CountdownClock />
             </div>
             <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">
               Los más vendidos
@@ -35,17 +40,17 @@ export async function AccessoriesGrid({ category }: { category?: string }) {
             <StaggeredItem key={acc.id || i}>
               <div className="border h-full border-white/10 bg-black flex flex-col group hover:border-brand/50 transition-colors">
                 <div className="relative aspect-square bg-[#080808] flex items-center justify-center overflow-hidden">
-                  <img
+                  <Image
                     src={
                       acc.image ||
-                      'https://res.cloudinary.com/dzualplqi/image/upload/v1782126676/mlltz37idqfdhud9cf2z.webp'
+                      'https://res.cloudinary.com/dzualplqi/image/upload/f_auto,q_auto/v1782126676/mlltz37idqfdhud9cf2z.webp'
                     }
                     alt={acc.name || 'Producto'}
-                    className="w-full h-full object-cover px-6 py-6 group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover px-6 py-6 group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-2 left-2 text-[10px] font-mono font-bold bg-brand text-black uppercase tracking-widest px-2 py-1">
+                  <span className="absolute top-2 left-2 text-[10px] font-mono font-bold bg-brand text-black uppercase tracking-widest px-2 py-1 z-10">
                     {acc.status || 'TOP'}
                   </span>
                 </div>

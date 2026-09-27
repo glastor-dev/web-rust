@@ -161,6 +161,11 @@ pub struct BestsellersParams {
     pub category: Option<String>,
 }
 
+#[derive(Deserialize)]
+pub struct SearchParams {
+    pub q: String,
+}
+
 #[derive(Serialize)]
 pub struct BestsellersResponse {
     pub products: Vec<Product>,
@@ -202,4 +207,69 @@ pub struct AnalyticsSummary {
     pub average_duration: i64,
     pub top_pages: Vec<TopPage>,
     pub top_events: Vec<TopEvent>,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct User {
+    pub id: String,
+    pub email: String,
+    #[serde(skip_serializing)]
+    pub password_hash: String,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub phone: Option<String>,
+    pub address: Option<serde_json::Value>,
+    pub role: Option<String>,
+    pub created_at: Option<chrono::NaiveDateTime>,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct Order {
+    pub id: String,
+    pub user_id: String,
+    pub status: Option<String>,
+    pub total_amount: f32,
+    pub shipping_address: Option<serde_json::Value>,
+    pub created_at: Option<chrono::NaiveDateTime>,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct OrderItem {
+    pub id: String,
+    pub order_id: String,
+    pub product_id: String,
+    pub quantity: i32,
+    pub price_at_purchase: f32,
+    pub product_name: Option<String>,
+}
+
+#[derive(Deserialize)]
+pub struct RegisterPayload {
+    pub email: String,
+    pub password: String,
+    pub first_name: String,
+    pub last_name: String,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateProfilePayload {
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub phone: Option<String>,
+    pub address: Option<serde_json::Value>,
+}
+
+#[derive(Deserialize)]
+pub struct CreateOrderPayload {
+    pub items: Vec<CreateOrderItem>,
+    pub shipping_address: serde_json::Value,
+    pub total_amount: f32,
+}
+
+#[derive(Deserialize)]
+pub struct CreateOrderItem {
+    pub product_id: String,
+    pub quantity: i32,
+    pub price_at_purchase: f32,
+    pub product_name: Option<String>,
 }
