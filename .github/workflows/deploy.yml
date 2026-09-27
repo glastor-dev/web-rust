@@ -82,6 +82,18 @@ jobs:
             tar -xzf backend-build.tar.gz
             rm backend-build.tar.gz
             
+            # Generar archivo .env del backend desde GitHub Secrets
+            cat << EOF > .env
+            NEON_DB_URL=${{ secrets.NEON_DB_URL }}
+            DATABASE_URL=${{ secrets.NEON_DB_URL }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            RESEND_FROM_EMAIL=${{ secrets.RESEND_FROM_EMAIL }}
+            TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+            MEILI_MASTER_KEY=${{ secrets.MEILI_MASTER_KEY }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+            EOF
+            
             cat << 'EOF' > Dockerfile
             FROM debian:bookworm-slim
             RUN apt-get update && apt-get install -y libssl3 ca-certificates sqlite3 && rm -rf /var/lib/apt/lists/*
