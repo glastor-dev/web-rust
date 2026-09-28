@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   try {
     const resolvedParams = await params;
-    const url = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+    const url = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_URL || 'http://127.0.0.1:3001';
     const response = await fetch(`${url}/api/products/${resolvedParams.id}`, { cache: 'no-store' });
     if (!response.ok) {
       return { title: 'Producto no encontrado | Glastor' };

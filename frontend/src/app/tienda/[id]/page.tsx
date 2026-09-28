@@ -25,7 +25,7 @@ export default function ProductDetail() {
   } = useQuery<Product>({
     queryKey: ['product', id],
     queryFn: async () => {
-      const url = process.env.NEXT_PUBLIC_API_URL || (typeof window === 'undefined' ? 'http://127.0.0.1:3001' : '');
+      const url = process.env.NEXT_PUBLIC_API_URL || (typeof window === 'undefined' ? (process.env.BACKEND_URL || 'http://127.0.0.1:3001') : '');
       const response = await fetch(`${url}/api/products/${id}`);
       if (!response.ok) {
         throw new Error('Producto no encontrado');

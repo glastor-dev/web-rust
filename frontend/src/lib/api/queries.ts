@@ -1,7 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import type { Product } from '@/lib/constants/dummyProducts';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window === 'undefined' ? 'http://127.0.0.1:3001' : '');
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || '';
+  }
+  return process.env.BACKEND_URL || 'http://127.0.0.1:3001';
+};
+
+const API_URL = getBaseUrl();
 
 export const useProductsQuery = () => {
   return useQuery<Product[]>({

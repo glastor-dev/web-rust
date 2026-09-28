@@ -17,6 +17,10 @@ RUN pnpm install --frozen-lockfile
 # Copiamos el resto del código fuente
 COPY . .
 
+# Argumentos y variables de entorno para el build
+ARG BACKEND_URL=http://backend:3001
+ENV BACKEND_URL=${BACKEND_URL}
+
 # Compilamos la aplicación Next.js
 RUN pnpm run build
 
