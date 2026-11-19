@@ -21,7 +21,7 @@ interface MediaLibraryModalProps {
 
 export function MediaLibraryModal({ isOpen, onClose, onSelect }: MediaLibraryModalProps) {
   const [directUrl, setDirectUrl] = useState('');
-  const [assets, setAssets] = useState<MediaAsset[]>([]); // In a real app, fetch from /api/media
+  const [assets] = useState<MediaAsset[]>([]); // In a real app, fetch from /api/media
   const [search, setSearch] = useState('');
 
   if (!isOpen) return null;

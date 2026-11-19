@@ -50,7 +50,7 @@ const parseJsonField = (g: any, fallback: any = []) => {
   try {
     const parsed = JSON.parse(g);
     return parsed || fallback;
-  } catch (e) {
+  } catch {
     return fallback;
   }
 };

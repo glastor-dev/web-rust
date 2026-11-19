@@ -29,7 +29,7 @@ function ParticleSwarm({ count = 1500 }) {
 
   useFrame((state) => {
     if (!pointsRef.current) return;
-    
+
     const time = state.clock.getElapsedTime();
     const mouseX = (state.pointer.x * state.viewport.width) / 2;
     const mouseY = (state.pointer.y * state.viewport.height) / 2;
@@ -38,11 +38,10 @@ function ParticleSwarm({ count = 1500 }) {
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      
+
       // Floating motion using sine waves
       const originalX = initialPositions[i3];
       const originalY = initialPositions[i3 + 1];
-      const originalZ = initialPositions[i3 + 2];
 
       // Subtle ambient float
       let targetX = originalX + Math.sin(time * 0.2 + originalY) * 0.5;
@@ -52,7 +51,7 @@ function ParticleSwarm({ count = 1500 }) {
       const dx = targetX - mouseX;
       const dy = targetY - mouseY;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (dist < 3) {
         const force = (3 - dist) / 3;
         targetX += (dx / dist) * force * 1.5;
@@ -63,9 +62,9 @@ function ParticleSwarm({ count = 1500 }) {
       positionsArray[i3] += (targetX - positionsArray[i3]) * 0.05;
       positionsArray[i3 + 1] += (targetY - positionsArray[i3 + 1]) * 0.05;
     }
-    
+
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
-    
+
     // Slow global rotation
     pointsRef.current.rotation.y = time * 0.05;
   });

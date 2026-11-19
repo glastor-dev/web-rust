@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "[Husky] Corriendo linter con Oxc..."
 cd frontend
 bunx lint-staged

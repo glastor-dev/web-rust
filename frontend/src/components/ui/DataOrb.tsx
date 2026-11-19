@@ -46,7 +46,7 @@ const FragmentedMonolith = () => {
     return { initialData: data, boxGeo: geo };
   }, [numCubes]);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
     if (instancesRef.current && groupRef.current) {

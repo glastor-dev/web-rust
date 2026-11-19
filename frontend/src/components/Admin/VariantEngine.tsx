@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PlusIcon, Trash2Icon, Loader2Icon, LayersIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { Trash2Icon, LayersIcon } from 'lucide-react';
 
 export interface ProductOption {
   id: string;

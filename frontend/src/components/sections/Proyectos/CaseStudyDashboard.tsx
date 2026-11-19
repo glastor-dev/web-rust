@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'motion/react';
 import type { CaseStudy } from '../../../lib/data/caseStudies';
 import {
   Alert01Icon,
@@ -13,18 +12,25 @@ import {
 
 export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
   // Extract main results for the bottom cards
-  const uptime = study.resultsInfra?.find((r) => r.toLowerCase().includes('uptime')) || 
-                 study.resultsTech?.find((r) => r.toLowerCase().includes('uptime')) ||
-                 'Uptime: 99.99%';
-                 
+  const uptime =
+    study.resultsInfra?.find((r) => r.toLowerCase().includes('uptime')) ||
+    study.resultsTech?.find((r) => r.toLowerCase().includes('uptime')) ||
+    'Uptime: 99.99%';
+
   const cost =
-    study.resultsCost?.find((r) => r.toLowerCase().includes('costo') || r.toLowerCase().includes('servidor')) ||
-    study.resultsInfra?.find((r) => r.toLowerCase().includes('costo') || r.toLowerCase().includes('servidor')) ||
+    study.resultsCost?.find(
+      (r) => r.toLowerCase().includes('costo') || r.toLowerCase().includes('servidor'),
+    ) ||
+    study.resultsInfra?.find(
+      (r) => r.toLowerCase().includes('costo') || r.toLowerCase().includes('servidor'),
+    ) ||
     study.resultsBusiness?.find((r) => r.toLowerCase().includes('costo')) ||
     'Costo: -40%';
-    
+
   const perf =
-    study.resultsPerformance?.find((r) => r.toLowerCase().includes('latencia') || r.toLowerCase().includes('throughput')) ||
+    study.resultsPerformance?.find(
+      (r) => r.toLowerCase().includes('latencia') || r.toLowerCase().includes('throughput'),
+    ) ||
     study.resultsTech?.find((r) => r.toLowerCase().includes('tiempo de respuesta')) ||
     'Rendimiento: 10x';
 
@@ -34,7 +40,7 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
       text.match(/→\s*(.*)/) ||
       text.match(/:\s*(.*?)\s*→/) ||
       text.match(/:\s*(.*)/);
-      
+
     let val = match ? match[1].trim() : text;
     // Safety net: if it's too long, just take the first word/number to prevent overflow
     if (val.length > 8) {
@@ -62,7 +68,6 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
 
   return (
     <div className="w-full flex flex-col gap-[clamp(4rem,8vw,6rem)] my-8">
-      
       {/* Before / After Panel */}
       <div>
         <h3 className="text-[clamp(1.5rem,3vw,2rem)] font-black text-white mb-[clamp(1.5rem,4vw,2.5rem)] tracking-tighter">
@@ -129,7 +134,7 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
             { icon: ArrowRight01Icon, value: uptime, label: 'Uptime' },
             { icon: Settings02Icon, value: perf, label: 'Mejora Prod.' },
             { icon: Clock01Icon, value: getRoi(), label: 'Retorno (ROI)' },
-            { icon: Coins01Icon, value: cost, label: 'Ahorro Infra.' }
+            { icon: Coins01Icon, value: cost, label: 'Ahorro Infra.' },
           ].map((card, i) => (
             <div key={i} className="flex flex-col relative">
               <card.icon className="w-[clamp(1.2rem,2vw,1.5rem)] h-[clamp(1.2rem,2vw,1.5rem)] text-brand mb-[clamp(1rem,2vw,1.5rem)]" />
@@ -177,8 +182,6 @@ export function CaseStudyDashboard({ study }: { study: CaseStudy }) {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

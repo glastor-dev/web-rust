@@ -20,29 +20,25 @@ export function ProductTabs({ product, sku, mockReviewsData }: ProductTabsProps)
   return (
     <div className="border-t border-white/10 pt-8 mt-12">
       <div className="flex gap-8 border-b border-zinc-800 mb-8 overflow-x-auto pb-4 hide-scrollbar">
-        {[
-          'RESUMEN',
-          'ESPECIFICACIONES TÉCNICAS',
-          `RESEÑAS (${mockReviewsData.totalCount})`,
-        ].map((tab, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActiveTab(tab.split(' ')[0] as any)}
-            className={`text-xs sm:text-sm font-bold uppercase tracking-wider whitespace-nowrap pb-4 relative transition-colors ${
-              activeTab === tab.split(' ')[0]
-                ? 'text-brand'
-                : 'text-zinc-500 hover:text-zinc-300'
-            }`}
-          >
-            {tab}
-            {activeTab === tab.split(' ')[0] && (
-              <motion.div
-                layoutId="tab-indicator"
-                className="absolute bottom-0 left-0 w-full h-0.5 bg-brand"
-              />
-            )}
-          </button>
-        ))}
+        {['RESUMEN', 'ESPECIFICACIONES TÉCNICAS', `RESEÑAS (${mockReviewsData.totalCount})`].map(
+          (tab, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveTab(tab.split(' ')[0] as any)}
+              className={`text-xs sm:text-sm font-bold uppercase tracking-wider whitespace-nowrap pb-4 relative transition-colors ${
+                activeTab === tab.split(' ')[0] ? 'text-brand' : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+            >
+              {tab}
+              {activeTab === tab.split(' ')[0] && (
+                <motion.div
+                  layoutId="tab-indicator"
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-brand"
+                />
+              )}
+            </button>
+          ),
+        )}
       </div>
 
       <div className="min-h-100">
@@ -94,7 +90,7 @@ export function ProductTabs({ product, sku, mockReviewsData }: ProductTabsProps)
                           </li>
                         ));
                       }
-                    } catch (e) {
+                    } catch {
                       if (product.features && product.features.length > 5) {
                         return (
                           <li>
@@ -191,7 +187,7 @@ export function ProductTabs({ product, sku, mockReviewsData }: ProductTabsProps)
                         </li>
                       ));
                     }
-                  } catch (e) {
+                  } catch {
                     return (
                       <li>
                         <strong className="text-white">Detalles:</strong>{' '}
