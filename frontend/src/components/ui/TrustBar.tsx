@@ -4,15 +4,14 @@ import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 
 const trustSignals = [
-  { name: 'CERTIFICACIÓN ISO 9001' },
-  { name: 'ENVÍOS EN 24/48H' },
-  { name: 'GARANTÍA OFICIAL' },
-  { name: 'PAGOS B2B SEGUROS' },
-  { name: 'INTEGRACIÓN ERP' },
-  { name: 'SOPORTE TÉCNICO 24/7' },
-  { name: 'CATÁLOGOS PUNCHOUT' },
-  { name: 'STOCK PERMANENTE' },
-  { name: 'DEVOLUCIÓN 30 DÍAS' },
+  { name: 'SISTEMAS DE ALTA CONCURRENCIA' },
+  { name: 'LATENCIA SUB-MILISEGUNDO' },
+  { name: 'CERO PANICS EN PRODUCCIÓN' },
+  { name: 'ARQUITECTURAS CRÍTICAS EN RUST' },
+  { name: 'UPTIME 99.999% SLA' },
+  { name: 'AUDITORÍA DE RENDIMIENTO' },
+  { name: 'OPTIMIZACIÓN DE COSTOS CLOUD' },
+  { name: 'MIGRACIÓN LEGACY A RUST' },
 ];
 
 const techSignals = [
@@ -29,7 +28,12 @@ export function TrustBar({ variant = 'trust' }: { variant?: 'trust' | 'tech' }) 
   const marqueeRef = useRef<HTMLDivElement>(null);
 
   const activeSignals = variant === 'trust' ? trustSignals : techSignals;
-  const duplicatedSignals = [...activeSignals, ...activeSignals, ...activeSignals, ...activeSignals];
+  const duplicatedSignals = [
+    ...activeSignals,
+    ...activeSignals,
+    ...activeSignals,
+    ...activeSignals,
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -59,9 +63,13 @@ export function TrustBar({ variant = 'trust' }: { variant?: 'trust' | 'tech' }) 
               className="flex items-center group-hover:opacity-100 opacity-80 hover:opacity-100! transition-opacity duration-300"
             >
               <div className="flex items-center gap-8 md:gap-24 pl-8 md:pl-24">
-                {variant === 'tech' && 'icon' in signal && signal.icon ? (
+                {variant === 'tech' && 'icon' in signal && typeof signal.icon === 'string' ? (
                   <div className="flex items-center gap-4 md:gap-6">
-                    <img src={signal.icon} alt={signal.name} className="w-10 h-10 md:w-14 md:h-14 object-contain" />
+                    <img
+                      src={signal.icon}
+                      alt={signal.name}
+                      className="w-10 h-10 md:w-14 md:h-14 object-contain"
+                    />
                     <span
                       className="text-2xl md:text-4xl font-extrabold tracking-tight transition-colors duration-500 text-white/10 cursor-default block py-1 leading-normal"
                       style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.6)' }}

@@ -107,7 +107,9 @@ export default function Dashboard() {
     localStorage.removeItem('glastor_admin_token');
     router.push('/');
   };
-  const [activeTab, setActiveTab] = useState<'telemetry' | 'catalog' | 'customers' | 'orders'>('telemetry');
+  const [activeTab, setActiveTab] = useState<'telemetry' | 'catalog' | 'customers' | 'orders'>(
+    'telemetry',
+  );
 
   // Telemetry using React Query
   const {
@@ -138,7 +140,7 @@ export default function Dashboard() {
     queryKey: ['adminProducts'],
     queryFn: async () => {
       const res = await fetch('/api/products', {
-        headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
+        headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
       });
       if (!res.ok) throw new Error('Failed to fetch products');
       return res.json();
@@ -147,10 +149,16 @@ export default function Dashboard() {
   });
 
   // Customers Query
-  const { data: customers = [], isLoading: isCustomersLoading, refetch: refetchCustomers } = useQuery<User[]>({
+  const {
+    data: customers = [],
+    isLoading: isCustomersLoading,
+    refetch: refetchCustomers,
+  } = useQuery<User[]>({
     queryKey: ['adminCustomers'],
     queryFn: async () => {
-      const res = await fetch('/api/admin/users', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch('/api/admin/users', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error('Failed to fetch customers');
       return res.json();
     },
@@ -158,10 +166,16 @@ export default function Dashboard() {
   });
 
   // Orders Query
-  const { data: orders = [], isLoading: isOrdersLoading, refetch: refetchOrders } = useQuery<Order[]>({
+  const {
+    data: orders = [],
+    isLoading: isOrdersLoading,
+    refetch: refetchOrders,
+  } = useQuery<Order[]>({
     queryKey: ['adminOrders'],
     queryFn: async () => {
-      const res = await fetch('/api/admin/orders', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch('/api/admin/orders', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error('Failed to fetch orders');
       return res.json();
     },
@@ -423,9 +437,7 @@ export default function Dashboard() {
             <button
               onClick={() => setActiveTab('orders')}
               className={`flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-widest rounded-sm transition-all ${
-                activeTab === 'orders'
-                  ? 'bg-white/10 text-brand'
-                  : 'text-zinc-500 hover:text-white'
+                activeTab === 'orders' ? 'bg-white/10 text-brand' : 'text-zinc-500 hover:text-white'
               }`}
             >
               <ShoppingCartIcon size={14} /> Pedidos
@@ -742,13 +754,20 @@ export default function Dashboard() {
         {activeTab === 'customers' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-              <h2 className="text-xl font-bold uppercase tracking-wider text-white">Directorio de Clientes</h2>
-              <button onClick={() => refetchCustomers()} className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors">
+              <h2 className="text-xl font-bold uppercase tracking-wider text-white">
+                Directorio de Clientes
+              </h2>
+              <button
+                onClick={() => refetchCustomers()}
+                className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors"
+              >
                 <RefreshCwIcon className="w-3 h-3" /> Refrescar
               </button>
             </div>
             {isCustomersLoading ? (
-               <div className="flex justify-center items-center h-64"><ActivityIcon className="animate-pulse text-brand w-8 h-8" /></div>
+              <div className="flex justify-center items-center h-64">
+                <ActivityIcon className="animate-pulse text-brand w-8 h-8" />
+              </div>
             ) : (
               <div className="overflow-x-auto border border-white/10 rounded-lg bg-black">
                 <table className="w-full text-left border-collapse">
@@ -764,16 +783,27 @@ export default function Dashboard() {
                     {customers.map((c) => (
                       <tr key={c.id} className="border-b border-white/5 hover:bg-white/5">
                         <td className="p-4 font-mono text-xs text-brand">
-                          {c.id.substring(0,8)}<br/>
-                          <span className="text-zinc-500 text-[10px]">{c.created_at ? new Date(c.created_at).toLocaleDateString() : ''}</span>
+                          {c.id.substring(0, 8)}
+                          <br />
+                          <span className="text-zinc-500 text-[10px]">
+                            {c.created_at ? new Date(c.created_at).toLocaleDateString() : ''}
+                          </span>
                         </td>
-                        <td className="p-4 font-bold text-white">{c.first_name} {c.last_name}</td>
+                        <td className="p-4 font-bold text-white">
+                          {c.first_name} {c.last_name}
+                        </td>
                         <td className="p-4 text-zinc-300">{c.email}</td>
-                        <td className="p-4 text-right uppercase text-[10px] tracking-widest text-zinc-500">{c.role}</td>
+                        <td className="p-4 text-right uppercase text-[10px] tracking-widest text-zinc-500">
+                          {c.role}
+                        </td>
                       </tr>
                     ))}
                     {customers.length === 0 && (
-                      <tr><td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">No hay clientes registrados.</td></tr>
+                      <tr>
+                        <td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">
+                          No hay clientes registrados.
+                        </td>
+                      </tr>
                     )}
                   </tbody>
                 </table>
@@ -786,13 +816,20 @@ export default function Dashboard() {
         {activeTab === 'orders' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
             <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-              <h2 className="text-xl font-bold uppercase tracking-wider text-white">Registro de Pedidos</h2>
-              <button onClick={() => refetchOrders()} className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors">
+              <h2 className="text-xl font-bold uppercase tracking-wider text-white">
+                Registro de Pedidos
+              </h2>
+              <button
+                onClick={() => refetchOrders()}
+                className="flex items-center gap-2 px-3 py-1 bg-white/5 hover:bg-white/10 rounded border border-white/10 text-xs text-zinc-300 transition-colors"
+              >
                 <RefreshCwIcon className="w-3 h-3" /> Refrescar
               </button>
             </div>
             {isOrdersLoading ? (
-               <div className="flex justify-center items-center h-64"><ActivityIcon className="animate-pulse text-brand w-8 h-8" /></div>
+              <div className="flex justify-center items-center h-64">
+                <ActivityIcon className="animate-pulse text-brand w-8 h-8" />
+              </div>
             ) : (
               <div className="overflow-x-auto border border-white/10 rounded-lg bg-black">
                 <table className="w-full text-left border-collapse">
@@ -808,18 +845,31 @@ export default function Dashboard() {
                     {orders.map((o) => (
                       <tr key={o.id} className="border-b border-white/5 hover:bg-white/5">
                         <td className="p-4 font-mono text-xs text-brand">
-                          {o.id.substring(0,8)}<br/>
-                          <span className="text-zinc-500 text-[10px]">{o.created_at ? new Date(o.created_at).toLocaleDateString() : ''}</span>
+                          {o.id.substring(0, 8)}
+                          <br />
+                          <span className="text-zinc-500 text-[10px]">
+                            {o.created_at ? new Date(o.created_at).toLocaleDateString() : ''}
+                          </span>
                         </td>
-                        <td className="p-4 font-mono text-xs text-zinc-400">{o.user_id.substring(0,8)}</td>
+                        <td className="p-4 font-mono text-xs text-zinc-400">
+                          {o.user_id.substring(0, 8)}
+                        </td>
                         <td className="p-4 text-center">
-                          <span className="bg-white/10 px-2 py-1 rounded text-xs uppercase tracking-widest text-white">{o.status}</span>
+                          <span className="bg-white/10 px-2 py-1 rounded text-xs uppercase tracking-widest text-white">
+                            {o.status}
+                          </span>
                         </td>
-                        <td className="p-4 text-right font-bold text-white">${o.total_amount.toLocaleString()}</td>
+                        <td className="p-4 text-right font-bold text-white">
+                          ${o.total_amount.toLocaleString()}
+                        </td>
                       </tr>
                     ))}
                     {orders.length === 0 && (
-                      <tr><td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">No hay pedidos registrados.</td></tr>
+                      <tr>
+                        <td colSpan={4} className="p-8 text-center text-zinc-500 font-mono text-sm">
+                          No hay pedidos registrados.
+                        </td>
+                      </tr>
                     )}
                   </tbody>
                 </table>
@@ -831,7 +881,7 @@ export default function Dashboard() {
 
       {editingProduct && (
         <ProductEditorModal
-          product={editingProduct}
+          product={editingProduct as any}
           isOpen={true}
           isNew={isCreatingProduct}
           onClose={() => {

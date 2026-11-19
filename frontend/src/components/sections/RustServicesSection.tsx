@@ -15,7 +15,7 @@ type TechFilter = 'todos' | 'rust' | 'docker' | 'kubernetes' | 'postgresql';
 
 interface ServiceItem {
   icon: React.ReactNode;
-  image: string;
+  image?: string;
   title: string;
   description: string;
   features: string[];
@@ -29,71 +29,71 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
   const servicesData: ServiceItem[] = [
     {
       icon: <CodeIcon className="w-8 h-8 text-brand" />,
-      image: '/images/especialista1.webp',
-      title: 'Desarrollo en Rust',
+      title: 'Desarrollo Core en Rust',
       description:
-        'APIs, microservicios y aplicaciones de alto rendimiento construidas desde cero o migradas desde sistemas legacy.',
+        'Motores de cálculo, microservicios y runtimes distribuidos construidos sobre Tokio y Axum, con rendimiento determinista y seguridad de memoria garantizada.',
       features: [
-        'APIs REST y GraphQL con latencia mínima',
-        'Microservicios escalables horizontalmente',
-        'Sistemas de procesamiento en tiempo real',
-        'Herramientas CLI y automatización',
+        'APIs gRPC y REST ultra-rápidas con Tokio runtime & Axum',
+        'Zero-cost abstractions y concurrencia segura con traits Send + Sync',
+        'Sistemas en tiempo real con latencia p99 plana (sin pausas de GC)',
+        'Binarios estáticos autónomos compilados sin dependencias externas',
       ],
-      results: ['Latencia p99: 10-50ms', 'Throughput: 10k-50k req/s', 'Uso memoria: 70-90% menor'],
+      results: ['Latencia p99: 5-15ms', 'Throughput: 50.000+ req/s', 'Consumo RAM: 70-90% menor'],
       tech: 'rust',
       linkUrl: '/proyectos',
       linkText: 'Ver proyectos en Rust',
     },
     {
       icon: <ServerStack01Icon className="w-8 h-8 text-brand" />,
-      image: '/images/especialista2.webp',
-      title: 'Servidores e Infraestructura',
+      title: 'Sistemas Distribuidos & Cloud',
       description:
-        'Arquitecturas distribuidas diseñadas para escalar sin dolor, con alta disponibilidad y monitoreo proactivo.',
+        'Infraestructura determinística de alta concurrencia diseñada para escalar sin fatiga, con observabilidad OpenTelemetry y mTLS nativo.',
       features: [
-        'Diseño de arquitectura distribuida',
-        'Load balancing y alta disponibilidad',
-        'Contenedores Docker y Kubernetes',
-        'CI/CD pipelines automatizados',
+        'Arquitecturas de microservicios con mTLS seguro (Rustls, sin OpenSSL)',
+        'Contenedores distroless/scratch ultra-ligeros (< 25MB por servicio)',
+        'Observabilidad estructurada con Tracing y métricas Prometheus',
+        'Pipelines CI/CD deterministas con compilación LTO y target nativo',
       ],
-      results: ['Uptime: 99.95-99.99%', 'Despliegue en minutos', 'Reducción costos: 40-70%'],
+      results: ['Uptime SLA: 99.99%', 'Imágenes Docker < 25MB', 'Reducción costos Cloud: 50-80%'],
       tech: 'docker',
       linkUrl: '/proyectos',
       linkText: 'Ver casos de infraestructura',
     },
     {
       icon: <DatabaseLightningIcon className="w-8 h-8 text-brand" />,
-      image: '/images/especialista3.webp',
-      title: 'Optimización de Rendimiento',
+      title: 'Auditoría & Optimización de Rendimiento',
       description:
-        'Analizamos y optimizamos sistemas existentes que no cumplen con los requisitos de rendimiento o cuestan demasiado.',
+        'Eliminamos cuellos de botella en sistemas existentes mediante perfilado de bajo nivel, análisis de memoria y aceleración de hardware.',
       features: [
-        'Auditoría técnica completa',
-        'Análisis de cuellos de botella',
-        'Optimización de consultas y datos',
-        'Reducción de latencia y costos',
+        'Perfilado con Linux perf, Flamegraphs y análisis de cache misses',
+        'Eliminación de pausas de Garbage Collector (GC Jitter)',
+        'Vectorización hardware SIMD (AVX-512 y ARM NEON)',
+        'Zero-allocation hot-paths con estructuras alineadas a caché L1/L2',
       ],
-      results: ['Reducción latencia: 80-95%', 'Aumento capacidad: 5-50x', 'Ahorro infra: 50-80%'],
+      results: [
+        'Reducción latencia p99: 80-95%',
+        'Throughput aumentado: 5-50x',
+        'Cero memory leaks',
+      ],
       tech: 'postgresql',
       linkUrl: '/proyectos',
       linkText: 'Ver casos de optimización',
     },
     {
       icon: <RefreshIcon className="w-8 h-8 text-brand" />,
-      image: '/images/especialista4.webp',
-      title: 'Migración de Sistemas Legacy',
+      title: 'Migración de Sistemas Legacy a Rust',
       description:
-        'Movemos aplicaciones antiguas a arquitecturas modernas sin downtime y sin perder funcionalidad.',
+        'Reescritura quirúrgica de cuellos de botella en Node.js, Python o Java hacia Rust mediante el Strangler Pattern sin interrumpir la operación.',
       features: [
-        'Análisis de código legacy',
-        'Estrategia de migración gradual',
-        'Refactorización y modernización',
-        'Despliegue sin interrupciones',
+        'Estrategia Strangler Fig con Shadow Traffic y cero downtime',
+        'Interoperabilidad FFI (C/C++, Python vía PyO3, Node vía N-API)',
+        'Reemplazo modular de microservicios costosos por módulos en Rust',
+        'Validación formal con property-based testing y fuzzing continuo',
       ],
       results: [
-        'Cero downtime en migración',
-        'Mejora rendimiento: 10-100x',
-        'Código mantenible y documentado',
+        'Cero downtime durante rollout',
+        'Consolidación de clústeres a 1/5',
+        'Sistemas deterministas y mantenibles',
       ],
       tech: 'rust',
       linkUrl: '/proyectos',
@@ -101,7 +101,6 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
     },
     {
       icon: <Message01Icon className="w-8 h-8 text-brand" />,
-      image: '/images/especialista5.webp',
       title: 'Consultoría Técnica',
       description:
         'Asesoramiento experto para decisiones técnicas críticas y resolución de problemas complejos.',
@@ -131,7 +130,7 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
           <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
             Especialistas en Rust
             <br />
-            <span className="text-zinc-600">y Servidores.</span>
+            <span className="text-zinc-400">y Servidores.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl text-lg font-light mt-6">
             No hacemos de todo. Nos especializamos en lo que mejor sabemos hacer: construir sistemas
@@ -143,28 +142,17 @@ export function RustServicesSection({ detailed = false }: { detailed?: boolean }
           {servicesData.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: index * 0.15 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
               className={`glass-panel p-8 border-editorial flex flex-col h-full relative overflow-hidden ${
                 !detailed
                   ? 'draw-border cursor-pointer group hover:bg-[#080808] transition-colors duration-300'
                   : 'group hover:bg-brand/5 hover:border-brand/30 transition-all duration-300'
               }`}
             >
-              {service.image && (
-                <>
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src={service.image}
-                      alt=""
-                      className="w-full h-full object-cover opacity-10 grayscale mix-blend-luminosity group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-30 group-hover:scale-105 transition-all duration-700"
-                    />
-                  </div>
-                  <div className="absolute inset-0 z-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent pointer-events-none" />
-                </>
-              )}
+              <div className="absolute -top-12 -right-12 w-36 h-36 bg-brand/5 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
               <div className="relative z-10 flex flex-col h-full grow">
                 <div className="mb-6">{service.icon}</div>

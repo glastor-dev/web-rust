@@ -1,71 +1,77 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, type MotionValue } from 'motion/react';
 
-const steps = [
+export interface StepItem {
+  num: string;
+  title: string;
+  duration: string;
+  description: string;
+  points: string[];
+  deliverable: string;
+}
+
+const steps: StepItem[] = [
   {
     num: '01',
-    title: 'Análisis Técnico',
-    duration: '1-2 semanas',
+    title: 'Discovery & Auditoría',
+    duration: 'Semana 1',
     description:
-      'No empezamos a codificar sin entender tu problema. Analizamos a fondo tus necesidades técnicas y de negocio.',
+      'Analizamos tu arquitectura actual, identificamos cuellos de botella y definimos los objetivos técnicos y de negocio.',
     points: [
-      'Reunión inicial para entender el problema',
-      'Análisis de requisitos técnicos y de negocio',
-      'Evaluación de infraestructura actual',
-      'Identificación de riesgos y dependencias',
-      'Propuesta técnica detallada',
+      'Auditoría de código y arquitectura existente',
+      'Perfilado de rendimiento y uso de memoria',
+      'Definición de SLOs (Latencia p99, Throughput, Uptime)',
+      'Diseño de arquitectura objetivo',
+      'Estimación detallada y plan de migración',
     ],
     deliverable:
-      'Documento técnico con arquitectura propuesta, timeline detallado y presupuesto cerrado.',
+      'Documento de arquitectura con trade-offs, benchmarks iniciales y estimación cerrada.',
   },
   {
     num: '02',
-    title: 'Diseño de Arquitectura',
-    duration: '1-2 semanas',
+    title: 'PoC & Benchmarking',
+    duration: 'Semana 2-3',
     description:
-      'Diseñamos sistemas que escalan desde el día uno, no arquitecturas que tendrás que reescribir en 6 meses.',
+      'Construimos una prueba de concepto del componente crítico y medimos el impacto real antes de comprometer el desarrollo completo.',
     points: [
-      'Diseño detallado del sistema',
-      'Selección de tecnologías y patrones',
-      'Plan de escalabilidad y mantenimiento',
-      'Prototipo de componentes críticos',
-      'Definición de métricas de éxito',
+      'Prototipo del módulo más crítico en Rust',
+      'Pruebas de carga comparativas con el sistema actual',
+      'Validación de throughput y consumo de recursos',
+      'Demostración con datos reales (anonimizados)',
+      'Decisión Go/No-Go con datos en mano',
     ],
-    deliverable:
-      'Diagramas de arquitectura, especificaciones técnicas, prototipo funcional y plan de testing.',
+    deliverable: 'Benchmark reproducible comparando el sistema actual vs la solución en Rust.',
   },
   {
     num: '03',
-    title: 'Desarrollo Iterativo',
-    duration: '4-12 semanas',
+    title: 'Desarrollo Core',
+    duration: 'Semana 4-8',
     description:
-      "Sprints de 1-2 semanas con entregas incrementales. No desaparecemos durante meses para volver con un 'producto terminado'.",
+      'Implementación del sistema completo siguiendo las mejores prácticas de Rust: zero-cost abstractions, tipado fuerte y concurrencia segura.',
     points: [
-      'Desarrollo por sprints de 1-2 semanas',
-      'Entregas incrementales de funcionalidad',
-      'Tests automatizados desde el día uno',
-      'Benchmarks de rendimiento continuos',
-      'Reuniones semanales de seguimiento',
-      'Code reviews rigurosos',
+      'Desarrollo modular con tests unitarios y de integración',
+      'Integración continua con pipelines automatizados',
+      'Fuzzing y property-based testing en áreas críticas',
+      'Documentación técnica y OpenAPI/gRPC specs',
+      'Revisiones de código semanales con tu equipo',
     ],
     deliverable:
-      'Código funcional, tests automatizados, documentación técnica, métricas de rendimiento y demos semanales.',
+      'Código fuente con >80% de cobertura de tests, binarios compilados y documentación.',
   },
   {
     num: '04',
-    title: 'Despliegue y Optimización',
-    duration: '1-2 semanas',
+    title: 'Migración & Despliegue',
+    duration: 'Semana 9-10',
     description:
-      'Producción con monitoreo desde el primer segundo. No cruzamos los dedos y esperamos, monitorizamos y optimizamos activamente.',
+      'Estrategia de rollout progresivo sin downtime. Shadow traffic, canary deployments y rollback automatizado.',
     points: [
-      'Despliegue en producción',
-      'Monitoreo intensivo inicial',
-      'Optimización basada en métricas reales',
-      'Ajustes de configuración',
-      'Testing de carga y estrés',
-      'Documentación de operaciones',
+      'Configuración de infraestructura (Docker, K8s)',
+      'Rollout progresivo con feature flags',
+      'Shadow traffic para validar respuestas en producción',
+      'Métricas en tiempo real (Prometheus/Grafana)',
+      'Transferencia de conocimiento al equipo interno',
     ],
     deliverable:
       'Sistema en producción, dashboards de monitoreo, alertas configuradas, documentación operativa y runbooks.',
@@ -97,7 +103,7 @@ export function ProcessSection() {
   });
 
   return (
-    <section ref={containerRef} className="py-24 relative bg-transparent">
+    <section ref={containerRef} className="pt-24 pb-12 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Header estático normal */}
         <div className="mb-16 md:mb-24 text-center">
@@ -107,7 +113,7 @@ export function ProcessSection() {
           <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
             De la Idea a Producción
             <br />
-            <span className="text-zinc-600">en 5 Pasos.</span>
+            <span className="text-zinc-400">en 5 Pasos.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             No improvisamos. Seguimos un proceso probado en más de 150 proyectos para asegurar que
@@ -115,18 +121,16 @@ export function ProcessSection() {
           </p>
         </div>
 
-        {/* Añadimos un padding-bottom alto para que el usuario tenga espacio para scrollear la última carta y verla apilada */}
-        <div className="relative w-full max-w-4xl mx-auto pb-[20vh]">
+        {/* Contenedor de cartas apiladas */}
+        <div className="relative w-full max-w-4xl mx-auto pb-6 md:pb-8">
           {steps.map((step, index) => {
             // El objetivo de escala: las primeras cartas se encogen un poco más que las últimas.
             const targetScale = 1 - (steps.length - index) * 0.05;
-            
+
             // Calculamos en qué rango del scrollYProgress debería empezar a encogerse esta carta
-            // Usamos una interpolación aproximada basada en el índice.
             const rangeStart = index / steps.length;
-            const rangeEnd = rangeStart + 1 / steps.length;
             const isLast = index === steps.length - 1;
-            
+
             return (
               <Card
                 key={index}
@@ -147,41 +151,34 @@ export function ProcessSection() {
 
 interface CardProps {
   index: number;
-  step: typeof steps[0];
-  progress: any;
-  range: number[];
+  step: StepItem;
+  progress: MotionValue<number>;
+  range: [number, number];
   targetScale: number;
   isLast: boolean;
 }
 
 function Card({ index, step, progress, range, targetScale, isLast }: CardProps) {
-  // Animamos la escala a medida que el usuario sigue bajando
-  // La última carta no debe encogerse
+  // Animamos la escala en desktop para el efecto apilado
   const scale = useTransform(progress, range, [1, isLast ? 1 : targetScale]);
-  
-  // En lugar de hacer toda la carta transparente (lo que revela las cartas de atrás),
-  // animamos un overlay negro para dar el efecto de profundidad/sombra sin perder opacidad.
-  // La última carta no debe oscurecerse
+
+  // Overlay oscuro solo para el efecto de profundidad en desktop
   const overlayOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.7]);
 
   return (
     <div
-      className="sticky flex items-start justify-center w-full"
+      className={`flex items-start justify-center w-full mb-6 ${isLast ? 'md:mb-0' : 'md:mb-[30vh]'} md:sticky`}
       style={{
-        // Aquí está la magia principal: Cada carta se frena en un top diferente 
-        // para dejar ver el borde de la carta anterior.
         top: `calc(15vh + ${index * 35}px)`,
-        // Solo añadimos margen a las cartas que no son la última, para no generar un padding gigante al final.
-        marginBottom: isLast ? '0' : '50vh',
       }}
     >
       <motion.div
         style={{ scale }}
-        className="relative w-full border border-white/10 hover:border-brand/30 bg-[#0a0a0a] p-8 md:p-12 shadow-2xl origin-top"
+        className="relative w-full border border-white/10 hover:border-brand/30 bg-[#0a0a0a] p-6 md:p-12 shadow-2xl origin-top"
       >
-        {/* Overlay para oscurecer la carta sin hacerla transparente */}
-        <motion.div 
-          className="absolute inset-0 bg-black pointer-events-none z-0"
+        {/* Overlay para oscurecer la carta sin hacerla transparente (solo en desktop) */}
+        <motion.div
+          className="hidden md:block absolute inset-0 bg-black pointer-events-none z-0"
           style={{ opacity: overlayOpacity }}
         />
         <div className="relative z-10 flex flex-col md:flex-row gap-8 md:gap-12">

@@ -1,14 +1,17 @@
 'use client';
 
 import { motion } from 'motion/react';
+import { ArrowUpRight } from 'lucide-react';
+import { GithubIcon } from 'hugeicons-react';
 import { AnimatedCounter } from '../ui/AnimatedCounter';
+import { RustCodeShowcase } from '../ui/RustCodeShowcase';
 
 import { benchmarks, advantages } from '../../data/benchmarks.data';
 
 export function RustBenchmarksSection() {
   return (
     <section className="py-24 relative bg-[#030303] overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand/5 via-[#050505] to-[#050505] opacity-50"></div>
+      <div className="absolute inset-0 bg-radial from-brand/5 via-[#050505] to-[#050505] opacity-50" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="mb-20 text-center">
@@ -18,7 +21,7 @@ export function RustBenchmarksSection() {
           <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
             Rust no es una Moda.
             <br />
-            <span className="text-zinc-600">Es Ingeniería.</span>
+            <span className="text-zinc-400">Es Ingeniería.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             Elegimos Rust no porque sea popular, sino porque nos permite construir sistemas que
@@ -42,12 +45,12 @@ export function RustBenchmarksSection() {
                         <div className="w-24 md:w-32 text-sm font-mono text-zinc-400">
                           {item.name}
                         </div>
-                        <div className="flex-grow h-8 bg-white/5 relative overflow-hidden rounded-r-sm">
+                        <div className="grow h-8 bg-white/5 relative overflow-hidden rounded-r-sm">
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${widthPercent}%` }}
-                            viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 1.5, delay: iIdx * 0.15, ease: 'easeOut' }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1.2, delay: iIdx * 0.1, ease: 'easeOut' }}
                             className={`h-full ${item.color} flex items-center px-3`}
                           ></motion.div>
                         </div>
@@ -65,6 +68,54 @@ export function RustBenchmarksSection() {
                 </div>
               </div>
             ))}
+
+            {/* Metodología Técnica y Parámetros Rigurosos */}
+            <div className="p-4 rounded-md bg-[#050505] border border-white/10 font-mono text-xs text-zinc-400 space-y-2">
+              <div className="flex items-center gap-2 text-brand font-bold uppercase tracking-wider text-[11px]">
+                <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+                Parámetros del Entorno de Pruebas
+              </div>
+              <p className="leading-relaxed">
+                <strong className="text-zinc-200">Carga sintética:</strong> 10.000 conexiones
+                concurrentes mantenidas con <code className="text-brand">wrk / k6</code> (payload
+                JSON 4 KB).
+              </p>
+              <p className="leading-relaxed">
+                <strong className="text-zinc-200">Hardware de referencia:</strong> AWS c6i.2xlarge
+                bare-metal (8 vCPUs Dedicadas, 16 GiB RAM, Linux x86_64).
+              </p>
+              <p className="leading-relaxed">
+                <strong className="text-zinc-200">Stack & Toolchain:</strong> Tokio async runtime +
+                Axum 0.8. Compilado con{' '}
+                <code className="text-zinc-300">
+                  opt-level=3, lto="fat", codegen-units=1, panic="abort"
+                </code>
+                .
+              </p>
+
+              <div className="pt-3 mt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center gap-3">
+                <a
+                  href="https://github.com/glastor-core/benchmarks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-3.5 py-2 bg-brand/10 hover:bg-brand border border-brand/40 text-brand hover:text-black font-mono text-[11px] font-bold uppercase tracking-wider transition-colors"
+                >
+                  <GithubIcon className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Ver harness reproducible (k6 / wrk)</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                </a>
+
+                <a
+                  href="https://github.com/glastor-core/hyper64"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 border border-white/10 hover:border-brand/40 text-zinc-300 hover:text-brand font-mono text-[11px] uppercase tracking-wider transition-colors"
+                >
+                  <span>SIMD cargo bench</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Advantages & Security */}
@@ -75,15 +126,8 @@ export function RustBenchmarksSection() {
               </h3>
               <ul className="space-y-6">
                 {advantages.map((adv, idx) => (
-                  <motion.li
-                    key={idx}
-                    initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-                    whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ delay: idx * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                    className="flex items-start"
-                  >
-                    <div className="mt-1 bg-brand/20 p-1 rounded-full mr-4">
+                  <li key={idx} className="flex items-start">
+                    <div className="mt-1 bg-brand/20 p-1 rounded-full mr-4 shrink-0">
                       <svg
                         className="w-4 h-4 text-brand"
                         fill="none"
@@ -104,7 +148,7 @@ export function RustBenchmarksSection() {
                       </strong>
                       <span className="text-zinc-400 text-sm">{adv.desc}</span>
                     </div>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -137,6 +181,9 @@ export function RustBenchmarksSection() {
             </div>
           </div>
         </div>
+
+        {/* Bloque Show Don't Tell: Rust Code Showcase */}
+        <RustCodeShowcase />
       </div>
     </section>
   );

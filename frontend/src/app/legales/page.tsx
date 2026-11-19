@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, Copy, Check } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Card } from '@/components/reutilizables/card';
 import { Button } from '@/components/reutilizables/button';
 
@@ -37,7 +36,6 @@ const legalDocuments = [
 
 export default function Legales() {
   const [activeDoc, setActiveDoc] = useState('privacidad');
-  const [copiedAnchor, setCopiedAnchor] = useState<string | null>(null);
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
@@ -53,16 +51,6 @@ export default function Legales() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
-
-  const copyAnchor = async (anchor: string) => {
-    try {
-      await navigator.clipboard.writeText(`${SITE}/legales#${anchor}`);
-      setCopiedAnchor(anchor);
-      setTimeout(() => setCopiedAnchor(null), 1200);
-    } catch {
-      // noop
-    }
-  };
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-screen bg-transparent pt-32 pb-24">
@@ -339,8 +327,8 @@ export default function Legales() {
                     <p>
                       Usted tiene derechos sobre sus datos personales. Puede ejercerlos de forma
                       gratuita en cualquier momento enviando un correo electrónico a{' '}
-                      <a href="mailto:privacy@glastor.com" className="text-brand hover:underline">
-                        privacy@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>{' '}
                       con el asunto "Protección de Datos" y adjuntando una copia de su documento de
                       identidad:
@@ -411,8 +399,8 @@ export default function Legales() {
                     <ul className="list-disc pl-6 space-y-2 text-zinc-400 mt-4">
                       <li>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a href="mailto:privacy@glastor.com" className="text-brand hover:underline">
-                          privacy@glastor.com
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>
@@ -452,8 +440,8 @@ export default function Legales() {
                       </li>
                       <li>
                         <strong>Email de Contacto:</strong>{' '}
-                        <a href="mailto:ventas@glastor.es" className="text-brand hover:underline">
-                          ventas@glastor.es
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>
@@ -599,8 +587,8 @@ export default function Legales() {
                         <strong>Derechos:</strong> Puede ejercer sus derechos de acceso,
                         rectificación, supresión, oposición, limitación del tratamiento y
                         portabilidad enviando un correo a{' '}
-                        <a href="mailto:privacy@glastor.com" className="text-brand hover:underline">
-                          privacy@glastor.com
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>{' '}
                         con una copia de su documento de identidad.
                       </li>
@@ -636,8 +624,8 @@ export default function Legales() {
 
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto para consultas legales:{' '}
-                      <a href="mailto:legal@glastor.com" className="text-brand hover:underline">
-                        legal@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>
                     </p>
                   </div>
@@ -892,8 +880,8 @@ export default function Legales() {
 
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto: Si tiene preguntas sobre esta política, puede contactarnos en{' '}
-                      <a href="mailto:privacy@glastor.com" className="text-brand hover:underline">
-                        privacy@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>
                       .<br />
                       <br />
@@ -1081,8 +1069,8 @@ export default function Legales() {
                     <p className="mt-4">
                       <strong>Procedimiento para ejercer el derecho:</strong> El cliente deberá
                       notificar su decisión por escrito a{' '}
-                      <a href="mailto:ventas@glastor.es" className="text-brand hover:underline">
-                        ventas@glastor.es
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>{' '}
                       dentro del plazo legal establecido.
                     </p>
@@ -1255,8 +1243,8 @@ export default function Legales() {
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto: Para consultas sobre estas Condiciones de Venta, puede contactarnos
                       en{' '}
-                      <a href="mailto:legal@glastor.com" className="text-brand hover:underline">
-                        legal@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>{' '}
                       o al teléfono [+[número de contacto]].
                     </p>
@@ -1377,11 +1365,8 @@ export default function Legales() {
                     <ul className="list-disc pl-6 space-y-2 text-zinc-400 mt-4">
                       <li>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a
-                          href="mailto:accesibilidad@glastor.com"
-                          className="text-brand hover:underline"
-                        >
-                          accesibilidad@glastor.com
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>
@@ -1450,11 +1435,8 @@ export default function Legales() {
 
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto: Para cualquier consulta sobre esta política, puede escribirnos a{' '}
-                      <a
-                        href="mailto:accesibilidad@glastor.com"
-                        className="text-brand hover:underline"
-                      >
-                        accesibilidad@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>
                       .<br />
                       <br />
@@ -1704,8 +1686,8 @@ export default function Legales() {
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto: Para cualquier consulta sobre este Aviso de Confidencialidad, puede
                       contactarnos en{' '}
-                      <a href="mailto:legal@glastor.com" className="text-brand hover:underline">
-                        legal@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>
                       .
                     </p>
@@ -1752,8 +1734,8 @@ export default function Legales() {
                       </li>
                       <li>
                         <strong>Email de Contacto:</strong>{' '}
-                        <a href="mailto:ventas@glastor.es" className="text-brand hover:underline">
-                          ventas@glastor.es
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>
@@ -1764,11 +1746,8 @@ export default function Legales() {
                     <p className="mt-4">
                       <strong>Atención al consumidor:</strong> Disponemos de un servicio de atención
                       al consumidor a través del correo{' '}
-                      <a
-                        href="mailto:atencionconsumidor@glastor.com"
-                        className="text-brand hover:underline"
-                      >
-                        atencionconsumidor@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>{' '}
                       y del teléfono [+[número de contacto]], con horario de atención de lunes a
                       viernes de 9:00 a 17:00 horas (8 horas diarias), en cumplimiento de la
@@ -1957,11 +1936,8 @@ export default function Legales() {
                     <ul className="list-disc pl-6 space-y-2 text-zinc-400 mt-4">
                       <li>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a
-                          href="mailto:reclamos@glastor.com"
-                          className="text-brand hover:underline"
-                        >
-                          reclamos@glastor.com
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>
@@ -2007,8 +1983,8 @@ export default function Legales() {
 
                     <p className="mt-8 pt-8 border-t border-white/10 text-sm text-zinc-500">
                       Contacto: Para cualquier consulta sobre esta política, puede contactarnos en{' '}
-                      <a href="mailto:legal@glastor.com" className="text-brand hover:underline">
-                        legal@glastor.com
+                      <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                        founder@glastor.es
                       </a>
                       .
                     </p>
@@ -2038,8 +2014,8 @@ export default function Legales() {
                     <ul className="list-disc pl-6 space-y-2 text-zinc-400 mt-4">
                       <li>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a href="mailto:dpo@glastor.es" className="text-brand hover:underline">
-                          dpo@glastor.es
+                        <a href="mailto:founder@glastor.es" className="text-brand hover:underline">
+                          founder@glastor.es
                         </a>
                       </li>
                       <li>

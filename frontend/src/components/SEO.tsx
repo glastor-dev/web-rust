@@ -20,10 +20,11 @@ export function SEO({ schemaType = 'Organization', dynamicSchema }: SEOProps) {
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',
-        email: 'ventas@glastor.es',
+        email: 'founder@glastor.es',
         telephone: '+5491132578591',
       },
       sameAs: [
+        'https://github.com/glastor-core',
         'https://github.com/glastor-dev',
         'https://wa.me/5491132578591',
         'https://t.me/glastordev',

@@ -1,0 +1,27 @@
+{
+  "version": "0.2",
+  "import": ["@cspell/dict-es-es/cspell-ext.json"],
+  "language": "en,es-ES",
+  "dictionaries": [
+    "softwareTerms",
+    "typescript",
+    "node",
+    "html",
+    "css",
+    "es-es",
+    "custom-glastor"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "custom-glastor",
+      "path": "./.cspell-custom.txt",
+      "addWords": true
+    }
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "build",
+    "public"
+  ]
+}

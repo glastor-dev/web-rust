@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardHeader, CardDescription, CardContent } from '../reutilizables/card';
 import { Database, Activity, Zap } from 'lucide-react';
 import { AnimatedCounter } from '../ui/AnimatedCounter';
@@ -9,7 +11,7 @@ export function IronCoreSection() {
         <h2 className="text-fluid-h3 font-extrabold tracking-tight text-white leading-none">
           El Núcleo DE HIERRO
         </h2>
-        <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest mt-4">
+        <p className="text-zinc-400 font-mono text-xs uppercase tracking-widest mt-4">
           Datos de Telemetría // Tiempo Real
         </p>
       </div>
@@ -25,7 +27,7 @@ export function IronCoreSection() {
             <div className="text-5xl font-extrabold tracking-tight mt-4">
               <AnimatedCounter from={0} to={14250} duration={2.5} suffix="+" />
             </div>
-            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">
+            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase">
               Transacciones Por Segundo
             </p>
           </CardContent>
@@ -35,7 +37,7 @@ export function IronCoreSection() {
         <Card className="rounded-none hover:-translate-y-2 transition-transform duration-500 delay-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardDescription>Latencia P99</CardDescription>
-            <Activity className="h-4 w-4 text-zinc-500" />
+            <Activity className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-5xl font-extrabold tracking-tight mt-4 text-white">
@@ -48,7 +50,7 @@ export function IronCoreSection() {
                 suffix="ms"
               />
             </div>
-            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">
+            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase">
               Tiempo de Respuesta Global
             </p>
           </CardContent>
@@ -58,13 +60,13 @@ export function IronCoreSection() {
         <Card className="rounded-none hover:-translate-y-2 transition-transform duration-500 delay-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardDescription>Disponibilidad</CardDescription>
-            <Database className="h-4 w-4 text-zinc-500" />
+            <Database className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-5xl font-extrabold tracking-tight mt-4 text-white">
               <AnimatedCounter from={0} to={99.99} duration={3} decimals={2} suffix="%" />
             </div>
-            <p className="text-xs font-mono text-zinc-500 mt-2 uppercase">Uptime Garantizado</p>
+            <p className="text-xs font-mono text-zinc-400 mt-2 uppercase">Uptime Garantizado</p>
           </CardContent>
         </Card>
       </div>

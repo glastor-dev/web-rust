@@ -94,7 +94,7 @@ Implementamos un flujo de CI/CD riguroso para proteger la estabilidad de `main`:
 Para discusiones arquitectónicas o consultas de infraestructura:
 
 - **GitHub Discussions:** Canal preferente para debate técnico.
-- **Soporte Corporativo:** [glastor.info@gmail.com](mailto:glastor.info@gmail.com)
+- **Soporte Corporativo:** [founder@glastor.es](mailto:founder@glastor.es)
 - **Comunicación Directa (Telegram):** [@zerhocool](https://t.me/zerhocool)
 
 ---

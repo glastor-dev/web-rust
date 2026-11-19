@@ -2,8 +2,9 @@
 
 import { motion } from 'motion/react';
 import { Card } from '../../reutilizables/card';
-import { CheckIcon, Search, Filter } from 'lucide-react';
+import { CheckIcon, Search } from 'lucide-react';
 import { useConfiguratorStore } from '../../../store/configuratorStore';
+import { formatArsFromEur, useEurToArsRate } from '../../../hooks/useEurToArsRate';
 
 export function ModuleGrid() {
   const {
@@ -15,6 +16,7 @@ export function ModuleGrid() {
     setSearchQuery,
     setCategoryFilter,
   } = useConfiguratorStore();
+  const { rate: eurArsRate } = useEurToArsRate();
 
   const categories = Array.from(new Set(availableModules.map((m) => m.category))).sort();
 
@@ -97,7 +99,7 @@ export function ModuleGrid() {
                   {isSelected && <CheckIcon size={14} strokeWidth={4} />}
                 </div>
 
-                <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4">
+                <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest mb-4">
                   {module.category}
                 </div>
 
@@ -115,7 +117,7 @@ export function ModuleGrid() {
 
                 <div className="flex justify-between items-end border-t border-white/10 pt-4 mt-auto">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
                       Base
                     </span>
                     <span
@@ -123,9 +125,14 @@ export function ModuleGrid() {
                     >
                       €{module.base_price.toLocaleString()} EUR
                     </span>
+                    {eurArsRate && (
+                      <span className="text-[11px] font-mono text-zinc-400 mt-0.5">
+                        ≈ {formatArsFromEur(module.base_price, eurArsRate)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col text-right">
-                    <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
                       Tiempo
                     </span>
                     <span className="text-zinc-300 text-sm font-bold">

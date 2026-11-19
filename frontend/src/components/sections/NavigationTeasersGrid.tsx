@@ -1,27 +1,30 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight01Icon, ChartHistogramIcon, Rocket01Icon, UserGroupIcon } from 'hugeicons-react';
 
 const teasers = [
   {
     title: 'Casos de Éxito',
-    description: 'Conoce cómo reducimos latencias en un 90% y optimizamos la infraestructura de nuestros clientes B2B.',
+    description:
+      'Conoce cómo reducimos latencias en un 90% y optimizamos la infraestructura de nuestros clientes B2B.',
     href: '/proyectos',
     icon: <Rocket01Icon className="w-8 h-8 text-brand mb-6" />,
     delay: 0.1,
   },
   {
     title: 'Métricas y Servicios',
-    description: 'Arquitecturas en Rust, migraciones seguras y servidores de ultra-alto rendimiento. Descubre nuestros benchmarks.',
+    description:
+      'Arquitecturas en Rust, migraciones seguras y servidores de ultra-alto rendimiento. Descubre nuestros benchmarks.',
     href: '/servicios',
     icon: <ChartHistogramIcon className="w-8 h-8 text-brand mb-6" />,
     delay: 0.2,
   },
   {
     title: 'Nuestra Filosofía',
-    description: 'Construimos sistemas críticos que escalan. Conoce a los ingenieros detrás del ecosistema Glastor.',
+    description:
+      'Construimos sistemas críticos que escalan. Conoce a los ingenieros detrás del ecosistema Glastor.',
     href: '/nosotros',
     icon: <UserGroupIcon className="w-8 h-8 text-brand mb-6" />,
     delay: 0.3,
@@ -35,15 +38,15 @@ export function NavigationTeasersGrid() {
         {teasers.map((teaser, idx) => (
           <Link key={idx} href={teaser.href} className="group block h-full">
             <motion.div
-              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: teaser.delay, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: teaser.delay, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="glass-panel p-8 md:p-10 border-editorial h-full flex flex-col bg-[#050505] hover:bg-[#080808] transition-colors duration-500 relative overflow-hidden"
             >
               {/* Glow effect on hover */}
               <div className="absolute top-0 left-0 w-full h-1 bg-brand transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out z-10" />
-              
+
               <div className="relative z-10 flex-grow flex flex-col">
                 {teaser.icon}
                 <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4 group-hover:text-brand transition-colors duration-300">

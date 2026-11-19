@@ -66,7 +66,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let resend_api_key = env::var("RESEND_API_KEY").unwrap_or_else(|_| "fake_key".to_string());
     let resend_from_email =
-        env::var("RESEND_FROM_EMAIL").unwrap_or_else(|_| "onboarding@resend.dev".to_string());
+        env::var("RESEND_FROM_EMAIL").unwrap_or_else(|_| "founder@glastor.es".to_string());
     let analytics_salt =
         env::var("ANALYTICS_SALT").unwrap_or_else(|_| "glastor_default_salt_2026".to_string());
     let turnstile_secret_key = env::var("TURNSTILE_SECRET_KEY")

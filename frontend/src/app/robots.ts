@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://glastor.es';
@@ -8,13 +8,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/checkout', '/cuenta'],
+        disallow: ['/api/', '/admin/', '/checkout', '/cuenta', '/tienda', '/glastor-sys-admin'],
       },
       {
-        // Enforce directives for AI model crawlers
+        // Directivas para crawlers de IA si se desea bloquear scraping indiscriminado
         userAgent: ['GPTBot', 'ChatGPT-User', 'ClaudeBot', 'Google-Extended', 'Applebot-Extended'],
-        disallow: ['/'],
-      }
+        disallow: ['/glastor-sys-admin', '/api/'],
+      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
   };

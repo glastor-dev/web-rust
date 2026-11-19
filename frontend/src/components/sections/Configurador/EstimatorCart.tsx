@@ -5,13 +5,20 @@ import { Card } from '../../reutilizables/card';
 import { Button } from '../../reutilizables/button';
 import { CalculatorIcon, ArrowRightIcon } from 'lucide-react';
 import { useConfiguratorStore } from '../../../store/configuratorStore';
+import {
+  formatArsFromEur,
+  formatRateTimestamp,
+  useEurToArsRate,
+} from '../../../hooks/useEurToArsRate';
 
 interface EstimatorCartProps {
   onGenerate: () => void;
 }
 
 export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
-  const { selectedModuleIds, totalPrice, totalMinWeeks, totalMaxWeeks } = useConfiguratorStore();
+  const { selectedModuleIds, totalPrice, totalMinWeeks, totalMaxWeeks, resetConfig } =
+    useConfiguratorStore();
+  const { rate: eurArsRate, updatedAt } = useEurToArsRate();
 
   return (
     <div className="sticky top-32">
@@ -25,7 +32,7 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
           </div>
           {selectedModuleIds.length > 0 && (
             <button
-              onClick={onGenerate?.bind(null, true)}
+              onClick={resetConfig}
               className="text-[10px] font-mono uppercase tracking-widest text-brand hover:text-white transition-colors"
             >
               Reiniciar
@@ -49,8 +56,20 @@ export function EstimatorCart({ onGenerate }: EstimatorCartProps) {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-4xl md:text-5xl font-extrabold tracking-tight text-brand"
               >
-                €{totalPrice.toLocaleString()} <span className="text-2xl text-zinc-600">EUR</span>
+                €{totalPrice.toLocaleString()} <span className="text-2xl text-zinc-400">EUR</span>
               </motion.div>
+              {eurArsRate && (
+                <div className="flex flex-col gap-0.5 pt-1">
+                  <span className="text-lg sm:text-xl font-mono font-bold text-zinc-200">
+                    ≈ {formatArsFromEur(totalPrice, eurArsRate)}
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
+                    Ref. Euro Oficial (venta): $
+                    {eurArsRate.toLocaleString('es-AR', { maximumFractionDigits: 2 })} ARS
+                    {updatedAt ? ` · ${formatRateTimestamp(updatedAt)}` : ''}
+                  </span>
+                </div>
+              )}
               {(() => {
                 const bundleSize = selectedModuleIds.length;
                 if (bundleSize >= 4)

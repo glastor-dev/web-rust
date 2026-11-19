@@ -1,19 +1,7 @@
-export const trackEvent = async (eventName: string, data?: string) => {
-  try {
-    const payload = {
-      event_name: eventName,
-      path: window.location.pathname,
-      data: data || null,
-    };
-
-    await fetch('/api/analytics/event', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-  } catch (error) {
-    console.debug('Failed to track event:', error);
-  }
+/**
+ * Client-side event tracker (legacy Rust store /api/analytics/event disabled
+ * for static-first deployment; PostHog handles active telemetry when configured).
+ */
+export const trackEvent = async (_eventName: string, _data?: string) => {
+  // No-op when legacy backend is disabled
 };

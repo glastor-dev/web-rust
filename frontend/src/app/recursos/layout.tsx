@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Recursos y Documentación Técnica | Glastor',
+  title: 'Recursos, RFDs y Deep-Dives en Rust | Glastor Labs',
   description:
-    'Accede a whitepapers, documentación técnica, guías de instalación y modelos CAD para tu próximo proyecto de infraestructura.',
+    'Artículos de ingeniería de sistemas, RFDs técnicos, patrones de producción en Rust, Tokio, Axum, SQLx, Docker distroless y Kubernetes.',
 };
 
 export default function RecursosLayout({ children }: { children: React.ReactNode }) {

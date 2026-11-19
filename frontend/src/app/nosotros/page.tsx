@@ -5,6 +5,7 @@ import { TeamSection } from '@/components/sections/TeamSection';
 import PhilosophySection from '@/components/sections/PhilosophySection';
 
 import { CompanyStatsHero } from '@/components/sections/Nosotros/CompanyStatsHero';
+import { FinalCTA } from '@/components/sections/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Nuestra Visión y Evolución | Glastor',
@@ -22,6 +23,9 @@ export default function Nosotros() {
 
       {/* 4. Liderazgo y Núcleo Operativo */}
       <TeamSection />
+
+      {/* 5. Cierre y Conversión Directa */}
+      <FinalCTA />
     </div>
   );
 }

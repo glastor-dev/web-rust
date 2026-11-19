@@ -108,30 +108,50 @@ const loadPersistedState = (): Partial<ConfiguratorState> => {
   }
 };
 
-let persistedSelection = loadPersistedState();
+function calculateTotals(availableModules: ArchitectureModule[], selectedModuleIds: string[]) {
+  const selectedModules = availableModules.filter((m) => selectedModuleIds.includes(m.id));
+  const totalMinWeeks = selectedModules.reduce((acc, m) => acc + m.min_weeks, 0);
+  const totalMaxWeeks = selectedModules.reduce((acc, m) => acc + m.max_weeks, 0);
+  const baseTotalPrice = selectedModules.reduce((acc, m) => acc + m.base_price, 0);
+
+  const bundleSize = selectedModules.length;
+  let bundleDiscount = 0;
+  if (bundleSize >= 4) {
+    bundleDiscount = 0.12;
+  } else if (bundleSize === 3) {
+    bundleDiscount = 0.08;
+  } else if (bundleSize === 2) {
+    bundleDiscount = 0.04;
+  }
+
+  const totalPrice = Math.round(baseTotalPrice * (1 - bundleDiscount));
+  return { totalPrice, totalMinWeeks, totalMaxWeeks };
+}
+
+const persistedSelection = loadPersistedState();
+const initialSelectedIds = persistedSelection.selectedModuleIds || [];
+const initialTotals = calculateTotals(FALLBACK_MODULES, initialSelectedIds);
 
 export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
-  availableModules: [],
-  selectedModuleIds: persistedSelection.selectedModuleIds || [],
-  totalPrice: 0,
-  totalMinWeeks: 0,
-  totalMaxWeeks: 0,
+  availableModules: FALLBACK_MODULES,
+  selectedModuleIds: initialSelectedIds,
+  totalPrice: initialTotals.totalPrice,
+  totalMinWeeks: initialTotals.totalMinWeeks,
+  totalMaxWeeks: initialTotals.totalMaxWeeks,
   isLoading: false,
   error: null,
   searchQuery: '',
   categoryFilter: 'all',
 
   fetchModules: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const res = await fetch('/api/modules');
-      if (!res.ok) throw new Error('Failed to fetch modules');
-      const data: ArchitectureModule[] = await res.json();
-      set({ availableModules: data, isLoading: false });
-    } catch (err: any) {
-      console.warn('Backend fetch failed, using fallback modules. Error:', err.message);
-      set({ availableModules: FALLBACK_MODULES, error: err.message, isLoading: false });
-    }
+    const selectedIds = get().selectedModuleIds;
+    const totals = calculateTotals(FALLBACK_MODULES, selectedIds);
+    set({
+      availableModules: FALLBACK_MODULES,
+      ...totals,
+      error: null,
+      isLoading: false,
+    });
   },
 
   toggleModule: (id: string) => {
@@ -141,29 +161,11 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
       ? state.selectedModuleIds.filter((mId) => mId !== id)
       : [...state.selectedModuleIds, id];
 
-    const selectedModules = state.availableModules.filter((m) => newSelectedIds.includes(m.id));
-    const totalMinWeeks = selectedModules.reduce((acc, m) => acc + m.min_weeks, 0);
-    const totalMaxWeeks = selectedModules.reduce((acc, m) => acc + m.max_weeks, 0);
-
-    const baseTotalPrice = selectedModules.reduce((acc, m) => acc + m.base_price, 0);
-
-    const bundleSize = selectedModules.length;
-    let bundleDiscount = 0;
-    if (bundleSize >= 4) {
-      bundleDiscount = 0.12;
-    } else if (bundleSize === 3) {
-      bundleDiscount = 0.08;
-    } else if (bundleSize === 2) {
-      bundleDiscount = 0.04;
-    }
-
-    const totalPrice = Math.round(baseTotalPrice * (1 - bundleDiscount));
+    const totals = calculateTotals(state.availableModules, newSelectedIds);
 
     set({
       selectedModuleIds: newSelectedIds,
-      totalPrice,
-      totalMinWeeks,
-      totalMaxWeeks,
+      ...totals,
     });
 
     try {

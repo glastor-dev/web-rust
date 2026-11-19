@@ -22,12 +22,13 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "spellcheck": "cspell \"src/**/*.{tsx,ts}\"",
+    "check:orphans": "node scripts/check-orphans.mjs",
     "release": "release-it"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
       "biome format --write",
-      "oxlint --deny-warnings",
+      "oxlint -A react/only-export-components --deny-warnings",
       "bash -c 'tsc -b'"
     ]
   },

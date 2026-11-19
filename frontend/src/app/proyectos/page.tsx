@@ -9,16 +9,7 @@ import type { ProjectCategory } from '@/lib/data/caseStudies';
 import { ProjectsFilterSection } from '@/components/sections/Proyectos/ProjectsFilterSection';
 import { DetailedCaseStudy } from '@/components/sections/Proyectos/DetailedCaseStudy';
 import { GlobalMetricsSection } from '@/components/sections/Proyectos/GlobalMetricsSection';
-
-const INLINE_CONTACT_ID = 'contacto';
-const INLINE_CTA_BEFORE_INDEXES = [1];
-
-const scrollToContact = () => {
-  const el = document.getElementById(INLINE_CONTACT_ID);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
+import { FinalCTA } from '@/components/sections/FinalCTA';
 
 export default function Proyectos() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('Todos');
@@ -32,30 +23,57 @@ export default function Proyectos() {
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Hero */}
       <PageHero
+        badge="Casos de Éxito & OSS"
         title={
-          <span className="whitespace-nowrap pr-4">
+          <span>
             PROYECTOS<span className="text-brand">.</span>
           </span>
         }
-        titleClass="text-[clamp(3rem,11vw,6rem)] lg:text-[clamp(3rem,4vw,5.5rem)]"
-        description="Sistemas en producción desde 2010. Más de 15 años construyendo software crítico. Aquí tienes una muestra de lo que hacemos."
+        titleClass="text-[clamp(2.5rem,8vw,5rem)]"
+        description="Arquitectura Dual-Core en producción: Proyectos insignia del ecosistema open-source @glastor-core e implementaciones críticas de alta concurrencia en Rust."
         ctaPrimary={{ text: 'Solicitar proyecto similar', href: '#contacto' }}
         minHeight="min-h-150"
         visualElement={
           <div className="relative w-full h-75 lg:h-112 flex items-center justify-center pb-20 lg:pb-0">
-            {/* Ambient Glow behind image */}
-            <img
-              src="/images/P1.webp"
-              alt="Muestra"
-              className="absolute w-[45%] lg:w-[35%] rounded-xl shadow-2xl border border-white/5 opacity-50 transition-all duration-700 ease-out hover:opacity-100! hover:scale-110! hover:z-50 z-10 translate-x-[-50%] lg:translate-x-[-70%] translate-y-[20%] -rotate-6 group-hover:translate-x-[-60%] lg:group-hover:translate-x-[-90%] group-hover:-rotate-12"
-            />
-
-            {/* Siéntete libre de cambiar la imagen P1.webp por otra del catálogo si lo deseas */}
-            <img
-              src="/images/P1.webp"
-              alt="Muestra de Proyecto"
-              className="relative z-10 w-full h-full object-contain drop-shadow-[0_0_50px_rgba(0,255,102,0.15)] hover:scale-105 transition-transform duration-700"
-            />
+            {/* Ambient Glow */}
+            <div className="absolute w-72 h-72 bg-brand/10 blur-[100px] rounded-full pointer-events-none" />
+            <div className="relative z-10 w-full max-w-md p-6 bg-[#080808] border border-white/10 rounded-xl shadow-[0_0_50px_rgba(0,255,102,0.08)]">
+              <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-brand" />
+                  <span className="text-[10px] font-mono text-zinc-500 ml-2">
+                    glastor-core v1.0.0
+                  </span>
+                </div>
+                <span className="text-[9px] font-mono text-brand bg-brand/10 px-2 py-0.5 border border-brand/20">
+                  SIMD AVX-512
+                </span>
+              </div>
+              <div className="font-mono text-xs text-zinc-300 space-y-2">
+                <p className="text-zinc-500">// Benchmarks en caliente</p>
+                <p>
+                  <span className="text-brand">$</span> hyper64::encode_simd(payload)
+                </p>
+                <p className="text-zinc-400 pl-4">
+                  → Throughput: <span className="text-white font-bold">25.4 GiB/s</span> [PASSED]
+                </p>
+                <p>
+                  <span className="text-brand">$</span> glastor-core::dispatch_pipeline()
+                </p>
+                <p className="text-zinc-400 pl-4">
+                  → Latencia p99: <span className="text-white font-bold">0.42 ms</span>{' '}
+                  [DETERMINISTIC]
+                </p>
+                <p>
+                  <span className="text-brand">$</span> byte-gauge::checksec_audit()
+                </p>
+                <p className="text-zinc-400 pl-4">
+                  → Hardening: <span className="text-brand font-bold">100% RELRO/CANARY/PIE</span>
+                </p>
+              </div>
+            </div>
           </div>
         }
       />
@@ -88,9 +106,8 @@ export default function Proyectos() {
       {/* Métricas Globales */}
       <GlobalMetricsSection />
 
-      {/* Secciones antiguas desactivadas */}
-      {/* <MetricsSection /> */}
-      {/* <PretextMasonryGrid /> */}
+      {/* Cierre Comercial & Contacto */}
+      <FinalCTA />
     </div>
   );
 }

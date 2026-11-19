@@ -7,12 +7,19 @@ export function FooterSocial() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-4">
           <a
-            href="https://github.com/glastor-dev"
+            href="https://github.com/glastor-core"
             target="_blank"
             rel="noopener noreferrer"
+            title="GLASTOR Core en GitHub"
             className="opacity-50 hover:opacity-100 hover:scale-110 transition-all"
           >
-            <Image src="/icons/github.svg" alt="GitHub" width={20} height={20} className="w-5 h-5 invert" />
+            <Image
+              src="/icons/github.svg"
+              alt="GitHub"
+              width={20}
+              height={20}
+              className="w-5 h-5 invert"
+            />
           </a>
           <a
             href="https://wa.me/5491132578591"
@@ -20,7 +27,13 @@ export function FooterSocial() {
             rel="noopener noreferrer"
             className="opacity-50 hover:opacity-100 hover:text-brand hover:scale-110 transition-all"
           >
-            <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={20} height={20} className="w-5 h-5" />
+            <Image
+              src="/icons/whatsapp.svg"
+              alt="WhatsApp"
+              width={20}
+              height={20}
+              className="w-5 h-5"
+            />
           </a>
           <a
             href="https://t.me/zerhocool"
@@ -28,7 +41,13 @@ export function FooterSocial() {
             rel="noopener noreferrer"
             className="opacity-50 hover:opacity-100 hover:text-brand hover:scale-110 transition-all"
           >
-            <Image src="/icons/telegram.svg" alt="Telegram" width={20} height={20} className="w-5 h-5 invert" />
+            <Image
+              src="/icons/telegram.svg"
+              alt="Telegram"
+              width={20}
+              height={20}
+              className="w-5 h-5 invert"
+            />
           </a>
           <a
             href="https://instagram.com/glastorgroup"
@@ -37,10 +56,16 @@ export function FooterSocial() {
             aria-label="Instagram"
             className="opacity-50 hover:opacity-100 hover:scale-110 transition-all"
           >
-            <Image src="/icons/instagram.svg" alt="Instagram" width={20} height={20} className="w-5 h-5 invert" />
+            <Image
+              src="/icons/instagram.svg"
+              alt="Instagram"
+              width={20}
+              height={20}
+              className="w-5 h-5 invert"
+            />
           </a>
           <a
-            href="mailto:ventas@glastor.es"
+            href="mailto:founder@glastor.es"
             className="opacity-50 hover:opacity-100 hover:scale-110 transition-all"
           >
             <Image

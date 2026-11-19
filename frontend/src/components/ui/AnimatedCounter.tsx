@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMotionValue, useTransform, animate, motion, useInView } from 'motion/react';
 
 interface AnimatedCounterProps {
@@ -22,7 +22,7 @@ export function AnimatedCounter({
 }: AnimatedCounterProps) {
   // Use framer-motion's useInView for reliable triggering (works with Lenis)
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: true });
 
   // Set initial value to 0 for animation, but if JS fails it would render `from`.
   // Actually, we bind the motion value to `from` initially.

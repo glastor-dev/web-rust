@@ -18,7 +18,7 @@ export function FinalCTA() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6">
-            ¿Listo para Construir Algo <span className="text-brand">Inquebrantable??</span>
+            ¿Listo para Construir Algo <span className="text-brand">Inquebrantable?</span>
           </h2>
           <p className="text-zinc-400 text-lg md:text-xl font-light mb-12">
             Cuéntanos tu proyecto y te daremos una estimación técnica en 48 horas. Sin compromiso.
@@ -31,24 +31,24 @@ export function FinalCTA() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
         >
           <Button
             asChild
             variant="default"
-            className="h-16 px-8 text-lg w-full sm:w-auto animate-pulse flex items-center justify-center gap-2"
+            className="h-12 px-6 sm:px-7 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-none w-full sm:w-auto flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(0,255,102,0.18)] hover:shadow-[0_0_28px_rgba(0,255,102,0.32)] hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <a href="https://cal.com/glastor">
-              <Calendar className="w-5 h-5" /> AGENDAR LLAMADA DE 30 MIN
+            <a href="https://cal.com/glastor" target="_blank" rel="noopener noreferrer">
+              <Calendar className="w-4 h-4" aria-hidden="true" /> Agendar llamada (30 min)
             </a>
           </Button>
           <Button
             asChild
             variant="outline"
-            className="h-16 px-8 text-lg w-full sm:w-auto flex items-center justify-center gap-2"
+            className="h-12 px-6 sm:px-7 text-xs sm:text-sm font-bold uppercase tracking-widest rounded-none w-full sm:w-auto flex items-center justify-center gap-2.5 hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <a href="mailto:hola@glastor.es">
-              <Mail className="w-5 h-5" /> Enviar email
+            <a href="mailto:founder@glastor.es">
+              <Mail className="w-4 h-4" aria-hidden="true" /> Enviar email
             </a>
           </Button>
         </motion.div>

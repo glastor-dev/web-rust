@@ -4,15 +4,15 @@ import { TrustBar } from '@/components/ui/TrustBar';
 import { ROICalculator } from '@/components/ui/ROICalculator';
 
 import { RustServicesSection } from '@/components/sections/RustServicesSection';
-import { RustBenchmarksSection } from '@/components/sections/RustBenchmarksSection';
 import ServicesListSection from '@/components/sections/ServicesListSection';
 import { ProcessSection } from '@/components/sections/ProcessSection';
 import { GuaranteesSection } from '@/components/sections/GuaranteesSection';
+import { FinalCTA } from '@/components/sections/FinalCTA';
 
 export const metadata: Metadata = {
-  title: 'Servicios Industriales B2B | Glastor',
+  title: 'Servicios de Ingeniería en Rust & Sistemas Críticos | Glastor',
   description:
-    'Construimos sistemas críticos que escalan, optimizamos infraestructura y migramos aplicaciones legacy a arquitecturas modernas.',
+    'Desarrollo de backend en Rust, optimización de infraestructura de alto rendimiento, migraciones de sistemas críticos y arquitectura cloud determinística.',
 };
 
 export default function Servicios() {
@@ -20,15 +20,14 @@ export default function Servicios() {
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* 1. Hero Dedicado con ROICalculator */}
       <PageHero
+        badge="Servicios Técnicos & Consultoría"
         title={
-          <>
-            Servicios
-            <br />
-            <span className="text-brand">Técnicos.</span>
-          </>
+          <span>
+            SERVICIOS<span className="text-brand">.</span>
+          </span>
         }
-        titleClass="text-[clamp(2.5rem,8vw,4.5rem)] lg:text-[clamp(2.5rem,3.5vw,4.5rem)]"
-        description="Construimos sistemas críticos que escalan, optimizamos infraestructura que cuesta demasiado, y migramos aplicaciones legacy a arquitecturas modernas."
+        titleClass="text-[clamp(2.5rem,8vw,5rem)]"
+        description="Construimos sistemas críticos que escalan, optimizamos infraestructura que cuesta demasiado, y migramos aplicaciones legacy a arquitecturas modernas en Rust."
         ctaPrimary={{ text: 'Ver casos de éxito', href: '/proyectos' }}
         ctaSecondary={{ text: 'Solicitar presupuesto', href: '#contacto' }}
         visualElement={<ROICalculator />}
@@ -42,13 +41,15 @@ export default function Servicios() {
 
       {/* 3. Deep Dive en nuestra ventaja tecnológica */}
       <RustServicesSection detailed={true} />
-      <RustBenchmarksSection />
 
       {/* 4. Metodología de Trabajo */}
       <ProcessSection />
 
       {/* 5. Acuerdos y Garantías */}
       <GuaranteesSection />
+
+      {/* 6. Llamada a la Acción B2B */}
+      <FinalCTA />
     </div>
   );
 }

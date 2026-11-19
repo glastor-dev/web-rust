@@ -24,17 +24,18 @@ const redHatMono = Red_Hat_Mono({
 export const metadata: Metadata = {
   title: {
     template: '%s | Glastor',
-    default: 'Glastor | Soluciones Industriales',
+    default: 'Glastor | Consultora e Ingeniería de Software en Rust',
   },
   description:
-    'Glastor: Distribución B2B de herramientas premium e Ingeniería de software de alto rendimiento en Rust.',
+    'Glastor: Consultora e ingeniería de software especializada en desarrollo backend en Rust, microservicios de alto rendimiento y arquitecturas críticas.',
   metadataBase: new URL('https://glastor.es'),
   openGraph: {
     type: 'website',
     locale: 'es_ES',
     url: 'https://glastor.es',
-    title: 'Glastor | Soluciones Industriales & Desarrollo Web',
-    description: 'Distribuidor oficial de herramientas premium y Agencia de desarrollo de software crítico.',
+    title: 'Glastor | Agencia de Ingeniería de Software en Rust',
+    description:
+      'Especialistas en backend en Rust, microservicios de latencia ultra baja y sistemas escalables de misión crítica.',
     siteName: 'Glastor',
     images: [
       {
@@ -47,8 +48,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Glastor',
-    description: 'Distribuidor oficial de herramientas premium y Agencia de desarrollo en Rust.',
+    title: 'Glastor | Ingeniería de Software en Rust',
+    description:
+      'Especialistas en backend en Rust, sistemas de misión crítica y microservicios de alta concurrencia.',
     images: ['/images/glastor-logo.webp'],
     creator: '@glastor_es',
   },
@@ -65,8 +67,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon/favicon.ico',
-    shortcut: '/favicon/favicon-16x16.png',
-    apple: '/favicon/apple-touch-icon.png',
   },
 };
 
@@ -84,8 +84,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://res.cloudinary.com" />
       </head>
       <body className="bg-transparent min-h-screen text-white font-sans overflow-x-hidden selection:bg-brand selection:text-black relative">
-        <PremiumBackground 
-          baseColor="#141416" 
+        <PremiumBackground
+          baseColor="#141416"
           textureUrl="https://www.transparenttextures.com/patterns/darth-stripe.png"
           textureOpacity={0.4}
         />

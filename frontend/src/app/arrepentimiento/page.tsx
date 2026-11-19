@@ -50,7 +50,7 @@ export default function Arrepentimiento() {
         purchase_date: '',
         product_name: '',
       };
-      const res = await fetch('http://localhost:3001/api/arrepentimiento/send', {
+      const res = await fetch('/api/arrepentimiento/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

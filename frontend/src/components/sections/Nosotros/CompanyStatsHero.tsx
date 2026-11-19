@@ -25,37 +25,22 @@ export function CompanyStatsHero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start lg:items-center">
           {/* Columna Izquierda: Texto y CTA */}
           <div className="flex flex-col items-start">
-            <motion.div 
-              initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)' }}
-              animate={{ opacity: 1, clipPath: 'inset(0% 0 0 0)' }}
-              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-              className="bg-brand text-black font-mono text-[10px] font-bold tracking-widest px-3 py-1 mb-8 rounded-sm inline-block"
-            >
-              Sobre Nosotros
-            </motion.div>
+            <div className="bg-brand text-black font-mono text-[10px] font-bold tracking-widest px-3 py-1 mb-8 rounded-sm inline-block">
+              SOBRE NOSOTROS
+            </div>
 
-            <motion.h1 
-              initial={{ y: '100%', clipPath: 'inset(100% 0 -100% 0)' }}
-              animate={{ y: 0, clipPath: 'inset(0% 0 -100% 0)' }}
-              transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-[0.85] mb-8 text-white overflow-visible"
-            >
-              Somos <br />
-              <span className="text-brand">Glastor®</span>
-            </motion.h1>
+            <h1 className="text-5xl md:text-7xl lg:text-[80px] font-black uppercase tracking-tighter leading-[0.85] mb-8 text-white overflow-visible">
+              NOSOTROS<span className="text-brand">.</span>
+            </h1>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-              className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-6 font-medium max-w-xl"
-            >
-              Ingeniería de software en estado puro. Desde 2010, arquitecto sistemas escalables en <strong>Rust y Python</strong> con un enfoque obsesivo en la precisión visual y el rendimiento técnico. Base: Madrid / Remoto Global.
-            </motion.p>
+            <p className="text-zinc-300 text-lg md:text-xl leading-relaxed mb-6 font-medium max-w-xl">
+              Ingeniería de software en estado puro y creadores del ecosistema open-source{' '}
+              <strong className="text-white">@glastor-core</strong>. Arquitectamos sistemas
+              determinísticos de ultra-baja latencia en <strong>Rust</strong> con un enfoque
+              obsesivo en el rendimiento y la seguridad formal. Base: Madrid / Remoto Global.
+            </p>
 
-
-
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.4 }}
@@ -70,10 +55,10 @@ export function CompanyStatsHero() {
               </Button>
 
               <a
-                href="mailto:ventas@glastor.es"
+                href="mailto:founder@glastor.es"
                 className="h-12 px-8 flex items-center justify-center gap-2 border border-white/10 hover:border-brand/50 text-zinc-400 hover:text-brand font-mono text-xs tracking-widest transition-colors rounded-sm"
               >
-                ventas@glastor.es <ArrowRightIcon size={14} />
+                founder@glastor.es <ArrowRightIcon size={14} />
               </a>
             </motion.div>
           </div>
@@ -82,9 +67,9 @@ export function CompanyStatsHero() {
             {COMPANY_STATS.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-                animate={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-                transition={{ duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.3 + 0.1 * i }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 + 0.08 * i }}
                 className={`border p-8 rounded-xl flex flex-col justify-center min-h-40 transition-colors ${
                   stat.highlight
                     ? 'border-brand/20 bg-brand/5'

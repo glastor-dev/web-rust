@@ -64,10 +64,10 @@ export default function ServicesListSection() {
               <motion.div
                 key={service.id}
                 layout
-                initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-                whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setActiveService(isActive ? null : service.id)}
                 className={`group relative bg-white/1 backdrop-blur-sm cursor-pointer transition-all duration-500 overflow-hidden 
                 border-l-[6px] ${isActive ? 'border-brand bg-white/3' : 'border-transparent hover:border-brand/50 hover:bg-white/4'} 

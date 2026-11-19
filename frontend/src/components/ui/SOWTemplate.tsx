@@ -1,5 +1,10 @@
 import React from 'react';
 import { useConfiguratorStore } from '../../store/configuratorStore';
+import {
+  formatArsFromEur,
+  formatRateTimestamp,
+  useEurToArsRate,
+} from '../../hooks/useEurToArsRate';
 
 export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; name: string }>(
   ({ company, name }, ref) => {
@@ -7,60 +12,202 @@ export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; n
     const selectedModuleIds = useConfiguratorStore((state) => state.selectedModuleIds);
     const totalInversion = useConfiguratorStore((state) => state.totalPrice);
     const selectedModules = availableModules.filter((m) => selectedModuleIds.includes(m.id));
+    const { rate: eurArsRate, updatedAt } = useEurToArsRate();
 
     // Fixed A4 size in pixels for 96 DPI: 794px by 1123px
-    // Usando tema claro (fondo blanco, texto negro/gris oscuro) para el PDF
+    // 100% inline hex/rgba styles so html2canvas never parses Tailwind v4 oklab/oklch functions
     return (
-      <div className="fixed top-0 left-0 -z-50 opacity-0 pointer-events-none overflow-hidden">
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: -50,
+          opacity: 0,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
+      >
         <div
           ref={ref}
-          className="bg-white text-black p-12 relative flex flex-col"
-          style={{ width: '794px', minHeight: '1123px', fontFamily: 'monospace' }}
+          style={{
+            width: '794px',
+            minHeight: '1123px',
+            backgroundColor: '#ffffff',
+            color: '#09090b',
+            padding: '48px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          }}
         >
           {/* Header */}
-          <div className="border-b border-black/10 pb-8 mb-8 flex justify-between items-end">
+          <div
+            style={{
+              borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+              paddingBottom: '28px',
+              marginBottom: '32px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+            }}
+          >
             <div>
-              <h1 className="text-5xl font-extrabold tracking-tight mb-2 text-black">GLASTOR®</h1>
-              <p className="text-zinc-500 text-sm tracking-widest uppercase">
+              <h1
+                style={{
+                  fontSize: '42px',
+                  fontWeight: 900,
+                  letterSpacing: '-0.03em',
+                  margin: '0 0 8px 0',
+                  color: '#09090b',
+                  lineHeight: 1,
+                }}
+              >
+                GLASTOR®
+              </h1>
+              <p
+                style={{
+                  color: '#52525b',
+                  fontSize: '13px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  margin: 0,
+                }}
+              >
                 Statement of Work (SOW)
               </p>
             </div>
-            <div className="text-right">
-              {/* Usando un verde más oscuro para buen contraste sobre blanco */}
-              <p className="text-[#00a843] font-bold">FECHA: {new Date().toLocaleDateString()}</p>
-              <p className="text-zinc-500 text-xs mt-1">VÁLIDO POR 15 DÍAS</p>
+            <div style={{ textAlign: 'right' }}>
+              <p
+                style={{
+                  color: '#00a843',
+                  fontWeight: 700,
+                  fontSize: '14px',
+                  margin: 0,
+                }}
+              >
+                FECHA: {new Date().toLocaleDateString('es-AR')}
+              </p>
+              <p
+                style={{
+                  color: '#52525b',
+                  fontSize: '11px',
+                  margin: '4px 0 0 0',
+                }}
+              >
+                VÁLIDO POR 15 DÍAS
+              </p>
             </div>
           </div>
 
           {/* Client Info */}
-          <div className="mb-12">
-            <p className="text-zinc-500 text-xs tracking-widest uppercase mb-1">PREPARADO PARA</p>
-            <h2 className="text-2xl font-bold uppercase text-black">{company}</h2>
-            <p className="text-zinc-600">Atención: {name}</p>
+          <div style={{ marginBottom: '40px' }}>
+            <p
+              style={{
+                color: '#52525b',
+                fontSize: '11px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                margin: '0 0 4px 0',
+              }}
+            >
+              PREPARADO PARA
+            </p>
+            <h2
+              style={{
+                fontSize: '24px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                color: '#09090b',
+                margin: '0 0 4px 0',
+              }}
+            >
+              {company || 'Cliente B2B'}
+            </h2>
+            <p style={{ color: '#3f3f46', fontSize: '14px', margin: 0 }}>
+              Atención: {name || 'Equipo Técnico'}
+            </p>
           </div>
 
           {/* Modules Table */}
-          <div className="flex-1">
-            <p className="text-[#00a843] text-sm tracking-widest uppercase mb-4 font-bold border-b border-black/10 pb-2">
+          <div style={{ flex: 1 }}>
+            <p
+              style={{
+                color: '#00a843',
+                fontSize: '13px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+                paddingBottom: '8px',
+                margin: '0 0 16px 0',
+              }}
+            >
               MÓDULOS DE ARQUITECTURA SELECCIONADOS
             </p>
-            <div className="flex flex-col gap-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {selectedModules.length === 0 ? (
-                <p className="text-zinc-500 text-sm italic">Ningún módulo seleccionado.</p>
+                <p style={{ color: '#52525b', fontSize: '13px', fontStyle: 'italic' }}>
+                  Ningún módulo seleccionado.
+                </p>
               ) : (
                 selectedModules.map((module) => (
                   <div
                     key={module.id}
-                    className="flex justify-between items-start border-b border-black/5 pb-4"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                      paddingBottom: '14px',
+                    }}
                   >
-                    <div className="pr-8">
-                      <h4 className="font-bold text-lg mb-1 text-black">{module.title}</h4>
-                      <p className="text-zinc-600 text-xs max-w-lg">{module.description}</p>
+                    <div style={{ paddingRight: '28px' }}>
+                      <h4
+                        style={{
+                          fontWeight: 700,
+                          fontSize: '16px',
+                          margin: '0 0 4px 0',
+                          color: '#09090b',
+                        }}
+                      >
+                        {module.title}
+                      </h4>
+                      <p
+                        style={{
+                          color: '#52525b',
+                          fontSize: '12px',
+                          maxWidth: '480px',
+                          margin: 0,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {module.description}
+                      </p>
                     </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-black font-mono font-bold">
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <p
+                        style={{
+                          color: '#09090b',
+                          fontWeight: 700,
+                          fontSize: '14px',
+                          margin: 0,
+                        }}
+                      >
                         €{module.base_price?.toLocaleString() || 0} EUR
                       </p>
+                      {eurArsRate && (
+                        <p
+                          style={{
+                            color: '#52525b',
+                            fontSize: '11px',
+                            margin: '3px 0 0 0',
+                          }}
+                        >
+                          ≈ {formatArsFromEur(module.base_price || 0, eurArsRate)}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))
@@ -69,15 +216,88 @@ export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; n
           </div>
 
           {/* Totals */}
-          <div className="mt-12 border-t border-black/10 pt-8 flex justify-end">
-            <div className="w-1/2 bg-zinc-50 p-6 border border-black/10">
-              <p className="text-zinc-500 text-xs tracking-widest uppercase mb-2">
+          <div
+            style={{
+              marginTop: '40px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+              paddingTop: '28px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <div
+              style={{
+                width: '55%',
+                backgroundColor: '#f4f4f5',
+                padding: '24px',
+                border: '1px solid rgba(0, 0, 0, 0.12)',
+              }}
+            >
+              <p
+                style={{
+                  color: '#52525b',
+                  fontSize: '11px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  margin: '0 0 8px 0',
+                }}
+              >
                 INVERSIÓN TOTAL ESTIMADA
               </p>
-              <p className="text-4xl font-black text-[#00a843]">
+              <p
+                style={{
+                  fontSize: '34px',
+                  fontWeight: 900,
+                  color: '#00a843',
+                  margin: 0,
+                  lineHeight: 1.1,
+                }}
+              >
                 €{totalInversion.toLocaleString()} EUR
               </p>
-              <p className="text-zinc-500 text-[10px] uppercase tracking-widest mt-4">
+              {eurArsRate && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    paddingTop: '10px',
+                    borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 700,
+                      color: '#09090b',
+                      margin: 0,
+                    }}
+                  >
+                    ≈ {formatArsFromEur(totalInversion, eurArsRate)}
+                  </p>
+                  <p
+                    style={{
+                      color: '#52525b',
+                      fontSize: '10px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      margin: '4px 0 0 0',
+                    }}
+                  >
+                    Euro Oficial (venta): $
+                    {eurArsRate.toLocaleString('es-AR', { maximumFractionDigits: 2 })} ARS
+                    {updatedAt ? ` (${formatRateTimestamp(updatedAt)})` : ''}
+                  </p>
+                </div>
+              )}
+              <p
+                style={{
+                  color: '#52525b',
+                  fontSize: '10px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  margin: '16px 0 0 0',
+                  lineHeight: 1.4,
+                }}
+              >
                 * Los costos de infraestructura Cloud (AWS/GCP) se facturan por separado según
                 consumo.
               </p>
@@ -85,9 +305,20 @@ export const SOWTemplate = React.forwardRef<HTMLDivElement, { company: string; n
           </div>
 
           {/* Footer */}
-          <div className="mt-auto pt-12 border-t border-black/10 flex justify-between items-center text-xs text-zinc-500">
-            <p>CONFIDENCIAL - GLASTOR® 2026</p>
-            <p>www.glastor.es | ventas@glastor.es</p>
+          <div
+            style={{
+              marginTop: 'auto',
+              paddingTop: '40px',
+              borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontSize: '11px',
+              color: '#52525b',
+            }}
+          >
+            <p style={{ margin: 0 }}>CONFIDENCIAL - GLASTOR® 2026</p>
+            <p style={{ margin: 0 }}>www.glastor.es | founder@glastor.es</p>
           </div>
         </div>
       </div>

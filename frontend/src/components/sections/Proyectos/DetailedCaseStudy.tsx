@@ -1,30 +1,22 @@
 'use client';
 
-import { motion } from 'motion/react';
 import type { CaseStudy } from '../../../lib/data/caseStudies';
-import { Building2, Calendar, Zap } from 'lucide-react';
+import { Building2, Calendar, Zap, ArrowUpRight, Package } from 'lucide-react';
+import { GithubIcon } from 'hugeicons-react';
 import { ArchitectureDiagram } from '../../ui/ArchitectureDiagram';
 import { CaseStudyDashboard } from './CaseStudyDashboard';
-import { CaseStudyTestimonial } from './CaseStudyTestimonial';
-
+import { CaseStudyTechnicalProof } from './CaseStudyTechnicalProof';
 
 interface DetailedCaseStudyProps {
   study: CaseStudy;
   index: number;
 }
 
-export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
+export function DetailedCaseStudy({ study }: DetailedCaseStudyProps) {
   return (
-    <motion.article
-      initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-      whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      className="py-24 md:py-32 border-b border-white/10 relative"
-    >
+    <article className="py-16 md:py-32 border-b border-white/10 relative">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-16 xl:gap-24 items-start">
-          
           {/* Left Column (Sticky Sidebar) */}
           <div className="xl:col-span-4 xl:sticky xl:top-32 shrink-0">
             <div className="flex flex-wrap gap-3 mb-6">
@@ -41,14 +33,54 @@ export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
                 </span>
               ))}
             </div>
-            
+
             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-[1.1] mb-6">
               {study.title}
             </h2>
 
-            <p className="text-zinc-300 text-base md:text-lg mb-8 leading-relaxed">
+            <p className="text-zinc-300 text-base md:text-lg mb-6 leading-relaxed">
               {study.solutionText}
             </p>
+
+            {(study.repoUrl || study.cratesUrl) && (
+              <div className="flex flex-col gap-3 mb-6">
+                {study.repoUrl && (
+                  <a
+                    href={study.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between w-full p-3 bg-white/5 hover:bg-white/10 border border-brand/30 hover:border-brand text-xs font-mono text-white hover:text-brand transition-all duration-300 rounded-sm group"
+                  >
+                    <span className="flex items-center gap-2">
+                      <GithubIcon className="w-4 h-4 text-brand" />
+                      <span className="font-bold">Ver Repositorio OSS</span>
+                    </span>
+                    <span className="text-[10px] text-brand opacity-70 group-hover:opacity-100 flex items-center gap-1">
+                      {study.repoUrl.replace('https://github.com/', '')}
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </a>
+                )}
+
+                {study.cratesUrl && (
+                  <a
+                    href={study.cratesUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-between w-full p-3 bg-brand/10 hover:bg-brand text-xs font-mono text-brand hover:text-black border border-brand/40 hover:border-brand transition-all duration-300 rounded-sm group"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Package className="w-4 h-4" />
+                      <span className="font-bold">Publicado en crates.io</span>
+                    </span>
+                    <span className="text-[10px] font-bold flex items-center gap-1">
+                      {study.cratesUrl.replace('https://', '')}
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="flex flex-col gap-4 text-xs font-mono text-zinc-400 uppercase tracking-widest mb-8 border-l-2 border-white/10 pl-4">
               <span className="flex items-center gap-3">
@@ -75,7 +107,6 @@ export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
 
           {/* Right Column (Scrollable Content) */}
           <div className="xl:col-span-8 flex flex-col gap-16 md:gap-24 min-w-0">
-            
             {/* High-Conversion Dashboard */}
             <div className="w-full">
               <CaseStudyDashboard study={study} />
@@ -96,17 +127,15 @@ export function DetailedCaseStudy({ study, index }: DetailedCaseStudyProps) {
               </div>
             )}
 
-            {/* Testimonial Section */}
-            {study.testimonial && (
+            {/* Technical Proof Section */}
+            {study.technicalProof && (
               <div className="w-full">
-                <CaseStudyTestimonial testimonial={study.testimonial} />
+                <CaseStudyTechnicalProof proof={study.technicalProof} />
               </div>
             )}
           </div>
         </div>
-
-
       </div>
-    </motion.article>
+    </article>
   );
 }

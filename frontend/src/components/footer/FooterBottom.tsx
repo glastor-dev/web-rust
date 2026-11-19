@@ -17,8 +17,13 @@ export function FooterBottom() {
         <span>Marca registrada ante el INPI (Reg. 4559568 y 4559567).</span>
         <span>Los precios están expresados en moneda local e incluyen IVA.</span>
         <span>CUIT 23-25316566-9 | Resp. Inscripto | IB: Convenio Multilateral</span>
-        <span className="text-zinc-500 mt-2">GLASTOR-DEV (División de Desarrollo) | Core v.{process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}</span>
-        <span className="mt-2 text-brand font-bold uppercase tracking-widest">Exclusivo B2B / Pagos por Transferencia.</span>
+        <span className="text-zinc-400 mt-2">
+          GLASTOR® Core & Enterprise Engineering | v.
+          {process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0'}
+        </span>
+        <span className="mt-2 text-brand font-bold uppercase tracking-widest">
+          Exclusivo B2B / Pagos por Transferencia.
+        </span>
       </div>
 
       {/* Right: Social, Legal & Payments */}
@@ -32,8 +37,20 @@ export function FooterBottom() {
 
         {/* Medios de Pago */}
         <div className="flex flex-wrap justify-center lg:justify-end items-center gap-4 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-          <Image src="/icons/visa.svg" alt="Visa" width={40} height={24} className="h-6 object-contain" />
-          <Image src="/icons/mastercard.svg" alt="Mastercard" width={40} height={24} className="h-6 object-contain" />
+          <Image
+            src="/icons/visa.svg"
+            alt="Visa"
+            width={40}
+            height={24}
+            className="h-6 object-contain"
+          />
+          <Image
+            src="/icons/mastercard.svg"
+            alt="Mastercard"
+            width={40}
+            height={24}
+            className="h-6 object-contain"
+          />
           <Image
             src="/icons/american-express.svg"
             alt="American Express"
@@ -42,19 +59,37 @@ export function FooterBottom() {
             className="h-6 object-contain"
           />
           <div className="w-px h-5 bg-white/20 mx-1 hidden sm:block"></div>
-          <Image src="/icons/bitcoin.svg" alt="Bitcoin" width={40} height={24} className="h-6 object-contain" />
-          <Image src="/icons/tether.svg" alt="Tether" width={40} height={24} className="h-6 object-contain" />
+          <Image
+            src="/icons/bitcoin.svg"
+            alt="Bitcoin"
+            width={40}
+            height={24}
+            className="h-6 object-contain"
+          />
+          <Image
+            src="/icons/tether.svg"
+            alt="Tether"
+            width={40}
+            height={24}
+            className="h-6 object-contain"
+          />
         </div>
       </div>
 
       <button
+        type="button"
         onClick={scrollToTop}
-        className="group absolute top-0 right-0 lg:-top-4 lg:-right-4 w-12 h-12 md:w-14 md:h-14 bg-[#050505] border border-white/10 hover:border-brand flex flex-col items-center justify-center text-zinc-500 hover:text-black transition-colors duration-300 overflow-hidden z-20 rounded-md"
-        aria-label="Volver arriba"
+        className="group absolute top-0 right-0 lg:-top-4 lg:-right-4 w-12 h-12 md:w-14 md:h-14 bg-[#050505] border border-white/10 hover:border-brand flex flex-col items-center justify-center text-zinc-400 hover:text-black transition-colors duration-300 overflow-hidden z-20 rounded-md cursor-pointer"
+        aria-label="TOP — Volver arriba"
       >
         <span className="absolute inset-0 bg-brand w-full h-full translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-        <ArrowUpIcon size={16} className="relative z-10 mb-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-        <span className="relative z-10 text-[8px] md:text-[9px] font-mono font-bold tracking-widest uppercase">TOP</span>
+        <ArrowUpIcon
+          size={16}
+          className="relative z-10 mb-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"
+        />
+        <span className="relative z-10 text-[8px] md:text-[9px] font-mono font-bold tracking-widest uppercase">
+          TOP
+        </span>
       </button>
     </div>
   );

@@ -30,10 +30,23 @@ export default function Configurador() {
     try {
       if (!sowRef.current) throw new Error('SOWTemplate ref is null');
 
+      // Wait one frame so clientInfo (name/company) renders into SOWTemplate before capture
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
       const html2canvas = (await import('html2canvas')).default;
       const { jsPDF } = await import('jspdf');
 
-      const canvas = await html2canvas(sowRef.current, { scale: 2, useCORS: true });
+      const canvas = await html2canvas(sowRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        onclone: (clonedDoc) => {
+          // Strip Tailwind v4 stylesheets in the cloned document so html2canvas never parses oklab/oklch
+          for (const el of clonedDoc.querySelectorAll('style, link[rel="stylesheet"]')) {
+            el.remove();
+          }
+        },
+      });
       const imgData = canvas.toDataURL('image/jpeg', 0.9);
 
       const pdf = new jsPDF({
@@ -43,37 +56,24 @@ export default function Configurador() {
       });
 
       pdf.addImage(imgData, 'JPEG', 0, 0, 794, 1123);
-      const pdfBase64 = pdf.output('datauristring');
 
-      const response = await fetch('/api/sow/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: data.email,
-          name: data.name,
-          company: data.company,
-          pdf_base64: pdfBase64,
-          turnstile_token: data.turnstileToken,
-        }),
-      });
+      // Descarga inmediata del documento PDF para el usuario (static-first, sin dependencia de backend)
+      const safeCompanyName = data.company ? data.company.replace(/\s+/g, '_') : 'Glastor';
+      pdf.save(`Glastor-Propuesta-${safeCompanyName}.pdf`);
 
-      if (!response.ok) {
-        const errorBody = await response.text().catch(() => 'Failed to send email');
-        throw new Error(errorBody);
-      }
+      alert(
+        '¡Propuesta técnica generada con éxito! Se ha descargado tu copia en PDF. Puedes remitírnosla a founder@glastor.es si requieres ajuste de alcance.',
+      );
 
-      alert('¡SOW enviado con éxito a ' + data.email + '!');
       setIsModalOpen(false);
     } catch (error) {
-      console.error(error);
-      alert('Hubo un error al generar o enviar el documento.');
+      console.error('Error al generar propuesta:', error);
+      alert(
+        'Hubo un error al procesar el documento. Por favor contacta directamente a founder@glastor.es.',
+      );
     } finally {
       setIsGenerating(false);
     }
-  };
-
-  const handleReset = () => {
-    useConfiguratorStore.getState().resetConfig();
   };
 
   useEffect(() => {

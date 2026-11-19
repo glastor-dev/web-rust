@@ -1,32 +1,35 @@
-import { MetadataRoute } from 'next';
-import { DUMMY_PRODUCTS, Product } from '@/lib/constants/dummyProducts';
+import type { MetadataRoute } from 'next';
+import { TECH_ARTICLES } from '@/data/articles.data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://glastor.es';
 
-  // SILO 1: Tienda B2B / Distribución
-  const storeRoutes = ['', '/tienda', '/checkout'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString().split('T')[0],
-    changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1.0 : 0.8,
+  // Rutas activas de Glastor (Consultora e Ingeniería de Software en Rust)
+  const routes = [
+    { route: '', priority: 1.0, changeFrequency: 'weekly' as const },
+    { route: '/servicios', priority: 0.9, changeFrequency: 'weekly' as const },
+    { route: '/proyectos', priority: 0.9, changeFrequency: 'weekly' as const },
+    { route: '/nosotros', priority: 0.8, changeFrequency: 'monthly' as const },
+    { route: '/arquitectura', priority: 0.8, changeFrequency: 'monthly' as const },
+    { route: '/recursos', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/legales', priority: 0.5, changeFrequency: 'yearly' as const },
+  ];
+
+  const staticEntries: MetadataRoute.Sitemap = routes.map(
+    ({ route, priority, changeFrequency }) => ({
+      url: `${baseUrl}${route}`,
+      lastModified: new Date().toISOString().split('T')[0],
+      changeFrequency,
+      priority,
+    }),
+  );
+
+  const articleEntries: MetadataRoute.Sitemap = TECH_ARTICLES.map((article) => ({
+    url: `${baseUrl}/recursos/${article.id}`,
+    lastModified: article.isoDate,
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
   }));
 
-  // SILO 2: Agencia de Ingeniería B2B
-  const agencyRoutes = ['/home', '/servicios', '/proyectos', '/nosotros', '/recursos', '/arquitectura'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString().split('T')[0],
-    changeFrequency: 'weekly' as const,
-    priority: route === '/home' ? 0.9 : 0.8,
-  }));
-
-  // Dynamic products
-  const productRoutes = DUMMY_PRODUCTS.map((product: Product) => ({
-    url: `${baseUrl}/tienda/${product.id}`,
-    lastModified: new Date().toISOString().split('T')[0],
-    changeFrequency: 'daily' as const,
-    priority: 0.6,
-  }));
-
-  return [...storeRoutes, ...agencyRoutes, ...productRoutes];
+  return [...staticEntries, ...articleEntries];
 }

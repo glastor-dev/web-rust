@@ -1,24 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 const stackData = [
   {
-    id: "01",
-    title: "RUST: SEGURO POR DISEÑO",
-    content: "Rust no es solo un lenguaje rápido; garantiza matemáticamente la seguridad de la memoria y la ausencia de condiciones de carrera. Lo usamos para los microservicios core donde un error en producción cuesta millones. Es la definición de \"Dormir tranquilo\"."
+    id: '01',
+    title: 'RUST: SEGURO POR DISEÑO',
+    content:
+      'Rust no es solo un lenguaje rápido; garantiza matemáticamente la seguridad de la memoria y la ausencia de condiciones de carrera mediante el Borrow Checker y los traits Send + Sync. Lo usamos para los microservicios core donde un error o una pausa de Garbage Collector en producción cuesta millones. Es la definición de "Dormir tranquilo".',
   },
   {
-    id: "02",
-    title: "BUN: VELOCIDAD EXTREMA EN JS",
-    content: "Reemplazamos Node.js por Bun. Los tiempos de arranque bajaron de segundos a milisegundos. Instalación de paquetes instantánea. Un servidor HTTP integrado 4 veces más rápido. La experiencia de desarrollo es tan fluida que parece magia."
+    id: '02',
+    title: 'BUN: VELOCIDAD EXTREMA EN JS',
+    content:
+      'Reemplazamos Node.js por Bun. Los tiempos de arranque bajaron de segundos a milisegundos. Instalación de paquetes instantánea. Un servidor HTTP integrado 4 veces más rápido. La experiencia de desarrollo es tan fluida que parece magia.',
   },
   {
-    id: "03",
-    title: "WEBGL: EXPERIENCIAS INMERSIVAS",
-    content: "El DOM HTML tiene límites físicos. Cuando necesitamos que la web se sienta como un videojuego AAA o mostrar 10,000 partículas en tiempo real sin quemar la GPU, cruzamos la frontera hacia WebGL y Shaders GLSL. Rendimiento crudo directo al navegador."
-  }
+    id: '03',
+    title: 'WEBGL: EXPERIENCIAS INMERSIVAS',
+    content:
+      'El DOM HTML tiene límites físicos. Cuando necesitamos que la web se sienta como un videojuego AAA o mostrar 10,000 partículas en tiempo real sin quemar la GPU, cruzamos la frontera hacia WebGL y Shaders GLSL. Rendimiento crudo directo al navegador.',
+  },
 ];
 
 export default function PhilosophySection() {
@@ -62,31 +65,49 @@ export default function PhilosophySection() {
           {stackData.map((item, index) => {
             const isActive = activeIndex === index;
             return (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="group relative overflow-hidden bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors duration-300"
               >
                 {/* Glow Effect */}
-                <div 
-                  className={`absolute left-0 top-0 w-1 h-full transition-colors duration-500 ${isActive ? 'bg-brand shadow-[0_0_15px_rgba(0,255,102,0.5)]' : 'bg-transparent group-hover:bg-brand/20'}`} 
+                <div
+                  className={`absolute left-0 top-0 w-1 h-full transition-colors duration-500 ${isActive ? 'bg-brand shadow-[0_0_15px_rgba(0,255,102,0.5)]' : 'bg-transparent group-hover:bg-brand/20'}`}
                 />
-                
-                <button 
+
+                <button
                   onClick={() => setActiveIndex(isActive ? null : index)}
                   className="w-full text-left py-6 pl-8 pr-6 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0 relative z-10"
                 >
                   <div className="flex items-center gap-6">
-                    <span className={`text-sm md:text-lg font-mono tracking-widest transition-colors duration-300 ${isActive ? 'text-brand' : 'text-zinc-600 group-hover:text-brand/50'}`}>
+                    <span
+                      className={`text-sm md:text-lg font-mono tracking-widest transition-colors duration-300 ${isActive ? 'text-brand' : 'text-zinc-600 group-hover:text-brand/50'}`}
+                    >
                       {item.id}
                     </span>
-                    <h4 className={`text-xl md:text-3xl font-black uppercase tracking-tighter transition-all duration-300 ${isActive ? 'text-white translate-x-2' : 'text-zinc-400 group-hover:text-zinc-200'}`}>
+                    <h4
+                      className={`text-xl md:text-3xl font-black uppercase tracking-tighter transition-all duration-300 ${isActive ? 'text-white translate-x-2' : 'text-zinc-400 group-hover:text-zinc-200'}`}
+                    >
                       {item.title}
                     </h4>
                   </div>
-                  
-                  <div className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 ${isActive ? 'border-brand text-brand rotate-45 bg-brand/10 shadow-[0_0_15px_rgba(0,255,102,0.2)]' : 'border-white/10 text-white/50 group-hover:border-brand/50 group-hover:text-brand/50'}`}>
-                    <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M6 1V11M1 6H11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+
+                  <div
+                    className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 ${isActive ? 'border-brand text-brand rotate-45 bg-brand/10 shadow-[0_0_15px_rgba(0,255,102,0.2)]' : 'border-white/10 text-white/50 group-hover:border-brand/50 group-hover:text-brand/50'}`}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 1V11M1 6H11"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </div>
                 </button>

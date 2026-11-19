@@ -2,23 +2,10 @@ export const TEAM_MEMBERS = [
   {
     name: 'Andres A. Cardoso',
     role: 'Fundador, CEO & Arquitecto Jefe',
-    image: 'https://res.cloudinary.com/dzualplqi/image/upload/v1783985243/andres-fundador_o9kzlf.png',
+    image:
+      'https://res.cloudinary.com/dzualplqi/image/upload/v1783985243/andres-fundador_o9kzlf.png',
     specialty: 'Rust y sistemas distribuidos',
     bio: 'Lidera la ejecución de arquitecturas críticas y la reducción de latencia en producción.',
-  },
-  {
-    name: 'Elena Silva',
-    role: 'CTO & Sistemas Cloud',
-    image: '/images/team_cto.png',
-    specialty: 'Cloud, Kubernetes y Fintech/Salud',
-    bio: 'Diseña e infraestructura entornos de alto tráfico y cumplimiento operativo.',
-  },
-  {
-    name: 'David Torres',
-    role: 'Lead Full-Stack',
-    image: '/images/team_lead.png',
-    specialty: 'WebGL/React y experiencias producto',
-    bio: 'Transforma requerimientos complejos en interfaces de alto rendimiento.',
   },
 ];
 
@@ -26,22 +13,32 @@ export const TIMELINE_EVENTS = [
   {
     year: '2010',
     title: 'Fundación',
-    description: 'Glastor nace con la misión de democratizar herramientas digitales avanzadas y ponerlas al alcance de la comunidad técnica y corporativa.',
+    description:
+      'Glastor nace con la misión de democratizar herramientas digitales avanzadas y ponerlas al alcance de la comunidad técnica y corporativa.',
   },
   {
     year: '2015',
     title: 'Estructura Híbrida',
-    description: 'Transformación en entidad para escalar operaciones, atrayendo talento e infraestructura sin perder los valores fundacionales.',
+    description:
+      'Transformación en entidad para escalar operaciones, atrayendo talento e infraestructura sin perder los valores fundacionales.',
   },
   {
     year: '2019',
     title: 'Plataforma Cloud',
-    description: 'Desarrollo de infraestructura robusta de alta computación y rendimiento (HPC). Lanzamiento de servicios B2B.',
+    description:
+      'Desarrollo de infraestructura robusta de alta computación y rendimiento (HPC). Lanzamiento de servicios B2B.',
   },
   {
     year: '2023',
     title: 'Madrid, España',
-    description: 'Traslado de operaciones HQ a Madrid, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
+    description:
+      'Traslado de operaciones HQ a Madrid, España. Expansión internacional y consolidación como empresa tecnológica de alto rendimiento.',
+  },
+  {
+    year: '2026',
+    title: 'Ecosistema @glastor-core',
+    description:
+      'Consolidación de la Arquitectura Dual-Core y publicación del ecosistema open-source de alto rendimiento (hyper64, specter, byte-gauge, vortex).',
   },
 ];
 
@@ -50,9 +47,9 @@ export const MISSION_BULLETS = [
     title: 'Innovación constante',
     desc: 'empujamos los límites de la tecnología en cada proyecto',
   },
-  { 
-    title: 'Colaboración abierta', 
-    desc: 'código open source y aportes para la comunidad' 
+  {
+    title: 'Colaboración abierta',
+    desc: 'código open source y aportes para la comunidad',
   },
   {
     title: 'Excelencia técnica',

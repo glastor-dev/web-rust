@@ -49,9 +49,6 @@ export function PageHero({
     offset: ['start start', 'end start'],
   });
 
-  const opacityY = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scaleY = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
-  const translateY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const bgTranslateY = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   // Build GSAP-ready lines from titleText prop (highlights RUST keyword)
@@ -118,10 +115,7 @@ export function PageHero({
           <div
             className={`flex flex-col ${isAsymmetrical ? 'items-start text-left' : 'items-center text-center'}`}
           >
-            <motion.div
-              style={{ opacity: opacityY, scale: scaleY, y: translateY }}
-              className="w-full"
-            >
+            <div className="w-full">
               {/* Title: GSAP reveal (preferred) or motion.h1 fallback */}
               {badge && (
                 <div className="inline-block bg-brand text-black font-sans font-black uppercase tracking-widest text-xs md:text-sm px-6 py-1 transform -skew-x-12 mb-5">
@@ -134,37 +128,27 @@ export function PageHero({
                   className={titleClasses}
                   immediate={true}
                   asH1={true}
-                  delay={0.2}
+                  delay={0.1}
                 />
               ) : (
                 <div className="overflow-visible">
-                  <motion.h1
-                    initial={{ opacity: 0, y: 100 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className={titleClasses}
-                  >
-                    {title}
-                  </motion.h1>
+                  <h1 className={titleClasses}>{title}</h1>
                 </div>
               )}
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className={`text-zinc-400 text-xl md:text-2xl font-light mb-12 ${isAsymmetrical ? 'max-w-xl' : 'max-w-2xl mx-auto'}`}
+              <div
+                className={`text-zinc-400 text-lg md:text-2xl font-light mb-8 md:mb-12 ${isAsymmetrical ? 'max-w-xl' : 'max-w-2xl mx-auto'}`}
               >
                 {description}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             {/* CTAs */}
             {(ctaPrimary || ctaSecondary) && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.8 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
                 className={`flex flex-col sm:flex-row gap-4 mb-8 ${isAsymmetrical ? '' : 'justify-center w-full'}`}
               >
                 {ctaPrimary && (
@@ -185,7 +169,7 @@ export function PageHero({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.9, duration: 0.8 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
                 className={`text-xs font-mono text-zinc-500 uppercase tracking-widest border-t border-white/10 pt-4 w-full ${isAsymmetrical ? 'text-left' : 'text-center max-w-sm mx-auto'}`}
               >
                 {socialProof}
@@ -196,10 +180,10 @@ export function PageHero({
           {/* Right Column Visual */}
           {isAsymmetrical && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 1, type: 'spring', stiffness: 50 }}
-              className="w-full relative h-full flex items-center justify-center mt-12 lg:mt-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="w-full relative h-full flex items-center justify-center mt-8 lg:mt-0"
             >
               {visualElement}
             </motion.div>

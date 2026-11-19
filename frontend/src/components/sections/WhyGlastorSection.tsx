@@ -87,7 +87,7 @@ export function WhyGlastorSection() {
           <h2 className="text-fluid-h2 font-extrabold text-white mb-6 leading-none">
             15 Años Construyendo
             <br />
-            <span className="text-zinc-600">Software que Funciona.</span>
+            <span className="text-zinc-400">Software que Funciona.</span>
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light mt-6">
             No somos una startup de moda. Somos un equipo con trayectoria real, construyendo
@@ -99,10 +99,10 @@ export function WhyGlastorSection() {
           {reasons.map((reason, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, clipPath: 'inset(10% 0 10% 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0% 0)' }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: index * 0.15, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               <h3 className="text-2xl font-extrabold text-white mb-4 tracking-tight">
                 {reason.title}
