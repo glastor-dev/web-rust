@@ -3,7 +3,7 @@ use axum::{
     http::{request::Parts, StatusCode},
     Json,
 };
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -29,10 +29,14 @@ where
                 let token_data = decode::<AdminClaims>(
                     token,
                     &DecodingKey::from_secret(secret.as_ref()),
-                    &Validation::default()
+                    &Validation::new(Algorithm::HS256)
                 ).map_err(|_| {
                     (StatusCode::UNAUTHORIZED, Json(json!({"error": "Invalid token"})))
                 })?;
+
+                if token_data.claims.role != "admin" {
+                    return Err((StatusCode::FORBIDDEN, Json(json!({"error": "Insufficient permissions"}))));
+                }
                 
                 return Ok(token_data.claims);
             }
@@ -80,7 +84,7 @@ where
                 let token_data = decode::<UserClaims>(
                     token,
                     &DecodingKey::from_secret(secret.as_ref()),
-                    &Validation::default()
+                    &Validation::new(Algorithm::HS256)
                 ).map_err(|_| {
                     (StatusCode::UNAUTHORIZED, Json(json!({"error": "Invalid token"})))
                 })?;
