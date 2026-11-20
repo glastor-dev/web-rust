@@ -22,12 +22,38 @@ interface EcosystemRepo {
   metric: string;
   description: string;
   url: string;
+  demoUrl?: string;
   cratesUrl?: string;
   icon: React.ReactNode;
   highlight?: boolean;
 }
 
 const REPOSITORIES: EcosystemRepo[] = [
+  {
+    name: 'pii-veil',
+    repo: 'glastor-core/pii-veil',
+    tag: 'AI Privacy & MCP DLP',
+    metric: '165 µs · 212x Presidio',
+    description:
+      'Anonimizador reversible de PII y secretos en Rust para LLMs, agentes MCP y streams SSE. SDKs en Rust, Python, Node y Go + demo WASM.',
+    url: 'https://github.com/glastor-core/pii-veil',
+    demoUrl: 'https://pii-veil.glastor.es',
+    cratesUrl: 'https://crates.io/crates/pii-veil-core',
+    icon: <ShieldCheck className="w-6 h-6 text-brand" />,
+    highlight: true,
+  },
+  {
+    name: 'spec-stream',
+    repo: 'glastor-core/spec-stream',
+    tag: 'LLM Speculative Engine',
+    metric: '2.0x–3.8x Throughput',
+    description:
+      'Motor en Rust puro de Speculative Decoding y Paged KV-Cache con rollback O(1) y soporte GGUF para acelerar inferencia LLM.',
+    url: 'https://github.com/glastor-core/spec-stream',
+    cratesUrl: 'https://crates.io/crates/spec-stream',
+    icon: <Cpu className="w-6 h-6 text-brand" />,
+    highlight: true,
+  },
   {
     name: 'glastor-core',
     repo: 'glastor-core/glastor-core',
@@ -79,11 +105,13 @@ const REPOSITORIES: EcosystemRepo[] = [
     name: 'specter',
     repo: 'glastor-core/specter',
     tag: 'Polyglot AST Gatekeeper',
-    metric: '< 12ms AST Diff',
+    metric: '< 5ms AST Diff',
     description:
       'Differ de contratos de API sin compilador, detector de ataques de supply chain y guardián SemVer con SARIF & SBOM.',
     url: 'https://github.com/glastor-core/specter',
+    cratesUrl: 'https://crates.io/crates/specter-cli',
     icon: <FileCode className="w-6 h-6 text-brand" />,
+    highlight: true,
   },
   {
     name: 'vortex',
@@ -242,7 +270,7 @@ export function GlastorCoreEcosystemSection() {
                 </div>
                 <h4 className="text-xl font-black tracking-tight text-white mb-2 group-hover:text-brand transition-colors">
                   <a
-                    href={repo.cratesUrl ?? repo.url}
+                    href={repo.demoUrl ?? repo.cratesUrl ?? repo.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-between w-full focus-visible:outline-none focus-visible:text-brand"
@@ -270,19 +298,31 @@ export function GlastorCoreEcosystemSection() {
                   <span>GitHub ↗</span>
                 </a>
 
-                {repo.cratesUrl ? (
-                  <a
-                    href={repo.cratesUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand/10 border border-brand/40 text-brand hover:bg-brand hover:text-black font-bold transition-colors"
-                  >
-                    <Package className="w-3 h-3" aria-hidden="true" />
-                    <span>crates.io ↗</span>
-                  </a>
-                ) : (
-                  <span className="text-zinc-400">OSS</span>
-                )}
+                <div className="flex items-center gap-1.5">
+                  {repo.demoUrl && (
+                    <a
+                      href={repo.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-500/15 border border-emerald-400/50 text-emerald-300 hover:bg-emerald-400 hover:text-black font-bold transition-colors"
+                    >
+                      <span>Demo WASM ↗</span>
+                    </a>
+                  )}
+                  {repo.cratesUrl ? (
+                    <a
+                      href={repo.cratesUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand/10 border border-brand/40 text-brand hover:bg-brand hover:text-black font-bold transition-colors"
+                    >
+                      <Package className="w-3 h-3" aria-hidden="true" />
+                      <span>crates.io ↗</span>
+                    </a>
+                  ) : (
+                    !repo.demoUrl && <span className="text-zinc-400">OSS</span>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

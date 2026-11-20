@@ -65,6 +65,98 @@ export interface TechArticle {
 
 export const TECH_ARTICLES: TechArticle[] = [
   {
+    id: 'pii-veil-sub-millisecond-llm-anonymizer',
+    rfdId: 'RFD-007',
+    title: 'Cómo construimos un anonimizador PII reversible en 165 µs para LLMs y MCP en Rust',
+    subtitle:
+      'Arquitectura zero-copy con SIMD Aho-Corasick, validación matemática de checksums y restauración en vivo de streams SSE — 212x más rápido que Microsoft Presidio.',
+    excerpt:
+      'Cómo evitar fugas de emails, tarjetas, IBANs, DNIs y API keys hacia proveedores LLM en 0.165 ms y < 15 MB de RAM sin romper el streaming de tokens.',
+    tech: 'rust',
+    pillar: 'optimizar',
+    readTime: '10 min',
+    date: '20 Nov, 2026',
+    isoDate: '2026-11-20',
+    toolchain: 'Rust 1.85+ · WASM · MCP · SSE',
+    author: {
+      name: 'Glastor Systems Team',
+      role: 'AI Privacy & High-Performance Rust Architecture',
+    },
+    tags: ['#AI-Privacy', '#MCP', '#SIMD', '#GDPR'],
+    metrics: [
+      { label: 'Latencia Prompt 1 KB', value: '165 µs', detail: '~212x más rápido que Presidio' },
+      { label: 'Restauración SSE', value: '69.6 µs', detail: 'Tokens partidos entre chunks' },
+      { label: 'Huella de Memoria', value: '< 15 MB', detail: 'Distroless vs ~450 MB spaCy' },
+    ],
+    sections: [
+      {
+        id: 'el-problema-dlp-llm',
+        heading: '1. El problema real: fugas de PII y tokens partidos en streaming SSE',
+        paragraphs: [
+          'Cada vez que un agente IA, pipeline RAG o servidor MCP envía un prompt a un LLM externo, existe un riesgo directo de exponer datos regulados (GDPR, HIPAA, PCI-DSS): correos, tarjetas de crédito, IBANs, DNI/CUIT, URIs de PostgreSQL o API keys de producción.',
+          'Las soluciones habituales obligan a elegir entre dos cuellos de botella: pipelines Python + spaCy como Microsoft Presidio (~35 ms por prompt y ~450 MB de RAM sin soporte nativo de restauración en streaming) o APIs cloud como AWS Comprehend (80–250 ms de red y > $100 USD por millón de requests enviando el PII sin cifrar a un tercero).',
+          'Con pii-veil (open-source en github.com/glastor-core/pii-veil y demo interactiva 100% WebAssembly en https://pii-veil.glastor.es), resolvemos tanto la anonimización reversible como la restauración en vivo sobre Server-Sent Events (SSE), donde un placeholder como [EMAIL_1] suele llegar dividido entre chunks arbitrarios ([EMA + IL_1]).',
+        ],
+        callout: {
+          type: 'benchmark',
+          title: 'Resultados reproducibles (Criterion, x86_64)',
+          body: 'Prompt 1 KB (7 entidades sensibles): 165.68 µs [IC 95%: 164.40–167.22 µs] · Throughput sostenido 1 MB: 20.58 ms (46.33 MiB/s) · Restauración SSE: 69.65 µs/chunk · Reproducible vía cargo bench -p pii-veil-core --bench bench_throughput.',
+        },
+      },
+      {
+        id: 'arquitectura-simd-checksums',
+        heading: '2. Arquitectura: SIMD Aho-Corasick + 18 detectores con checksum matemático',
+        paragraphs: [
+          'Para eliminar el overhead de modelos NLP de 450 MB en datos estructurados, pii-veil combina slices zero-copy en Rust, pre-filtrado SIMD con aho-corasick y validadores matemáticos deterministas (Luhn para tarjetas, ISO 13616 Mod-97 para IBAN, Mod-23 para DNI/NIE, Mod-11 para CUIT/CUIL y RUT) reduciendo los falsos positivos a casi cero.',
+        ],
+        diagram: {
+          title: 'Pipeline Reversible Zero-Egress (pii-veil)',
+          subtitle: 'Del prompt original al stream SSE restaurado en < 0.25 ms totales',
+          nodes: [
+            { step: '01', label: 'SIMD Pre-Filter', detail: 'Aho-Corasick AVX2/NEON sobre &str' },
+            { step: '02', label: 'Checksum Gate', detail: 'Luhn, Mod-97 IBAN, Mod-23/11 y Secretos', highlight: true },
+            { step: '03', label: 'Encrypted Vault', detail: 'Placeholders semánticos [EMAIL_1] + vault cifrado' },
+            { step: '04', label: 'StreamingRestorer', detail: 'Restaura chunks SSE partidos en 69.6 µs', highlight: true },
+          ],
+        },
+      },
+      {
+        id: 'integracion-cli-mcp-ci',
+        heading: '3. Despliegue inmediato: CLI, Proxy HTTP/SSE, MCP Server y SDKs',
+        paragraphs: [
+          'pii-veil sigue una arquitectura 6-en-1 publicada en crates.io (pii-veil-core / pii-veil-cli), PyPI (glastor-pii-veil), npm (pii-veil-node), Go SDK, Homebrew (glastor-core/tap/veil), GitHub Actions Marketplace y el Official MCP Registry (io.github.glastor-core/pii-veil).',
+        ],
+        code: {
+          filename: 'terminal-quickstart.sh',
+          language: 'bash',
+          caption: 'Anonimización con vault cifrado, proxy SSE local y servidor MCP para Cursor/Claude Desktop',
+          code: `# 1. Instalar vía Homebrew o Cargo
+brew install glastor-core/tap/veil
+
+# 2. Anonimizar con vault cifrado autenticado
+veil redact \\
+  --text "Charge maria@startup.io (CUIT 20-12345678-6) on 4532-0151-1283-0366" \\
+  --vault-out vault.enc --vault-pass "prod-secret"
+
+# 3. Levantar servidor MCP stdio o proxy HTTP/SSE en < 15 MB RAM
+veil mcp
+veil proxy --listen 127.0.0.1:8080 --echo`,
+        },
+        callout: {
+          type: 'architecture',
+          title: 'Trade-offs honestos en producción',
+          body: 'pii-veil es imbatible en PII estructurada, identificadores nacionales y secretos con latencia determinista. Para NER semántico libre de nombres propios ambiguos en prosa sin estructura, úsalo como primera barrera ultrarrápida combinada con una pasada NLP selectiva.',
+        },
+      },
+    ],
+    checklist: [
+      'Prueba pii-veil en 3 segundos sin instalar nada en https://pii-veil.glastor.es (WASM 100% local).',
+      'Activa glastor-core/pii-veil@v1 en GitHub Actions para bloquear PII y secretos en PRs.',
+      'Conecta veil mcp en Cursor o Claude Desktop para proteger prompts de agentes.',
+      'Evalúa despliegue On-Premise / Air-Gapped con auditoría SIEM y reglas DLP a medida vía founder@glastor.es.',
+    ],
+  },
+  {
     id: 'rust-memory',
     rfdId: 'RFD-001',
     title: 'Gestión de memoria en Rust: Evitando leaks en Microservicios Críticos',

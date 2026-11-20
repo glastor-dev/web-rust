@@ -5,6 +5,7 @@ import {
   Code2Icon,
   CloudCogIcon,
   UsersIcon,
+  ShieldCheckIcon,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -103,6 +104,25 @@ export const services: ServiceData[] = [
     weeks: [
       { w: 'Semana 1', text: 'Onboarding de Arquitectura' },
       { w: 'Continuo', text: 'Desarrollo Core & Mentoring' },
+    ],
+  },
+  {
+    id: 's7',
+    category: 'Enterprise',
+    level: 'NIVEL 05',
+    title: 'AI Privacy & DevSecOps Gate',
+    short: 'Despliegue On-Premise de pii-veil, byte-gauge y specter.',
+    icon: ShieldCheckIcon,
+    metrics: '165 µs · GDPR / EU CRA',
+    star: true,
+    bullets: [
+      'Anonimización reversible de PII en 165 µs para LLMs, agentes MCP y SSE (pii-veil).',
+      'Auditoría SIMD de binarios/Wasm, CycloneDX 1.5 SBOM y SARIF 2.1.0 (byte-gauge).',
+      'Protección contra Trojan Breaking Changes sin compilador en < 5 ms (specter).',
+    ],
+    weeks: [
+      { w: 'Semana 1', text: 'Despliegue Air-Gapped / Kubernetes Sidecar & Reglas DLP' },
+      { w: 'Semana 2', text: 'Integración SIEM, CI/CD Gate & Evidencia GDPR/HIPAA/CRA' },
     ],
   },
 

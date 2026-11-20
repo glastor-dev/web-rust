@@ -16,7 +16,7 @@ export function SEO({ schemaType = 'Organization', dynamicSchema }: SEOProps) {
       url: 'https://glastor.es',
       logo: 'https://glastor.es/icons/favicon-512x512.png',
       description:
-        'Agencia de software B2B especializada en Rust y arquitecturas de alto rendimiento.',
+        'Agencia de ingeniería de software B2B especializada en Rust, AI Privacy (pii-veil), DevSecOps Supply Chain y arquitecturas de alto rendimiento.',
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',
@@ -26,6 +26,8 @@ export function SEO({ schemaType = 'Organization', dynamicSchema }: SEOProps) {
       sameAs: [
         'https://github.com/glastor-core',
         'https://github.com/glastor-dev',
+        'https://pii-veil.glastor.es',
+        'https://www.youtube.com/@glastor-es',
         'https://wa.me/5491132578591',
         'https://t.me/glastordev',
         'https://instagram.com/glastordev',
